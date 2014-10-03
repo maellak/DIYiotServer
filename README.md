@@ -18,7 +18,7 @@ Rest Api για δημιουργία διεπαφής για Web/Phone
 You can use the DIYiotTools code AS-IS!  No need to build or recompile--just clone this repo and use the files in the `web` folder.  
 
 Tree Example
-
+```
 ├── client
 │   ├── client-getdevices.php
 │   └── client-gettoken.php
@@ -70,7 +70,7 @@ Tree Example
     │       ├── includes.php
     │       └── methodtypes.php
     └── swagger-ui
-
+```
 ### Config
 
 Follow these steps:
