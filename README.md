@@ -132,6 +132,7 @@ Happy Coding :-)
 #  Required dependencies
 
 Make sure you have all dependencies
+
 For more information see web/swagger-ui/README.md and  swagger/swagger-php/readme.md
 
 # License
