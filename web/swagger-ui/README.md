@@ -27,11 +27,11 @@ Swagger UI Version | Release Date | Swagger Spec compatability | Notes | Status
 ## How to Use It
 
 ### Download
-You can use the swagger-ui code AS-IS!  No need to build or recompile--just clone this repo and use the pre-built files in the `dist` folder.  If you like swagger-ui as-is, stop here.
+You can use the swagger-ui code AS-IS!  No need to build or recompile--just clone this repo and use the pre-built files in the `dist` folder. 
 
 ## more info
 
-For more information about Swagger UI see  README_orig_from_swagger.md or  [Swagger UI](https://github.com/wordnik/swagger-ui)
+For more information about Swagger UI see  README_orig_from_swagger.md or  [Swagger UI](https://github.com/wordnik/swagger-ui) on GitHub
 
 ## License
 
