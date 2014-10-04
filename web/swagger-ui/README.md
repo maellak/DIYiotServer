@@ -16,7 +16,6 @@ Check out [Swagger-Spec](https://github.com/wordnik/swagger-spec) for additional
 
 ## How to Use It
 
-### Download
 You can use the swagger-ui code AS-IS!  No need to build or recompile--just use the pre-built files in the `dist` folder. 
 
 ## more info
