@@ -1,9 +1,9 @@
-# DIYiotTools
+# DIYiotServer
 
-Το έργο DIYiotTools παρέχει Rest API και εργαλεία για τη δημιουργία Network-enabled Arduino projects
+Το DIYiotServer παρέχει Rest API και εργαλεία για τη δημιουργία Network-enabled Arduino projects
 
 
-## To DIYiotTools παρέχει
+## To DIYiotServer παρέχει
 
 
 Network-enabled Arduino
@@ -15,7 +15,7 @@ Rest Api για δημιουργία διεπαφής για Web/Phone
 ## How to Use It
 
 ### Download
-You can use the DIYiotTools code AS-IS!  No need to build or recompile--just clone this repo and use the files in the `web` folder.  
+You can use the DIYiotServer code AS-IS!  No need to build or recompile--just clone this repo and use the files in the `web` folder.  
 
 Tree Example
 ```
