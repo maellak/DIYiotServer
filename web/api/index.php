@@ -53,34 +53,21 @@ $app->post('/token', function () use ($authenticateForRole)  {
 	return $rr;
 });
 
-//=========================  GET ==================================
 
-//api/get/diy_getdevices.php
-$app->get('/devices', function () use ($authenticateForRole, $diy_storage)  {
-    	global $app;
-    	$params = loadParameters();
-	$server = $authenticateForRole();
-	$dbstorage = $diy_storage();
-	if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
-		echo 'Unable to verify access token: '."\n";
-		$server->getResponse()->send();
-		die;
-	}else{
-		$crypto_token = OAuth2\Request::createFromGlobals()->query["access_token"];
-		$separator = '.';
-		list($header, $payload, $signature) = explode($separator, $crypto_token);
-		//echo base64_decode($payload);
-		$params["payload"] = $payload;
-		$params["storage"] = $dbstorage;
-		$result = diy_getdevices(
-			$params["payload"],
-			$params["storage"],
-			$params["test"]
-           	);      
-    		PrepareResponse();
-    		$app->response()->setBody( toGreek( json_encode( $result ) ) );
-	}
-});
+
+
+/*Directories that contain api POST/GET*/
+$diy_classesDir = array (
+    '../api/post/',
+    '../api/get/',
+    '../api/delete/'
+);
+foreach ($diy_classesDir as $directory) {
+        foreach (glob("$directory*.php") as $__filename){
+            require_once ($__filename);
+        }
+}
+
 
 //=========================  HELPER ==================================
 //function not found

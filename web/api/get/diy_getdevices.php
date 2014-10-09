@@ -2,6 +2,33 @@
 
 header("Content-Type: text/html; charset=utf-8");
 
+//api/get/diy_getdevices.php
+$app->get('/devices', function () use ($authenticateForRole, $diy_storage)  {
+        global $app;
+        $params = loadParameters();
+        $server = $authenticateForRole();
+        $dbstorage = $diy_storage();
+        if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
+                echo 'Unable to verify access token: '."\n";
+                $server->getResponse()->send();
+                die;
+        }else{
+                $crypto_token = OAuth2\Request::createFromGlobals()->query["access_token"];
+                $separator = '.';
+                list($header, $payload, $signature) = explode($separator, $crypto_token);
+                //echo base64_decode($payload);
+                $params["payload"] = $payload;
+                $params["storage"] = $dbstorage;
+                $result = diy_getdevices(
+                        $params["payload"],
+                        $params["storage"],
+                        $params["test"]
+                );
+                PrepareResponse();
+                $app->response()->setBody( toGreek( json_encode( $result ) ) );
+        }
+});
+
 function diy_getdevices($payload,$storage){
     global $app;
     $result["controller"] = __FUNCTION__;

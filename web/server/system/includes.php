@@ -8,8 +8,7 @@ require_once('../../vendor/autoload.php');
 require_once('system/config.php');
 require_once('system/methodtypes.php');
 
-// ================================ GET ================================
-require_once('../api/get/diy_getdevices.php'); // devices pou enikoun ston christi
+//require_once('../api/get/diy_getdevices.php'); // devices pou enikoun ston christi
 
 
 ?>
