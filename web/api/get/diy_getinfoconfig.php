@@ -43,14 +43,16 @@ function diy_getinfoconfig($payload,$storage){
     $up=json_decode(base64_decode($payload));
     $client_id=$up->client_id;
     try {
-        $stmt = $storage->prepare('SELECT * FROM oauth_devices WHERE client_id = :client_id');
+        $stmt = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_id');
         $stmt->execute(array('client_id' => $client_id));
-        //device, device_desc, organisation, client_id
         $nr=0;
                 foreach ($stmt as $row) {
-                        $devices["dev"][$nr]["device"]= $row["device"];
-                        $devices["dev"][$nr]["device_desc"]= $row["device_desc"];
-                        $devices["dev"][$nr]["organisation"]= $row["organisation"];
+                        $devices["devinfo"][$nr]["client_id"]= $row["client_id"];
+                        $devices["devinfo"][$nr]["sshhost"]= $row["sshhost"];
+                        $devices["devinfo"][$nr]["sshport"]= $row["sshport"];
+                        $devices["devinfo"][$nr]["apihost"]= $row["apihost"];
+                        $devices["devinfo"][$nr]["apiport"]= $row["apiport"];
+                        $devices["devinfo"][$nr]["dataport"]= $row["dataport"];
                         $nr++;
                 }
 //result_messages===============================================================      
