@@ -1,0 +1,945 @@
+.
+	paradeigmata gia client
+-------------------------------------------------------------------
+	paradeigmata gia client
+├── client
+│   ├── client-getdevices.php
+│   ├── client-gettoken.php
+│   └── myhost.php
+
+	katalogos gia tis vasseis sqlite
+-------------------------------------------------------------------
+├── db
+│   └── oauth.sqlite
+├── LICENSE-agpl-3.0.txt
+├── README.md
+├── README_tree
+
+	src gia tin viviothiki oAuth2 pou chrissimopii to project
+-------------------------------------------------------------------
+├── src
+│   └── OAuth2
+│       ├── Autoloader.php
+│       ├── ClientAssertionType
+│       │   ├── ClientAssertionTypeInterface.php
+│       │   └── HttpBasic.php
+│       ├── Controller
+│       │   ├── AuthorizeControllerInterface.php
+│       │   ├── AuthorizeController.php
+│       │   ├── ResourceControllerInterface.php
+│       │   ├── ResourceController.php
+│       │   ├── TokenControllerInterface.php
+│       │   └── TokenController.php
+│       ├── Encryption
+│       │   ├── EncryptionInterface.php
+│       │   └── Jwt.php
+│       ├── GrantType
+│       │   ├── AuthorizationCode.php
+│       │   ├── ClientCredentials.php
+│       │   ├── GrantTypeInterface.php
+│       │   ├── JwtBearer.php
+│       │   ├── RefreshToken.php
+│       │   └── UserCredentials.php
+│       ├── OpenID
+│       │   ├── Controller
+│       │   │   ├── AuthorizeControllerInterface.php
+│       │   │   ├── AuthorizeController.php
+│       │   │   ├── UserInfoControllerInterface.php
+│       │   │   └── UserInfoController.php
+│       │   ├── GrantType
+│       │   │   └── AuthorizationCode.php
+│       │   ├── ResponseType
+│       │   │   ├── AuthorizationCodeInterface.php
+│       │   │   ├── AuthorizationCode.php
+│       │   │   ├── IdTokenInterface.php
+│       │   │   ├── IdToken.php
+│       │   │   ├── TokenIdTokenInterface.php
+│       │   │   └── TokenIdToken.php
+│       │   └── Storage
+│       │       ├── AuthorizationCodeInterface.php
+│       │       └── UserClaimsInterface.php
+│       ├── RequestInterface.php
+│       ├── Request.php
+│       ├── ResponseInterface.php
+│       ├── Response.php
+│       ├── ResponseType
+│       │   ├── AccessTokenInterface.php
+│       │   ├── AccessToken.php
+│       │   ├── AuthorizationCodeInterface.php
+│       │   ├── AuthorizationCode.php
+│       │   ├── CryptoToken.php
+│       │   └── ResponseTypeInterface.php
+│       ├── ScopeInterface.php
+│       ├── Scope.php
+│       ├── Server.php
+│       ├── Storage
+│       │   ├── AccessTokenInterface.php
+│       │   ├── AuthorizationCodeInterface.php
+│       │   ├── Cassandra.php
+│       │   ├── ClientCredentialsInterface.php
+│       │   ├── ClientInterface.php
+│       │   ├── CryptoTokenInterface.php
+│       │   ├── CryptoToken.php
+│       │   ├── DynamoDB.php
+│       │   ├── JwtBearerInterface.php
+│       │   ├── Memory.php
+│       │   ├── Mongo.php
+│       │   ├── Pdo.php
+│       │   ├── PublicKeyInterface.php
+│       │   ├── Redis.php
+│       │   ├── RefreshTokenInterface.php
+│       │   ├── ScopeInterface.php
+│       │   └── UserCredentialsInterface.php
+│       └── TokenType
+│           ├── Bearer.php
+│           ├── Mac.php
+│           └── TokenTypeInterface.php
+
+	katalogos gia ta keys ton christon
+	apoteloun paradeigmata
+	prepei se normal leitourgia na diagrafoun
+-------------------------------------------------------------------
+├── ssh
+│   ├── CLIENT_ID1_privkey.pem
+│   ├── CLIENT_ID1_pubkey.pem
+│   ├── CLIENT_ID_privkey.pem
+│   ├── CLIENT_ID_pubkey.pem
+│   ├── privkey.pem
+│   ├── pubkey.pem
+│   └── rsa
+
+	viviothiki sqgger
+	chrissimopiite apo to project
+	gia online help
+-------------------------------------------------------------------
+├── swagger
+│   └── swagger-php
+│       ├── bin
+│       │   └── swagger
+│       ├── CHANGELOG.md
+│       ├── composer.json
+│       ├── composer.lock
+│       ├── composer.phar
+│       ├── Examples
+│       │   ├── Examples.md
+│       │   ├── Facet
+│       │   │   ├── Models
+│       │   │   │   ├── Facet.php
+│       │   │   │   ├── FacetResult.php
+│       │   │   │   ├── FacetSet.php
+│       │   │   │   └── Some_Model.php
+│       │   │   └── Resources
+│       │   │       └── FacetResource.php
+│       │   ├── Minimal
+│       │   │   ├── Models
+│       │   │   │   ├── Dog.php
+│       │   │   │   └── Pet.php
+│       │   │   └── Resources
+│       │   │       ├── Operations.php
+│       │   │       └── ResolveController.php
+│       │   ├── Petstore
+│       │   │   ├── api.php
+│       │   │   ├── Models
+│       │   │   │   ├── Category.php
+│       │   │   │   ├── Pet.php
+│       │   │   │   ├── Tag.php
+│       │   │   │   └── User.php
+│       │   │   └── Resources
+│       │   │       ├── Pet.php
+│       │   │       ├── Store.php
+│       │   │       └── User.php
+│       │   └── Router
+│       │       ├── common.php
+│       │       ├── Controller.php
+│       │       └── routes.php
+│       ├── library
+│       │   └── Swagger
+│       │       ├── Annotations
+│       │       │   ├── AbstractAnnotation.php
+│       │       │   ├── Api.php
+│       │       │   ├── Authorization.php
+│       │       │   ├── Consumes.php
+│       │       │   ├── DataType.php
+│       │       │   ├── Info.php
+│       │       │   ├── Items.php
+│       │       │   ├── Model.php
+│       │       │   ├── Operation.php
+│       │       │   ├── Operations.php
+│       │       │   ├── Parameter.php
+│       │       │   ├── Parameters.php
+│       │       │   ├── Partial.php
+│       │       │   ├── Produces.php
+│       │       │   ├── Properties.php
+│       │       │   ├── Property.php
+│       │       │   ├── Resource.php
+│       │       │   ├── ResponseMessage.php
+│       │       │   ├── ResponseMessages.php
+│       │       │   └── Scope.php
+│       │       ├── Context.php
+│       │       ├── Logger.php
+│       │       ├── Parser.php
+│       │       ├── Processors
+│       │       │   ├── ApiProcessor.php
+│       │       │   ├── AuthorizationProcessor.php
+│       │       │   ├── InfoProcessor.php
+│       │       │   ├── ModelProcessor.php
+│       │       │   ├── NestingProcessor.php
+│       │       │   ├── ProcessorInterface.php
+│       │       │   ├── PropertyProcessor.php
+│       │       │   └── ResourceProcessor.php
+│       │       └── Swagger.php
+│       ├── LICENSE-2.0.txt
+│       ├── package.xml
+│       ├── phpunit.xml.dist
+│       ├── readme.md
+│       ├── scripts
+│       │   ├── compile.php
+│       │   └── package.php
+│       ├── swagger.phar
+│       ├── tests
+│       │   ├── bootstrap.php
+│       │   ├── ExamplesOutput
+│       │   │   ├── Facet
+│       │   │   │   └── facet.json
+│       │   │   ├── Minimal
+│       │   │   │   ├── api-docs.json
+│       │   │   │   ├── operations.json
+│       │   │   │   └── resolve.json
+│       │   │   ├── Petstore
+│       │   │   │   ├── api-docs.json
+│       │   │   │   ├── pet.json
+│       │   │   │   ├── store.json
+│       │   │   │   └── user.json
+│       │   │   └── Router
+│       │   │       └── logs.json
+│       │   └── SwaggerTests
+│       │       └── SwaggerTest.php
+│       ├── vendor
+│       │   ├── autoload.php
+│       │   ├── composer
+│       │   │   ├── autoload_classmap.php
+│       │   │   ├── autoload_namespaces.php
+│       │   │   ├── autoload_psr4.php
+│       │   │   ├── autoload_real.php
+│       │   │   ├── ClassLoader.php
+│       │   │   └── installed.json
+│       │   ├── doctrine
+│       │   │   ├── annotations
+│       │   │   │   ├── composer.json
+│       │   │   │   ├── lib
+│       │   │   │   │   └── Doctrine
+│       │   │   │   │       └── Common
+│       │   │   │   │           └── Annotations
+│       │   │   │   │               ├── Annotation
+│       │   │   │   │               │   ├── Attribute.php
+│       │   │   │   │               │   ├── Attributes.php
+│       │   │   │   │               │   ├── Enum.php
+│       │   │   │   │               │   ├── IgnoreAnnotation.php
+│       │   │   │   │               │   ├── Required.php
+│       │   │   │   │               │   └── Target.php
+│       │   │   │   │               ├── AnnotationException.php
+│       │   │   │   │               ├── Annotation.php
+│       │   │   │   │               ├── AnnotationReader.php
+│       │   │   │   │               ├── AnnotationRegistry.php
+│       │   │   │   │               ├── CachedReader.php
+│       │   │   │   │               ├── DocLexer.php
+│       │   │   │   │               ├── DocParser.php
+│       │   │   │   │               ├── FileCacheReader.php
+│       │   │   │   │               ├── IndexedReader.php
+│       │   │   │   │               ├── PhpParser.php
+│       │   │   │   │               ├── Reader.php
+│       │   │   │   │               ├── SimpleAnnotationReader.php
+│       │   │   │   │               └── TokenParser.php
+│       │   │   │   ├── LICENSE
+│       │   │   │   ├── phpunit.xml.dist
+│       │   │   │   ├── README.md
+│       │   │   │   └── tests
+│       │   │   │       └── Doctrine
+│       │   │   │           └── Tests
+│       │   │   │               ├── Common
+│       │   │   │               │   └── Annotations
+│       │   │   │               │       ├── AbstractReaderTest.php
+│       │   │   │               │       ├── Annotation
+│       │   │   │               │       │   └── TargetTest.php
+│       │   │   │               │       ├── AnnotationReaderTest.php
+│       │   │   │               │       ├── CachedReaderTest.php
+│       │   │   │               │       ├── DocLexerTest.php
+│       │   │   │               │       ├── DocParserTest.php
+│       │   │   │               │       ├── DummyClass.php
+│       │   │   │               │       ├── FileCacheReaderTest.php
+│       │   │   │               │       ├── Fixtures
+│       │   │   │               │       │   ├── Annotation
+│       │   │   │               │       │   │   ├── AnnotWithDefaultValue.php
+│       │   │   │               │       │   │   ├── Autoload.php
+│       │   │   │               │       │   │   ├── Route.php
+│       │   │   │               │       │   │   ├── Secure.php
+│       │   │   │               │       │   │   ├── Template.php
+│       │   │   │               │       │   │   └── Version.php
+│       │   │   │               │       │   ├── AnnotationEnumInvalid.php
+│       │   │   │               │       │   ├── AnnotationEnumLiteralInvalid.php
+│       │   │   │               │       │   ├── AnnotationEnumLiteral.php
+│       │   │   │               │       │   ├── AnnotationEnum.php
+│       │   │   │               │       │   ├── AnnotationTargetAll.php
+│       │   │   │               │       │   ├── AnnotationTargetAnnotation.php
+│       │   │   │               │       │   ├── AnnotationTargetClass.php
+│       │   │   │               │       │   ├── AnnotationTargetMethod.php
+│       │   │   │               │       │   ├── AnnotationTargetPropertyMethod.php
+│       │   │   │               │       │   ├── AnnotationWithAttributes.php
+│       │   │   │               │       │   ├── AnnotationWithConstants.php
+│       │   │   │               │       │   ├── AnnotationWithRequiredAttributes.php
+│       │   │   │               │       │   ├── AnnotationWithRequiredAttributesWithoutContructor.php
+│       │   │   │               │       │   ├── AnnotationWithTargetSyntaxError.php
+│       │   │   │               │       │   ├── AnnotationWithVarType.php
+│       │   │   │               │       │   ├── Api.php
+│       │   │   │               │       │   ├── ClassDDC1660.php
+│       │   │   │               │       │   ├── ClassNoNamespaceNoComment.php
+│       │   │   │               │       │   ├── ClassOverwritesTrait.php
+│       │   │   │               │       │   ├── ClassUsesTrait.php
+│       │   │   │               │       │   ├── ClassWithAnnotationEnum.php
+│       │   │   │               │       │   ├── ClassWithAnnotationWithTargetSyntaxError.php
+│       │   │   │               │       │   ├── ClassWithAnnotationWithVarType.php
+│       │   │   │               │       │   ├── ClassWithAtInDescriptionAndAnnotation.php
+│       │   │   │               │       │   ├── ClassWithClassAnnotationOnly.php
+│       │   │   │               │       │   ├── ClassWithClosure.php
+│       │   │   │               │       │   ├── ClassWithConstants.php
+│       │   │   │               │       │   ├── ClassWithFullyQualifiedUseStatements.php
+│       │   │   │               │       │   ├── ClassWithIgnoreAnnotation.php
+│       │   │   │               │       │   ├── ClassWithInvalidAnnotationTargetAtClass.php
+│       │   │   │               │       │   ├── ClassWithInvalidAnnotationTargetAtMethod.php
+│       │   │   │               │       │   ├── ClassWithInvalidAnnotationTargetAtProperty.php
+│       │   │   │               │       │   ├── ClassWithRequire.php
+│       │   │   │               │       │   ├── ClassWithValidAnnotationTarget.php
+│       │   │   │               │       │   ├── Controller.php
+│       │   │   │               │       │   ├── DifferentNamespacesPerFileWithClassAsFirst.php
+│       │   │   │               │       │   ├── DifferentNamespacesPerFileWithClassAsLast.php
+│       │   │   │               │       │   ├── EqualNamespacesPerFileWithClassAsFirst.php
+│       │   │   │               │       │   ├── EqualNamespacesPerFileWithClassAsLast.php
+│       │   │   │               │       │   ├── GlobalNamespacesPerFileWithClassAsFirst.php
+│       │   │   │               │       │   ├── GlobalNamespacesPerFileWithClassAsLast.php
+│       │   │   │               │       │   ├── IgnoreAnnotationClass.php
+│       │   │   │               │       │   ├── IntefaceWithConstants.php
+│       │   │   │               │       │   ├── InvalidAnnotationUsageButIgnoredClass.php
+│       │   │   │               │       │   ├── InvalidAnnotationUsageClass.php
+│       │   │   │               │       │   ├── MultipleClassesInFile.php
+│       │   │   │               │       │   ├── MultipleImportsInUseStatement.php
+│       │   │   │               │       │   ├── NamespaceAndClassCommentedOut.php
+│       │   │   │               │       │   ├── NamespacedSingleClassLOC1000.php
+│       │   │   │               │       │   ├── NamespaceWithClosureDeclaration.php
+│       │   │   │               │       │   ├── NoAnnotation.php
+│       │   │   │               │       │   ├── NonNamespacedClass.php
+│       │   │   │               │       │   ├── SingleClassLOC1000.php
+│       │   │   │               │       │   ├── TestInterface.php
+│       │   │   │               │       │   └── TraitWithAnnotatedMethod.php
+│       │   │   │               │       ├── PerformanceTest.php
+│       │   │   │               │       ├── PhpParserTest.php
+│       │   │   │               │       ├── SimpleAnnotationReaderTest.php
+│       │   │   │               │       ├── Ticket
+│       │   │   │               │       │   ├── DCOM55Test.php
+│       │   │   │               │       │   ├── DCOM58Entity.php
+│       │   │   │               │       │   └── DCOM58Test.php
+│       │   │   │               │       └── TopLevelAnnotation.php
+│       │   │   │               ├── DoctrineTestCase.php
+│       │   │   │               └── TestInit.php
+│       │   │   ├── common
+│       │   │   │   ├── bin
+│       │   │   │   │   └── travis-setup.php
+│       │   │   │   ├── build.properties
+│       │   │   │   ├── build.xml
+│       │   │   │   ├── composer.json
+│       │   │   │   ├── lib
+│       │   │   │   │   └── Doctrine
+│       │   │   │   │       └── Common
+│       │   │   │   │           ├── Annotations
+│       │   │   │   │           │   ├── Annotation
+│       │   │   │   │           │   │   ├── Attribute.php
+│       │   │   │   │           │   │   ├── Attributes.php
+│       │   │   │   │           │   │   ├── IgnoreAnnotation.php
+│       │   │   │   │           │   │   ├── Required.php
+│       │   │   │   │           │   │   └── Target.php
+│       │   │   │   │           │   ├── AnnotationException.php
+│       │   │   │   │           │   ├── Annotation.php
+│       │   │   │   │           │   ├── AnnotationReader.php
+│       │   │   │   │           │   ├── AnnotationRegistry.php
+│       │   │   │   │           │   ├── CachedReader.php
+│       │   │   │   │           │   ├── DocLexer.php
+│       │   │   │   │           │   ├── DocParser.php
+│       │   │   │   │           │   ├── FileCacheReader.php
+│       │   │   │   │           │   ├── IndexedReader.php
+│       │   │   │   │           │   ├── PhpParser.php
+│       │   │   │   │           │   ├── Reader.php
+│       │   │   │   │           │   ├── SimpleAnnotationReader.php
+│       │   │   │   │           │   └── TokenParser.php
+│       │   │   │   │           ├── Cache
+│       │   │   │   │           │   ├── ApcCache.php
+│       │   │   │   │           │   ├── ArrayCache.php
+│       │   │   │   │           │   ├── Cache.php
+│       │   │   │   │           │   ├── CacheProvider.php
+│       │   │   │   │           │   ├── FileCache.php
+│       │   │   │   │           │   ├── FilesystemCache.php
+│       │   │   │   │           │   ├── MemcacheCache.php
+│       │   │   │   │           │   ├── MemcachedCache.php
+│       │   │   │   │           │   ├── PhpFileCache.php
+│       │   │   │   │           │   ├── RedisCache.php
+│       │   │   │   │           │   ├── WinCacheCache.php
+│       │   │   │   │           │   ├── XcacheCache.php
+│       │   │   │   │           │   └── ZendDataCache.php
+│       │   │   │   │           ├── ClassLoader.php
+│       │   │   │   │           ├── Collections
+│       │   │   │   │           │   ├── ArrayCollection.php
+│       │   │   │   │           │   ├── Collection.php
+│       │   │   │   │           │   ├── Criteria.php
+│       │   │   │   │           │   ├── Expr
+│       │   │   │   │           │   │   ├── ClosureExpressionVisitor.php
+│       │   │   │   │           │   │   ├── Comparison.php
+│       │   │   │   │           │   │   ├── CompositeExpression.php
+│       │   │   │   │           │   │   ├── Expression.php
+│       │   │   │   │           │   │   ├── ExpressionVisitor.php
+│       │   │   │   │           │   │   └── Value.php
+│       │   │   │   │           │   ├── ExpressionBuilder.php
+│       │   │   │   │           │   └── Selectable.php
+│       │   │   │   │           ├── CommonException.php
+│       │   │   │   │           ├── Comparable.php
+│       │   │   │   │           ├── EventArgs.php
+│       │   │   │   │           ├── EventManager.php
+│       │   │   │   │           ├── EventSubscriber.php
+│       │   │   │   │           ├── Lexer.php
+│       │   │   │   │           ├── NotifyPropertyChanged.php
+│       │   │   │   │           ├── Persistence
+│       │   │   │   │           │   ├── AbstractManagerRegistry.php
+│       │   │   │   │           │   ├── ConnectionRegistry.php
+│       │   │   │   │           │   ├── Event
+│       │   │   │   │           │   │   ├── LifecycleEventArgs.php
+│       │   │   │   │           │   │   ├── LoadClassMetadataEventArgs.php
+│       │   │   │   │           │   │   ├── ManagerEventArgs.php
+│       │   │   │   │           │   │   ├── OnClearEventArgs.php
+│       │   │   │   │           │   │   └── PreUpdateEventArgs.php
+│       │   │   │   │           │   ├── ManagerRegistry.php
+│       │   │   │   │           │   ├── Mapping
+│       │   │   │   │           │   │   ├── AbstractClassMetadataFactory.php
+│       │   │   │   │           │   │   ├── ClassMetadataFactory.php
+│       │   │   │   │           │   │   ├── ClassMetadata.php
+│       │   │   │   │           │   │   ├── Driver
+│       │   │   │   │           │   │   │   ├── AnnotationDriver.php
+│       │   │   │   │           │   │   │   ├── DefaultFileLocator.php
+│       │   │   │   │           │   │   │   ├── FileDriver.php
+│       │   │   │   │           │   │   │   ├── FileLocator.php
+│       │   │   │   │           │   │   │   ├── MappingDriverChain.php
+│       │   │   │   │           │   │   │   ├── MappingDriver.php
+│       │   │   │   │           │   │   │   ├── PHPDriver.php
+│       │   │   │   │           │   │   │   ├── StaticPHPDriver.php
+│       │   │   │   │           │   │   │   └── SymfonyFileLocator.php
+│       │   │   │   │           │   │   ├── MappingException.php
+│       │   │   │   │           │   │   ├── ReflectionService.php
+│       │   │   │   │           │   │   ├── RuntimeReflectionService.php
+│       │   │   │   │           │   │   └── StaticReflectionService.php
+│       │   │   │   │           │   ├── ObjectManagerAware.php
+│       │   │   │   │           │   ├── ObjectManager.php
+│       │   │   │   │           │   ├── ObjectRepository.php
+│       │   │   │   │           │   ├── PersistentObject.php
+│       │   │   │   │           │   └── Proxy.php
+│       │   │   │   │           ├── PropertyChangedListener.php
+│       │   │   │   │           ├── Reflection
+│       │   │   │   │           │   ├── ClassFinderInterface.php
+│       │   │   │   │           │   ├── Psr0FindFile.php
+│       │   │   │   │           │   ├── ReflectionProviderInterface.php
+│       │   │   │   │           │   ├── StaticReflectionClass.php
+│       │   │   │   │           │   ├── StaticReflectionMethod.php
+│       │   │   │   │           │   ├── StaticReflectionParser.php
+│       │   │   │   │           │   └── StaticReflectionProperty.php
+│       │   │   │   │           ├── Util
+│       │   │   │   │           │   ├── ClassUtils.php
+│       │   │   │   │           │   ├── Debug.php
+│       │   │   │   │           │   └── Inflector.php
+│       │   │   │   │           └── Version.php
+│       │   │   │   ├── LICENSE
+│       │   │   │   ├── phpunit.xml.dist
+│       │   │   │   ├── README.md
+│       │   │   │   ├── tests
+│       │   │   │   │   ├── Doctrine
+│       │   │   │   │   │   └── Tests
+│       │   │   │   │   │       ├── Common
+│       │   │   │   │   │       │   ├── Annotations
+│       │   │   │   │   │       │   │   ├── AbstractReaderTest.php
+│       │   │   │   │   │       │   │   ├── AnnotationReaderTest.php
+│       │   │   │   │   │       │   │   ├── CachedReaderTest.php
+│       │   │   │   │   │       │   │   ├── DocLexerTest.php
+│       │   │   │   │   │       │   │   ├── DocParserTest.php
+│       │   │   │   │   │       │   │   ├── DummyClass.php
+│       │   │   │   │   │       │   │   ├── FileCacheReaderTest.php
+│       │   │   │   │   │       │   │   ├── Fixtures
+│       │   │   │   │   │       │   │   │   ├── Annotation
+│       │   │   │   │   │       │   │   │   │   ├── AnnotWithDefaultValue.php
+│       │   │   │   │   │       │   │   │   │   ├── Autoload.php
+│       │   │   │   │   │       │   │   │   │   ├── Route.php
+│       │   │   │   │   │       │   │   │   │   ├── Secure.php
+│       │   │   │   │   │       │   │   │   │   ├── Template.php
+│       │   │   │   │   │       │   │   │   │   └── Version.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationTargetAll.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationTargetAnnotation.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationTargetClass.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationTargetMethod.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationTargetPropertyMethod.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithAttributes.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithConstants.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithRequiredAttributes.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithRequiredAttributesWithoutContructor.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithTargetSyntaxError.php
+│       │   │   │   │   │       │   │   │   ├── AnnotationWithVarType.php
+│       │   │   │   │   │       │   │   │   ├── ClassDDC1660.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithAnnotationWithTargetSyntaxError.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithAnnotationWithVarType.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithClosure.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithConstants.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithFullyQualifiedUseStatements.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithInvalidAnnotationTargetAtClass.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithInvalidAnnotationTargetAtMethod.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithInvalidAnnotationTargetAtProperty.php
+│       │   │   │   │   │       │   │   │   ├── ClassWithValidAnnotationTarget.php
+│       │   │   │   │   │       │   │   │   ├── Controller.php
+│       │   │   │   │   │       │   │   │   ├── DifferentNamespacesPerFileWithClassAsFirst.php
+│       │   │   │   │   │       │   │   │   ├── DifferentNamespacesPerFileWithClassAsLast.php
+│       │   │   │   │   │       │   │   │   ├── EqualNamespacesPerFileWithClassAsFirst.php
+│       │   │   │   │   │       │   │   │   ├── EqualNamespacesPerFileWithClassAsLast.php
+│       │   │   │   │   │       │   │   │   ├── GlobalNamespacesPerFileWithClassAsFirst.php
+│       │   │   │   │   │       │   │   │   ├── GlobalNamespacesPerFileWithClassAsLast.php
+│       │   │   │   │   │       │   │   │   ├── IntefaceWithConstants.php
+│       │   │   │   │   │       │   │   │   ├── InvalidAnnotationUsageButIgnoredClass.php
+│       │   │   │   │   │       │   │   │   ├── InvalidAnnotationUsageClass.php
+│       │   │   │   │   │       │   │   │   ├── MultipleClassesInFile.php
+│       │   │   │   │   │       │   │   │   ├── MultipleImportsInUseStatement.php
+│       │   │   │   │   │       │   │   │   ├── NamespaceAndClassCommentedOut.php
+│       │   │   │   │   │       │   │   │   ├── NamespacedSingleClassLOC1000.php
+│       │   │   │   │   │       │   │   │   ├── NamespaceWithClosureDeclaration.php
+│       │   │   │   │   │       │   │   │   ├── NoAnnotation.php
+│       │   │   │   │   │       │   │   │   ├── NonNamespacedClass.php
+│       │   │   │   │   │       │   │   │   ├── SingleClassLOC1000.php
+│       │   │   │   │   │       │   │   │   └── TestInterface.php
+│       │   │   │   │   │       │   │   ├── PerformanceTest.php
+│       │   │   │   │   │       │   │   ├── PhpParserTest.php
+│       │   │   │   │   │       │   │   ├── SimpleAnnotationReaderTest.php
+│       │   │   │   │   │       │   │   ├── Ticket
+│       │   │   │   │   │       │   │   │   ├── DCOM55Test.php
+│       │   │   │   │   │       │   │   │   ├── DCOM58Entity.php
+│       │   │   │   │   │       │   │   │   └── DCOM58Test.php
+│       │   │   │   │   │       │   │   └── TopLevelAnnotation.php
+│       │   │   │   │   │       │   ├── Cache
+│       │   │   │   │   │       │   │   ├── ApcCacheTest.php
+│       │   │   │   │   │       │   │   ├── ArrayCacheTest.php
+│       │   │   │   │   │       │   │   ├── CacheTest.php
+│       │   │   │   │   │       │   │   ├── FilesystemCacheTest.php
+│       │   │   │   │   │       │   │   ├── MemcacheCacheTest.php
+│       │   │   │   │   │       │   │   ├── MemcachedCacheTest.php
+│       │   │   │   │   │       │   │   ├── PhpFileCacheTest.php
+│       │   │   │   │   │       │   │   ├── RedisCacheTest.php
+│       │   │   │   │   │       │   │   ├── WinCacheCacheTest.php
+│       │   │   │   │   │       │   │   ├── XcacheCacheTest.php
+│       │   │   │   │   │       │   │   └── ZendDataCacheTest.php
+│       │   │   │   │   │       │   ├── ClassLoaderTest
+│       │   │   │   │   │       │   │   ├── ClassA.class.php
+│       │   │   │   │   │       │   │   ├── ClassB.class.php
+│       │   │   │   │   │       │   │   ├── ClassC.class.php
+│       │   │   │   │   │       │   │   └── ClassD.php
+│       │   │   │   │   │       │   ├── ClassLoaderTest.php
+│       │   │   │   │   │       │   ├── Collections
+│       │   │   │   │   │       │   │   ├── ClosureExpressionVisitorTest.php
+│       │   │   │   │   │       │   │   ├── CollectionTest.php
+│       │   │   │   │   │       │   │   ├── CriteriaTest.php
+│       │   │   │   │   │       │   │   └── ExpressionBuilderTest.php
+│       │   │   │   │   │       │   ├── DoctrineExceptionTest.php
+│       │   │   │   │   │       │   ├── EventManagerTest.php
+│       │   │   │   │   │       │   ├── Persistence
+│       │   │   │   │   │       │   │   ├── Mapping
+│       │   │   │   │   │       │   │   │   ├── ChainDriverTest.php
+│       │   │   │   │   │       │   │   │   ├── ClassMetadataFactoryTest.php
+│       │   │   │   │   │       │   │   │   ├── DefaultFileLocatorTest.php
+│       │   │   │   │   │       │   │   │   ├── FileDriverTest.php
+│       │   │   │   │   │       │   │   │   ├── _files
+│       │   │   │   │   │       │   │   │   │   ├── global.yml
+│       │   │   │   │   │       │   │   │   │   ├── stdClass.yml
+│       │   │   │   │   │       │   │   │   │   └── TestEntity.php
+│       │   │   │   │   │       │   │   │   ├── PHPDriverTest.php
+│       │   │   │   │   │       │   │   │   ├── RuntimeReflectionServiceTest.php
+│       │   │   │   │   │       │   │   │   ├── StaticPHPDriverTest.php
+│       │   │   │   │   │       │   │   │   ├── StaticReflectionServiceTest.php
+│       │   │   │   │   │       │   │   │   └── SymfonyFileLocatorTest.php
+│       │   │   │   │   │       │   │   └── PersistentObjectTest.php
+│       │   │   │   │   │       │   ├── Reflection
+│       │   │   │   │   │       │   │   ├── DeeperNamespaceParent.php
+│       │   │   │   │   │       │   │   ├── Dummies
+│       │   │   │   │   │       │   │   │   └── NoParent.php
+│       │   │   │   │   │       │   │   ├── FullyClassifiedParent.php
+│       │   │   │   │   │       │   │   ├── NoParent.php
+│       │   │   │   │   │       │   │   ├── SameNamespaceParent.php
+│       │   │   │   │   │       │   │   ├── StaticReflectionParserTest.php
+│       │   │   │   │   │       │   │   └── UseParent.php
+│       │   │   │   │   │       │   └── Util
+│       │   │   │   │   │       │       ├── ClassUtilsTest.php
+│       │   │   │   │   │       │       └── DebugTest.php
+│       │   │   │   │   │       ├── DoctrineTestCase.php
+│       │   │   │   │   │       └── TestInit.php
+│       │   │   │   │   ├── NativePhpunitTask.php
+│       │   │   │   │   └── README.markdown
+│       │   │   │   ├── UPGRADE_TO_2_1
+│       │   │   │   └── UPGRADE_TO_2_2
+│       │   │   └── lexer
+│       │   │       ├── composer.json
+│       │   │       ├── lib
+│       │   │       │   └── Doctrine
+│       │   │       │       └── Common
+│       │   │       │           └── Lexer
+│       │   │       │               └── AbstractLexer.php
+│       │   │       └── README.md
+│       │   └── symfony
+│       │       ├── finder
+│       │       │   └── Symfony
+│       │       │       └── Component
+│       │       │           └── Finder
+│       │       │               ├── Adapter
+│       │       │               │   ├── AbstractAdapter.php
+│       │       │               │   ├── AbstractFindAdapter.php
+│       │       │               │   ├── AdapterInterface.php
+│       │       │               │   ├── BsdFindAdapter.php
+│       │       │               │   ├── GnuFindAdapter.php
+│       │       │               │   └── PhpAdapter.php
+│       │       │               ├── CHANGELOG.md
+│       │       │               ├── Comparator
+│       │       │               │   ├── Comparator.php
+│       │       │               │   ├── DateComparator.php
+│       │       │               │   └── NumberComparator.php
+│       │       │               ├── composer.json
+│       │       │               ├── Exception
+│       │       │               │   ├── AccessDeniedException.php
+│       │       │               │   ├── AdapterFailureException.php
+│       │       │               │   ├── ExceptionInterface.php
+│       │       │               │   ├── OperationNotPermitedException.php
+│       │       │               │   └── ShellCommandFailureException.php
+│       │       │               ├── Expression
+│       │       │               │   ├── Expression.php
+│       │       │               │   ├── Glob.php
+│       │       │               │   ├── Regex.php
+│       │       │               │   └── ValueInterface.php
+│       │       │               ├── Finder.php
+│       │       │               ├── Glob.php
+│       │       │               ├── Iterator
+│       │       │               │   ├── CustomFilterIterator.php
+│       │       │               │   ├── DateRangeFilterIterator.php
+│       │       │               │   ├── DepthRangeFilterIterator.php
+│       │       │               │   ├── ExcludeDirectoryFilterIterator.php
+│       │       │               │   ├── FilecontentFilterIterator.php
+│       │       │               │   ├── FilenameFilterIterator.php
+│       │       │               │   ├── FilePathsIterator.php
+│       │       │               │   ├── FileTypeFilterIterator.php
+│       │       │               │   ├── FilterIterator.php
+│       │       │               │   ├── MultiplePcreFilterIterator.php
+│       │       │               │   ├── PathFilterIterator.php
+│       │       │               │   ├── RecursiveDirectoryIterator.php
+│       │       │               │   ├── SizeRangeFilterIterator.php
+│       │       │               │   └── SortableIterator.php
+│       │       │               ├── LICENSE
+│       │       │               ├── phpunit.xml.dist
+│       │       │               ├── README.md
+│       │       │               ├── Shell
+│       │       │               │   ├── Command.php
+│       │       │               │   └── Shell.php
+│       │       │               ├── SplFileInfo.php
+│       │       │               └── Tests
+│       │       │                   ├── Comparator
+│       │       │                   │   ├── ComparatorTest.php
+│       │       │                   │   ├── DateComparatorTest.php
+│       │       │                   │   └── NumberComparatorTest.php
+│       │       │                   ├── Expression
+│       │       │                   │   ├── ExpressionTest.php
+│       │       │                   │   ├── GlobTest.php
+│       │       │                   │   └── RegexTest.php
+│       │       │                   ├── FakeAdapter
+│       │       │                   │   ├── DummyAdapter.php
+│       │       │                   │   ├── FailingAdapter.php
+│       │       │                   │   ├── NamedAdapter.php
+│       │       │                   │   └── UnsupportedAdapter.php
+│       │       │                   ├── FinderTest.php
+│       │       │                   ├── Fixtures
+│       │       │                   │   ├── A
+│       │       │                   │   │   ├── a.dat
+│       │       │                   │   │   └── B
+│       │       │                   │   │       ├── ab.dat
+│       │       │                   │   │       └── C
+│       │       │                   │   │           └── abc.dat
+│       │       │                   │   ├── copy
+│       │       │                   │   │   └── A
+│       │       │                   │   │       ├── a.dat.copy
+│       │       │                   │   │       └── B
+│       │       │                   │   │           ├── ab.dat.copy
+│       │       │                   │   │           └── C
+│       │       │                   │   │               └── abc.dat.copy
+│       │       │                   │   ├── dolor.txt
+│       │       │                   │   ├── ipsum.txt
+│       │       │                   │   ├── lorem.txt
+│       │       │                   │   ├── one
+│       │       │                   │   │   ├── a
+│       │       │                   │   │   └── b
+│       │       │                   │   │       ├── c.neon
+│       │       │                   │   │       └── d.neon
+│       │       │                   │   └── with\ space
+│       │       │                   │       └── foo.txt
+│       │       │                   └── Iterator
+│       │       │                       ├── CustomFilterIteratorTest.php
+│       │       │                       ├── DateRangeFilterIteratorTest.php
+│       │       │                       ├── DepthRangeFilterIteratorTest.php
+│       │       │                       ├── ExcludeDirectoryFilterIteratorTest.php
+│       │       │                       ├── FilecontentFilterIteratorTest.php
+│       │       │                       ├── FilenameFilterIteratorTest.php
+│       │       │                       ├── FilePathsIteratorTest.php
+│       │       │                       ├── FileTypeFilterIteratorTest.php
+│       │       │                       ├── FilterIteratorTest.php
+│       │       │                       ├── Iterator.php
+│       │       │                       ├── IteratorTestCase.php
+│       │       │                       ├── MockFileListIterator.php
+│       │       │                       ├── MockSplFileInfo.php
+│       │       │                       ├── MultiplePcreFilterIteratorTest.php
+│       │       │                       ├── PathFilterIteratorTest.php
+│       │       │                       ├── RealIteratorTestCase.php
+│       │       │                       ├── RecursiveDirectoryIteratorTest.php
+│       │       │                       ├── SizeRangeFilterIteratorTest.php
+│       │       │                       └── SortableIteratorTest.php
+│       │       └── process
+│       │           └── Symfony
+│       │               └── Component
+│       │                   └── Process
+│       │                       ├── CHANGELOG.md
+│       │                       ├── composer.json
+│       │                       ├── Exception
+│       │                       │   ├── ExceptionInterface.php
+│       │                       │   ├── InvalidArgumentException.php
+│       │                       │   ├── LogicException.php
+│       │                       │   ├── ProcessFailedException.php
+│       │                       │   ├── ProcessTimedOutException.php
+│       │                       │   └── RuntimeException.php
+│       │                       ├── ExecutableFinder.php
+│       │                       ├── LICENSE
+│       │                       ├── PhpExecutableFinder.php
+│       │                       ├── PhpProcess.php
+│       │                       ├── phpunit.xml.dist
+│       │                       ├── ProcessBuilder.php
+│       │                       ├── Process.php
+│       │                       ├── ProcessPipes.php
+│       │                       ├── ProcessUtils.php
+│       │                       ├── README.md
+│       │                       └── Tests
+│       │                           ├── AbstractProcessTest.php
+│       │                           ├── ExecutableFinderTest.php
+│       │                           ├── NonStopableProcess.php
+│       │                           ├── PhpExecutableFinderTest.php
+│       │                           ├── PhpProcessTest.php
+│       │                           ├── PipeStdinInStdoutStdErrStreamSelect.php
+│       │                           ├── ProcessBuilderTest.php
+│       │                           ├── ProcessFailedExceptionTest.php
+│       │                           ├── ProcessInSigchildEnvironment.php
+│       │                           ├── ProcessUtilsTest.php
+│       │                           ├── SigchildDisabledProcessTest.php
+│       │                           ├── SigchildEnabledProcessTest.php
+│       │                           ├── SignalListener.php
+│       │                           └── SimpleProcessTest.php
+│       └── VERSION
+
+	archeio me ta tasks pou prepei na ginoun
+-------------------------------------------------------------------
+├── tasks
+
+	diafora chrissima tools
+	opos rebuild db
+-------------------------------------------------------------------
+├── tools
+│   └── rebuild_db.php
+
+	autoload scripts
+	see api/index.php
+-------------------------------------------------------------------
+├── vendor
+│   ├── autoload.php
+│   └── composer
+│       ├── autoload_classmap.php
+│       ├── autoload_namespaces.php
+│       ├── autoload_psr4.php
+│       ├── autoload_real.php
+│       └── ClassLoader.php
+
+	edo archisi na ginete endiaferon
+-------------------------------------------------------------------
+└── web
+
+	katalogos me ta rest apis
+-------------------------------------------------------------------
+    ├── api
+    │   ├── get
+    │   │   ├── diy_getdevices.php
+    │   │   └── diy_getinfoconfig.php
+    │   ├── index.php
+    │   └── post
+    │       └── diy_deverror.php
+
+	gia to swagger kai apo to swagger auto help
+-------------------------------------------------------------------
+    ├── docs
+    │   ├── api-docs.json
+    │   ├── diyiot.json
+    │   ├── index.php
+    │   └── v1-tool_data-tool.json
+
+	katalogos server kai vivliothikes gia slim
+	vivliothikes
+	pou chrissimopii to project
+-------------------------------------------------------------------
+    ├── server
+    │   ├── libs
+    │   │   └── Slim
+    │   │       ├── Environment.php
+    │   │       ├── Exception
+    │   │       │   ├── Pass.php
+    │   │       │   └── Stop.php
+    │   │       ├── Helper
+    │   │       │   └── Set.php
+    │   │       ├── Http
+    │   │       │   ├── Cookies.php
+    │   │       │   ├── Headers.php
+    │   │       │   ├── Request.php
+    │   │       │   ├── Response.php
+    │   │       │   └── Util.php
+    │   │       ├── Log.php
+    │   │       ├── LogWriter.php
+    │   │       ├── Middleware
+    │   │       │   ├── ContentTypes.php
+    │   │       │   ├── Flash.php
+    │   │       │   ├── MethodOverride.php
+    │   │       │   ├── PrettyExceptions.php
+    │   │       │   └── SessionCookie.php
+    │   │       ├── Middleware.php
+    │   │       ├── Route.php
+    │   │       ├── Router.php
+    │   │       ├── Slim.php
+    │   │       └── View.php
+
+	vassikes rythmissis
+-------------------------------------------------------------------
+    │   └── system
+    │       ├── config.php
+    │       ├── includes.php
+    │       └── methodtypes.php
+
+	swagger interfaces gia view ton auto docs
+-------------------------------------------------------------------
+    └── swagger-ui
+        ├── bin
+        │   ├── CoffeeScript.png
+        │   ├── jasmine-1.1.0
+        │   │   ├── jasmine.css
+        │   │   ├── jasmine_favicon.png
+        │   │   ├── jasmine-html.js
+        │   │   ├── jasmine.js
+        │   │   ├── jasmine.sass
+        │   │   └── MIT.LICENSE
+        │   └── yuicompressor-2.4.7.jar
+        ├── Cakefile
+        ├── dist
+        │   ├── css
+        │   │   ├── reset.css
+        │   │   └── screen.css
+        │   ├── images
+        │   │   ├── explorer_icons.png
+        │   │   ├── logo_small.png
+        │   │   ├── pet_store_api.png
+        │   │   ├── throbber.gif
+        │   │   └── wordnik_api.png
+        │   ├── index.html
+        │   ├── lib
+        │   │   ├── backbone-min.js
+        │   │   ├── handlebars-1.0.0.js
+        │   │   ├── highlight.7.3.pack.js
+        │   │   ├── jquery-1.8.0.min.js
+        │   │   ├── jquery.ba-bbq.min.js
+        │   │   ├── jquery.slideto.min.js
+        │   │   ├── jquery.wiggle.min.js
+        │   │   ├── shred
+        │   │   │   └── content.js
+        │   │   ├── shred.bundle.js
+        │   │   ├── swagger-client.js
+        │   │   ├── swagger.js
+        │   │   ├── swagger-oauth.js
+        │   │   └── underscore-min.js
+        │   ├── o2c.html
+        │   ├── swagger-ui.js
+        │   └── swagger-ui.min.js
+        ├── index.js
+        ├── lib
+        │   ├── backbone-min.js
+        │   ├── handlebars-1.0.0.js
+        │   ├── highlight.7.3.pack.js
+        │   ├── jquery-1.8.0.min.js
+        │   ├── jquery.ba-bbq.min.js
+        │   ├── jquery.slideto.min.js
+        │   ├── jquery.wiggle.min.js
+        │   ├── shred
+        │   │   └── content.js
+        │   ├── shred.bundle.js
+        │   ├── swagger-client.js
+        │   ├── swagger.js
+        │   ├── swagger-oauth.js
+        │   └── underscore-min.js
+        ├── LICENSE
+        ├── package.json
+        ├── README.md
+        ├── README_orig_from_swagger.md
+        ├── src
+        │   ├── main
+        │   │   ├── coffeescript
+        │   │   │   ├── SwaggerUi.coffee
+        │   │   │   └── view
+        │   │   │       ├── ContentTypeView.coffee
+        │   │   │       ├── HeaderView.coffee
+        │   │   │       ├── MainView.coffee
+        │   │   │       ├── OperationView.coffee
+        │   │   │       ├── ParameterContentTypeView.coffee
+        │   │   │       ├── ParameterView.coffee
+        │   │   │       ├── ResourceView.coffee
+        │   │   │       ├── ResponseContentTypeView.coffee
+        │   │   │       ├── SignatureView.coffee
+        │   │   │       └── StatusCodeView.coffee
+        │   │   ├── html
+        │   │   │   ├── css
+        │   │   │   │   ├── reset.css
+        │   │   │   │   └── screen.css
+        │   │   │   ├── images
+        │   │   │   │   ├── explorer_icons.png
+        │   │   │   │   ├── logo_small.png
+        │   │   │   │   ├── pet_store_api.png
+        │   │   │   │   ├── throbber.gif
+        │   │   │   │   └── wordnik_api.png
+        │   │   │   ├── index.html
+        │   │   │   └── o2c.html
+        │   │   ├── javascript
+        │   │   │   └── doc.js
+        │   │   ├── less
+        │   │   │   ├── auth.less
+        │   │   │   ├── highlight_default.less
+        │   │   │   ├── reset.less
+        │   │   │   ├── screen.less
+        │   │   │   └── specs.less
+        │   │   └── template
+        │   │       ├── content_type.handlebars
+        │   │       ├── main.handlebars
+        │   │       ├── operation.handlebars
+        │   │       ├── parameter_content_type.handlebars
+        │   │       ├── param.handlebars
+        │   │       ├── param_list.handlebars
+        │   │       ├── param_readonly.handlebars
+        │   │       ├── param_readonly_required.handlebars
+        │   │       ├── param_required.handlebars
+        │   │       ├── resource.handlebars
+        │   │       ├── response_content_type.handlebars
+        │   │       ├── signature.handlebars
+        │   │       └── status_code.handlebars
+        │   └── test
+        │       ├── spec.html
+        │       └── swagger-ui-spec.coffee
+        └── swagger-ui.json
+
+thats all for the momment folks
