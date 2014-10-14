@@ -17,5 +17,6 @@ $conOptions->dbfile = sprintf($_dbfile);
 $conOptions->dsn = sprintf('sqlite:%s', $_dbfile);
 $conOptions->username = 'root';
 $conOptions->password = '';
+$conOptions->sshhome = '/home/SSH';
 
 ?>
