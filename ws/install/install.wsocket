@@ -1,0 +1,11 @@
+yum install libevent libevent-devel.x86_64 haproxy.x86_64 php.x86_64  php-pdo.x86_64 php-xml.x86_64  php-xmlrpc.x86_64  php-devel zeromq3.x86_64 zeromq3-devel libtool.x86_64 automake.noarch libuuid-devel.x86_64 uuid-devel.x86_64 uuid-php.x86_64 php-pear haproxy.x86_64
+wget http://download.zeromq.org/zeromq-4.0.5.tar.gz
+tar -xvf zeromq-4.0.5.tar.gz
+cd zeromq-4.0.5
+./configure
+make
+make install
+pecl install zmq-beta
+echo "; Enable zmq extension module " > /etc/php.d/zmq.ini
+echo "extension=zmq.so" >> /etc/php.d/zmq.ini
+easy_install supervisor

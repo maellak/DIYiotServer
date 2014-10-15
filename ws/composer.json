@@ -1,0 +1,13 @@
+{
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {
+            "MyApp": "src"
+        }
+    },
+    "require": {
+	"cboden/ratchet": "0.3.*"
+      , "react/zmq": "dev-master"
+    }
+}
+
