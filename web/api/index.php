@@ -45,6 +45,7 @@ $diy_storage = function ()
 	return $db;
 };
 
+
 //=========================  POST ==================================
 
 $app->post('/token', function () use ($authenticateForRole)  {
@@ -154,5 +155,30 @@ function toGreek($value)
 {
     return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', 'replace_unicode_escape_sequence', $value ? $value : array());
 }
+
+function diy_validate64($buffer)
+{
+  $VALID  = 1;
+  $INVALID= 0;
+
+  $p    = $buffer;
+  $len  = strlen($p);
+
+  for($i=0; $i<$len; $i++)
+  {
+     if( ($p[$i]>="A" && $p[$i]<="Z")||
+         ($p[$i]>="a" && $p[$i]<="z")||
+         ($p[$i]>="/" && $p[$i]<="9")||
+         ($p[$i]=="+")||
+         ($p[$i]=="=")||
+         ($p[$i]=="\x0a")||
+         ($p[$i]=="\x0d")
+       )
+       continue;
+     else
+       return $INVALID;
+  }  //fall through if all ok
+return $VALID;
+};
 
 ?>

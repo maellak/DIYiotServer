@@ -45,11 +45,16 @@ function diy_devsshkeys($payload,$storage){
     try {
         $public_key = OAuth2\Request::createFromGlobals()->request["public_key"];
         $public_key = trim($public_key);
-        $post["public_key"] = OAuth2\Request::createFromGlobals()->request["public_key"];
+	$pos  = mb_strripos($public_key, ' ');
+	$s = 0; 
+	$public = mb_substr($public_key, $s, $pos); 
 
+	$pos  = mb_strripos($public, ' ');
+	$s = $pos; 
+	$publicstring= mb_substr($public,$s,mb_strlen($public));
+        $publicstring = trim($publicstring);
 
-	$post["public_key"] = urldecode($post["public_key"]);
-
+/*
 	$gump = new GUMP();
 	$gump->validation_rules(array(
 	  'public_key'    => 'required|alpha_numeric'
@@ -63,6 +68,12 @@ function diy_devsshkeys($payload,$storage){
 	} else {
         	$result["gump2"] = $validated; // validation successful
 	}
+*/
+	if (  diy_validate64($publicstring)){
+        	$result["v"] = "ok $publicstring"; // validation successful
+	} else {
+        	$result["v"] = "no $publicstring"; // validation successful
+	}
 	$stmt1 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_id');
         $stmt1->execute(array('client_id' => $client_id));
 	 foreach ($stmt1 as $row) {
@@ -71,17 +82,14 @@ function diy_devsshkeys($payload,$storage){
 		$dataport= $row["dataport"];
 	 }
 
-	$pos  = mb_strripos($public_key, ' ');
-	$s = 0; 
-	$public = mb_substr($public_key, $s, $pos); 
         $stmt = $storage->prepare('UPDATE oauth_devices set public_key=:public_key where device=:client_id');
         $stmt->execute(array('client_id' => $client_id, 'public_key' => $public_key));
 	//result_messages===============================================================      
-	$auth_settings = 'no-pty,no-X11-forwarding,permitopen="localhost:'.$dataport.'",permitopen="localhost:'.$apiport.'",command="/bin/echo do-not-send-commands" '.$public.' '.$client_id.'=@OpenWrt';
+	$auth_settings = 'no-pty,no-X11-forwarding,permitopen="localhost:'.$dataport.'",permitopen="localhost:'.$apiport.'",command="/bin/echo do-not-send-commands" ssh-rsa '.$publicstring.' '.$client_id.'=@OpenWrt';
 
 	//file_put_contents('../tmp/authorized_keys', $auth_settings);
         //$result["result"]=  $auth_settings.$public_key;
-        $result["result"]=  "ok";
+        $result["result"]=  "ok $auth_settings";
         $result["error"]=  $error;
         $result["status"] = "200";
         $result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
