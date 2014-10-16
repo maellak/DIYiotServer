@@ -28,11 +28,11 @@ echo $topic->getId()." topic was not added \n";
      */
     public function onBlogEntry($entry) {
         $entryData = json_decode($entry, true);
-        if (!array_key_exists($entryData['cat'], $this->subscribedTopics)) {
+        if (!array_key_exists($entryData['catecory'], $this->subscribedTopics)) {
             //return;
         }
 
-        $topic = $this->subscribedTopics[$entryData['cat']];
+        $topic = $this->subscribedTopics[$entryData['catecory']];
 
         // re-send the data to all the clients subscribed to that category
         $topic->broadcast($entryData);
@@ -44,8 +44,8 @@ echo $topic->getId()." topic was not added \n";
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
     }
     public function onOpen(ConnectionInterface $conn) {
-$e = json_encode('Hello');
-$conn->send($e );
+//$e = json_encode('Hello');
+//$conn->send($e );
     }
     public function onClose(ConnectionInterface $conn) {
     }
