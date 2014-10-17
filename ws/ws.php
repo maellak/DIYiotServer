@@ -1,6 +1,14 @@
 <?php
 
     require __DIR__ . '/vendor/autoload.php';
+    require_once('../vendor/autoload.php');
+    require __DIR__ . '/server/system/config.php';
+
+function myauth(){
+return 1;
+}
+
+//var_dump(OAuth2\Request::createFromGlobals());
     $loop   = React\EventLoop\Factory::create();
     $pusher = new MyApp\Pusher;
 
@@ -13,6 +21,7 @@
     // Set up our WebSocket server for clients wanting real-time updates
     $webSock = new React\Socket\Server($loop);
     $webSock->listen(8080, '0.0.0.0'); // Binding to 0.0.0.0 means remotes can connect
+    //$webSock->listen(8080, '127.0.0.1'); // Binding to 0.0.0.0 means remotes can connect
     $webServer = new Ratchet\Server\IoServer(
         new Ratchet\Http\HttpServer(
             new Ratchet\WebSocket\WsServer(
