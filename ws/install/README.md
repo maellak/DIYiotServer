@@ -57,6 +57,9 @@ Follow these steps:
 
  run supervisord -c supervisor.conf
  
+5. edit /etc/hosts
+
+  put 127.0.0.1 verifytoken
 
 
 ## run problems

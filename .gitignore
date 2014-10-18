@@ -1,5 +1,4 @@
 db/oauth.sqlite
 ssh/
 web/autobahn.js
-web/example-websocket.html
 web/jquery-2.1.1.js

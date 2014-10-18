@@ -1,0 +1,52 @@
+<html>
+<head>
+<script>
+(function(g,b,d){var c=b.head||b.getElementsByTagName("head"),D="readyState",E="onreadystatechange",F="DOMContentLoaded",G="addEventListener",H=setTimeout;
+function f(){
+
+// ***************************************************************
+// *********************** $LAB stuff ****************************
+// ***************************************************************
+$LAB.script("js/jquery-2.1.1.js").wait() 
+        .script("js/autobahn.js").wait() 
+    	.script("js/diy_js.js").wait() 
+        .wait(function(){
+                // ***************************************************************
+                // *********************** scripts ok  ***************************
+                // ***************************************************************
+         	AUTOBAHN_DEBUG = true;
+ 		ab.debug(true);
+ 		var o =  new diy_tools();
+        	$(function(){   
+			/* 
+			 * ****************************************
+			 * get token and connect to wss 
+			 * connect is using fro data read from device 
+			 * ****************************************
+			*/ 
+			var promise = o.getToken();
+			promise.success(function (data) {
+				o.device = "kittensCategory";
+				o.access_token = data.access_token;
+				o.wss_connect();
+			});
+  		});
+                // ***************************************************************
+                // *********************** scripts ok  ***************************
+                // ***************************************************************
+        });
+// ***************************************************************
+// *********************** $LAB stuff  ***************************
+// ***************************************************************
+
+}
+H(function(){if("item"in c){if(!c[0]){H(arguments.callee,25);return}c=c[0]}var a=b.createElement("script"),e=false;a.onload=a[E]=function(){if((a[D]&&a[D]!=="complete"&&a[D]!=="loaded")||e){return false}a.onload=a[E]=null;e=true;f()};
+a.src="js/LAB.js";
+c.insertBefore(a,c.firstChild)},0);if(b[D]==null&&b[G]){b[D]="loading";b[G](F,d=function(){b.removeEventListener(F,d,false);b[D]="complete"},false)}})(this,document);
+
+</script>
+
+</head>
+<body>
+</body?
+</html>

@@ -12,9 +12,12 @@ class Pusher implements WampServerInterface {
     protected $subscribedTopics = array();
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-		echo $querystring = $conn->WebSocket->request->getQuery();
-		$data = $querystring;
-		$host="https://arduino.os.cs.teiath.gr";
+/*
+		$querystring = $conn->WebSocket->request->getQuery();
+		//echo $querystring = $conn->WebSocket->request->getQuery();
+		parse_str($querystring, $data_query);
+		$data = "access_token=".$data_query["access_token"];
+		$host="https://verifytoken";
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL,"$host/api/verifyToken?".$data);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -24,9 +27,11 @@ class Pusher implements WampServerInterface {
 		$result = curl_exec($ch);
 		curl_close($ch);
 		$i = json_decode($result, TRUE);
-		var_dump($i);
+		//var_dump($i);
+*/
 
-		$authok = $i["result"];
+		$authok = 1;
+		//$authok = $i["result"];
 		if ($authok == 1) {
 			// When a visitor subscribes to a topic link the Topic object in a  lookup array
 			if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
@@ -63,9 +68,11 @@ class Pusher implements WampServerInterface {
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
     }
     public function onOpen(ConnectionInterface $conn) {
-		echo $querystring = $conn->WebSocket->request->getQuery();
-		$data = $querystring;
-		$host="https://arduino.os.cs.teiath.gr";
+		$querystring = $conn->WebSocket->request->getQuery();
+		//echo $querystring = $conn->WebSocket->request->getQuery();
+		parse_str($querystring, $data_query);
+		$data = "access_token=".$data_query["access_token"];
+		$host="https://verifytoken";
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL,"$host/api/verifyToken?".$data);
 		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -75,7 +82,7 @@ class Pusher implements WampServerInterface {
 		$result = curl_exec($ch);
 		curl_close($ch);
 		$i = json_decode($result, TRUE);
-		var_dump($i);
+		//var_dump($i);
 
 		$authok = $i["result"];
 		if ($authok == 1) {

@@ -1,14 +1,9 @@
 <?php
 
     require __DIR__ . '/vendor/autoload.php';
-    require_once('../vendor/autoload.php');
     require __DIR__ . '/server/system/config.php';
 
-function myauth(){
-return 1;
-}
 
-//var_dump(OAuth2\Request::createFromGlobals());
     $loop   = React\EventLoop\Factory::create();
     $pusher = new MyApp\Pusher;
 
