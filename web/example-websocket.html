@@ -16,7 +16,7 @@ $LAB.script("js/jquery-2.1.1.js").wait()
                 // ***************************************************************
          	AUTOBAHN_DEBUG = true;
  		ab.debug(true);
- 		var o =  new diy_tools();
+ 		var diy_o =  new diy_tools();
         	$(function(){   
 			/* 
 			 * ****************************************
@@ -24,11 +24,27 @@ $LAB.script("js/jquery-2.1.1.js").wait()
 			 * connect is using fro data read from device 
 			 * ****************************************
 			*/ 
-			var promise = o.getToken();
-			promise.success(function (data) {
-				o.device = "kittensCategory";
-				o.access_token = data.access_token;
-				o.wss_connect();
+			var promiseToken = diy_o.getToken();
+			promiseToken.success(function (data) {
+				diy_o.access_token = data.access_token;
+				var promiseDevices = diy_o.getDevices();
+				promiseDevices.success(function (devices) {
+					$.each(devices.result.dev, function(i, item) {
+						$('<div id="diy_'+item.device+'" class="diy_devices">'+item.device+'</div>').appendTo('#devices');
+						//console.log('Devices:"' + item.device);	
+					});
+				});
+			});
+			$(document).on('click', '.diy_devices', function() {
+				var id = $(this).attr('id');
+				var device=id.substr(4)
+				//console.log('Devices:"' + device);	
+				promiseToken.success(function (data) {
+					diy_o.device = device;
+					//diy_o.device = "kittensCategory";
+					diy_o.access_token = data.access_token;
+					diy_o.wss_connect();
+				});
 			});
   		});
                 // ***************************************************************
@@ -48,5 +64,7 @@ c.insertBefore(a,c.firstChild)},0);if(b[D]==null&&b[G]){b[D]="loading";b[G](F,d=
 
 </head>
 <body>
+<div id="devices" class="devices">
+</div>
 </body?
 </html>

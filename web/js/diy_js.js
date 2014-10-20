@@ -1,5 +1,6 @@
 function diy_tools () {
-	var diy__hostname = "your server";
+	var diy__hostname = "arduino.os.cs.teiath.gr";
+	//var diy__hostname = "your server";
      	this.https_url = "https://"+diy__hostname;
      	this.wss_url = "wss://"+diy__hostname;
      	this.client_id = "CLIENT_ID11";
@@ -61,8 +62,14 @@ diy_tools.prototype.wss_connect = function()  {
     	var subject = this;
 	var conn = new ab.Session(this.wss_url+'?access_token='+this.access_token,
 		function() {
-			conn.subscribe(subject.device, function(topic, data) {
-				console.log('New device view"' + topic + '" : ' + data.category);
+			var device = new Object();
+			device.access_token = subject.access_token;
+			device.name = subject.device;
+			devicestr = JSON.stringify(device);
+			conn.subscribe("access_token="+subject.access_token+"&device="+subject.device, function(topic, data) {
+			//conn.subscribe(subject.wss_url+"/"+subject.device+"?access_token="+subject.access_token, function(topic, data) {
+			//conn.subscribe(subject.device, function(topic, data) {
+				console.log('device data:"' + topic + '" : ' + data.a+data.b+data.c);
 			});
 		},
 		function() {
@@ -74,6 +81,22 @@ diy_tools.prototype.wss_connect = function()  {
 	);
 }
 
+/*
+ * get devices from server
+ * required access_token
+ * return user devices 
+ */
+diy_tools.prototype.getDevices = function()  {
+    	var subject = this;
+	return $.ajax({
+		type: "GET",
+		url: this.https_url+'/api/devices',
+		dataType: "json",
+		data: {
+			'access_token': this.access_token
+		}
+	});
+}
 
 
 

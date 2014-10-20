@@ -12,11 +12,16 @@ class Pusher implements WampServerInterface {
     protected $subscribedTopics = array();
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-/*
-		$querystring = $conn->WebSocket->request->getQuery();
+		echo "\n\n\n".$topic->getId()."\n\n\n";
+		$querystring = $topic->getId();
 		//echo $querystring = $conn->WebSocket->request->getQuery();
 		parse_str($querystring, $data_query);
 		$data = "access_token=".$data_query["access_token"];
+		//$parseurl = parse_url($topic->getId());
+		//$bodytag = str_replace("%body%", "black", "<body text='%body%'>");
+		//$device = str_replace('/','',trim($parseurl["path"]));
+		$device = $data_query["device"];
+		//$device = trim($parseurl["path"]);
 		$host="https://verifytoken";
 		$ch = curl_init();
 		curl_setopt ($ch, CURLOPT_URL,"$host/api/verifyToken?".$data);
@@ -27,12 +32,38 @@ class Pusher implements WampServerInterface {
 		$result = curl_exec($ch);
 		curl_close($ch);
 		$i = json_decode($result, TRUE);
-		//var_dump($i);
-*/
 
-		$authok = 1;
-		//$authok = $i["result"];
+		$authok = $i["result"];
 		if ($authok == 1) {
+			$ch = curl_init();
+			curl_setopt ($ch, CURLOPT_URL,"$host/api/devices?".$data);
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+			curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+			$resultdev = curl_exec($ch);
+			curl_close($ch);
+			$dev = json_decode($resultdev, TRUE);
+			//var_dump($dev);
+			//$ii["result"]["dev"][0]["device"];
+			echo count($dev["result"]["dev"]);
+			echo $topic->getId();
+			for($iii=0; $iii<count($dev["result"]["dev"]); $iii++){
+					echo "-------------0000000000---$device----".$dev["result"]["dev"][$iii]["device"]."-----------------------";
+			   	if($dev["result"]["dev"][$iii]["device"] == $device){
+					echo "--------------------1111111111111111111111----$device-------------------";
+					$authdev=1;
+					//var_dump($topic);
+					//$devtopic=$dev["result"]["dev"][$iii]["device"];
+				}
+			}
+		}
+
+			echo "\n\n\n".$topic->getId()."\n\n\n";
+
+		//$authok = 1;
+		if ($authok == 1 && $authdev == 1) {
+		//if ($authok == 1 ) {
 			// When a visitor subscribes to a topic link the Topic object in a  lookup array
 			if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
 				$this->subscribedTopics[$topic->getId()] = $topic;
@@ -43,8 +74,9 @@ class Pusher implements WampServerInterface {
 				}
 			}
 		}else{
-			$conn->callError('You are not allowed to connect')->close();
+			$conn->callError('You are not allowed to dev connection')->close();
 		}
+		echo $conn->resourceId;
     }
 
     /**
@@ -68,8 +100,8 @@ class Pusher implements WampServerInterface {
     public function onUnSubscribe(ConnectionInterface $conn, $topic) {
     }
     public function onOpen(ConnectionInterface $conn) {
-		$querystring = $conn->WebSocket->request->getQuery();
-		//echo $querystring = $conn->WebSocket->request->getQuery();
+		//$querystring = $conn->WebSocket->request->getQuery();
+		echo $querystring = $conn->WebSocket->request->getQuery();
 		parse_str($querystring, $data_query);
 		$data = "access_token=".$data_query["access_token"];
 		$host="https://verifytoken";
@@ -82,7 +114,7 @@ class Pusher implements WampServerInterface {
 		$result = curl_exec($ch);
 		curl_close($ch);
 		$i = json_decode($result, TRUE);
-		//var_dump($i);
+		var_dump($i);
 
 		$authok = $i["result"];
 		if ($authok == 1) {

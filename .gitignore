@@ -1,4 +1,8 @@
 db/oauth.sqlite
 ssh/
+tools/root_insert_testdata_db.php
+tools/root_rebuild_db.php
+tools/tmp/
 web/autobahn.js
 web/jquery-2.1.1.js
+gitremovesensitivedata
