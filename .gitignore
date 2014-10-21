@@ -6,3 +6,4 @@ tools/tmp/
 web/autobahn.js
 web/jquery-2.1.1.js
 gitremovesensitivedata
+ws/src/MyApp/Config.php.backup

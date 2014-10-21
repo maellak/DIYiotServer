@@ -2,81 +2,71 @@
 namespace MyApp;
 use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\WampServerInterface;
+use MyApp\Core;
+use MyApp\Config;
+
 
 class Pusher implements WampServerInterface {
-
 
    /**
      * A lookup of all the topics clients have subscribed to
      */
     protected $subscribedTopics = array();
 
+
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-		echo "\n\n\n".$topic->getId()."\n\n\n";
-		$querystring = $topic->getId();
-		//echo $querystring = $conn->WebSocket->request->getQuery();
-		parse_str($querystring, $data_query);
-		$data = "access_token=".$data_query["access_token"];
-		//$parseurl = parse_url($topic->getId());
-		//$bodytag = str_replace("%body%", "black", "<body text='%body%'>");
-		//$device = str_replace('/','',trim($parseurl["path"]));
-		$device = $data_query["device"];
-		//$device = trim($parseurl["path"]);
-		$host="https://verifytoken";
-		$ch = curl_init();
-		curl_setopt ($ch, CURLOPT_URL,"$host/api/verifyToken?".$data);
-		curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
-		curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-		$result = curl_exec($ch);
-		curl_close($ch);
-		$i = json_decode($result, TRUE);
+echo Config::read('wss.username');
+	$querystring = $topic->getId();
+	$session = $conn->WAMP->sessionId;
+	$wss_user = $conn->resourceId;
+	$username = Config::read('wss.username');
+	$password = Config::read('wss.password');
+	$host = Config::read('api.host');
+	 $data="grant_type=client_credentials&client_id=".$username."&client_secret=".$password;
+	 $ch = curl_init();
+	 curl_setopt ($ch, CURLOPT_URL,"$host/api/token");
+	 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+	 curl_setopt ($ch, CURLOPT_USERPWD, "$username:$password");
+	 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+	 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);
+	 curl_setopt ($ch, CURLOPT_POST, 1);
+	 $curlResponse = curl_exec ($ch);
+	 curl_close($ch);
+	 $curlResponse = json_decode($curlResponse, TRUE);
+	 var_dump($curlResponse);
 
-		$authok = $i["result"];
-		if ($authok == 1) {
-			$ch = curl_init();
-			curl_setopt ($ch, CURLOPT_URL,"$host/api/devices?".$data);
-			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-			curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
-			curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
-			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-			$resultdev = curl_exec($ch);
-			curl_close($ch);
-			$dev = json_decode($resultdev, TRUE);
-			//var_dump($dev);
-			//$ii["result"]["dev"][0]["device"];
-			echo count($dev["result"]["dev"]);
-			echo $topic->getId();
-			for($iii=0; $iii<count($dev["result"]["dev"]); $iii++){
-					echo "-------------0000000000---$device----".$dev["result"]["dev"][$iii]["device"]."-----------------------";
-			   	if($dev["result"]["dev"][$iii]["device"] == $device){
-					echo "--------------------1111111111111111111111----$device-------------------";
-					$authdev=1;
-					//var_dump($topic);
-					//$devtopic=$dev["result"]["dev"][$iii]["device"];
-				}
+	$data = "access_token=".$curlResponse["access_token"];
+	$data .= "&session=". $conn->WAMP->sessionId;
+	$data .= "&wss_user=". $conn->resourceId; 
+	$data .= "&device=". $topic->getId(); 
+	$ch = curl_init();
+	curl_setopt ($ch, CURLOPT_URL,"$host/api/wssdeviceAccess?".$data);
+	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+	curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+	curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+	$result = curl_exec($ch);
+	curl_close($ch);
+	$i = json_decode($result, TRUE);
+	if($i["view"] == 1){
+
+
+
+		if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
+			$this->subscribedTopics[$topic->getId()] = $topic;
+			if(array_key_exists($topic->getId(),$this->subscribedTopics)){
+				echo $topic->getId()." topic was added $crypto_token\n";
+				echo "\n\n\nsession_id ".$conn->WAMP->sessionId."\n\n\n";
+				echo "\n resource_id ".$conn->resourceId;
+			}else{
+				echo $topic->getId()." topic was not added $crypto_token\n";
 			}
 		}
-
-			echo "\n\n\n".$topic->getId()."\n\n\n";
-
-		//$authok = 1;
-		if ($authok == 1 && $authdev == 1) {
-		//if ($authok == 1 ) {
-			// When a visitor subscribes to a topic link the Topic object in a  lookup array
-			if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
-				$this->subscribedTopics[$topic->getId()] = $topic;
-				if(array_key_exists($topic->getId(),$this->subscribedTopics)){
-					echo $topic->getId()." topic was added $crypto_token\n";
-				}else{
-					echo $topic->getId()." topic was not added $crypto_token\n";
-				}
-			}
-		}else{
-			$conn->callError('You are not allowed to dev connection')->close();
-		}
-		echo $conn->resourceId;
+	}else{
+		$conn->callError('You are not allowed to connect device')->close();
+	}
     }
 
     /**
@@ -114,17 +104,40 @@ class Pusher implements WampServerInterface {
 		$result = curl_exec($ch);
 		curl_close($ch);
 		$i = json_decode($result, TRUE);
-		var_dump($i);
+		//var_dump($i);
 
-		$authok = $i["result"];
+		$authok = $i["result"]["verify"];
+		$client_id = $i["result"]["client_id"];
 		if ($authok == 1) {
 			//$e = json_encode('Hello');
-			//$conn->send($e );
+			$data = "access_token=".$data_query["access_token"];
+			$data .= "&session=". $conn->WAMP->sessionId;
+			$data .= "&wss_user=". $conn->resourceId; 
+
+			$ch = curl_init();
+			curl_setopt ($ch, CURLOPT_URL,"$host/api/wssaddsession");
+			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+			curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+			curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);
+			curl_setopt ($ch, CURLOPT_POST, 1);
+
+			$result1 = curl_exec($ch);
+			//var_dump($result1);
+			curl_close($ch);
+			$ii = json_decode($result1, TRUE);
+			$sessionserver = $ii["result"]["session"];
+			//var_dump($ii);
+			if ($sessionserver == $conn->WAMP->sessionId ) {
+				//var_dump($ii);
+			}else{
+				$conn->callError('You are not allowed to connect session problem')->close();
+			}
 		}else{
 			//echo 'Unable to verify access token: '."\n";
 			$conn->callError('You are not allowed to connect')->close();
 		}
-
     }
     public function onClose(ConnectionInterface $conn) {
     }

@@ -1,11 +1,10 @@
 function diy_tools () {
-	var diy__hostname = "arduino.os.cs.teiath.gr";
-	//var diy__hostname = "your server";
+	var diy__hostname = "your server";
      	this.https_url = "https://"+diy__hostname;
      	this.wss_url = "wss://"+diy__hostname;
-     	this.client_id = "CLIENT_ID11";
-     	this.client_secret = "CLIENT_SECRET11";
-     	this.device = "kittensCategory";
+     	this.client_id = "user";
+     	this.client_secret = "password";
+     	this.device = "";
 }
 
 // var data="grant_type=client_credentials&client_id="+username+"&client_secret="+password;
@@ -66,9 +65,7 @@ diy_tools.prototype.wss_connect = function()  {
 			device.access_token = subject.access_token;
 			device.name = subject.device;
 			devicestr = JSON.stringify(device);
-			conn.subscribe("access_token="+subject.access_token+"&device="+subject.device, function(topic, data) {
-			//conn.subscribe(subject.wss_url+"/"+subject.device+"?access_token="+subject.access_token, function(topic, data) {
-			//conn.subscribe(subject.device, function(topic, data) {
+			conn.subscribe(subject.device, function(topic, data) {
 				console.log('device data:"' + topic + '" : ' + data.a+data.b+data.c);
 			});
 		},

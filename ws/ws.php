@@ -1,7 +1,7 @@
 <?php
 
     require __DIR__ . '/vendor/autoload.php';
-    require __DIR__ . '/server/system/config.php';
+    //require __DIR__ . '/server/system/config.php';
 
 
     $loop   = React\EventLoop\Factory::create();
