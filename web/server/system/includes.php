@@ -11,6 +11,10 @@ require_once('system/methodtypes.php');
 require_once('../../src/GUMP-master/gump.class.php');
 //require_once('../api/get/diy_getdevices.php'); // devices pou enikoun ston christi
 
+//exceptions
+require_once('exceptions/ExceptionCodes.php');
+require_once('exceptions/ExceptionMessages.php');
+require_once('exceptions/ExceptionManager.php');
 
 ?>
 
