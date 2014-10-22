@@ -44,6 +44,10 @@ class OperationView extends Backbone.View
     isMethodSubmissionSupported = true #jQuery.inArray(@model.method, @model.supportedSubmitMethods) >= 0
     @model.isReadOnly = true unless isMethodSubmissionSupported
 
+    # 1.2 syntax for description was `notes`
+    @model.description = (@model.description || @model.notes)
+    if @model.description
+      @model.description = @model.description.replace(/(?:\r\n|\r|\n)/g, '<br />')
     @model.oauth = null
     if @model.authorizations
       for k, v of @model.authorizations
@@ -54,6 +58,20 @@ class OperationView extends Backbone.View
             @model.oauth.scopes = []
           for o in v
             @model.oauth.scopes.push o
+
+    if typeof @model.responses isnt 'undefined'
+      @model.responseMessages = []
+      for code, value of @model.responses
+        schema = null
+        schemaObj = @model.responses[code].schema
+        if schemaObj and schemaObj['$ref']
+          schema = schemaObj['$ref']
+          if schema.indexOf('#/definitions/') is 0
+            schema = schema.substring('#/definitions/'.length)
+        @model.responseMessages.push {code: code, message: value.description, responseModel: schema }
+
+    if typeof @model.responseMessages is 'undefined'
+      @model.responseMessages = []
 
     $(@el).html(Handlebars.templates.operation(@model))
 
@@ -79,7 +97,7 @@ class OperationView extends Backbone.View
       type = param.type || param.dataType
       if typeof type is 'undefined'
         schema = param.schema
-        if schema['$ref']
+        if schema and schema['$ref']
           ref = schema['$ref']
           if ref.indexOf('#/definitions/') is 0
             type = ref.substring('#/definitions/'.length)
@@ -97,8 +115,6 @@ class OperationView extends Backbone.View
     @addParameter param, contentTypeModel.consumes for param in @model.parameters
 
     # Render each response code
-    if typeof @model.responseMessages is 'undefined'
-      @model.responseMessages = []
     @addStatusCode statusCode for statusCode in @model.responseMessages
 
     @
@@ -142,7 +158,7 @@ class OperationView extends Backbone.View
 
       for o in form.find("textarea")
         if(o.value? && jQuery.trim(o.value).length > 0)
-          map["body"] = o.value
+          map[o.name] = o.value
 
       for o in form.find("select") 
         val = this.getSelectedValue o
@@ -250,7 +266,7 @@ class OperationView extends Backbone.View
       options = []
       options.push opt.value for opt in select.options when opt.selected
       if options.length > 0 
-        options.join ","
+        options
       else
         null
 
@@ -350,7 +366,12 @@ class OperationView extends Backbone.View
       code = $('<code />').text("no content")
       pre = $('<pre class="json" />').append(code)
     else if contentType is "application/json" || /\+json$/.test(contentType)
-      code = $('<code />').text(JSON.stringify(JSON.parse(content), null, "  "))
+      json = null
+      try
+        json = JSON.stringify(JSON.parse(content), null, "  ")
+      catch e
+        json = "can't parse JSON.  Raw result:\n\n" + content
+      code = $('<code />').text(json)
       pre = $('<pre class="json" />').append(code)
     else if contentType is "application/xml" || /\+xml$/.test(contentType)
       code = $('<code />').text(@formatXml(content))

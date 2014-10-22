@@ -8,6 +8,8 @@ class ResourceView extends Backbone.View
 
     methods = {}
 
+    if @model.description
+      @model.summary = @model.description
     # Render each operation
     for operation in @model.operationsArray
       counter = 0
@@ -25,7 +27,7 @@ class ResourceView extends Backbone.View
 
     $('.toggleEndpointList', @el).click(this.callDocs.bind(this, 'toggleEndpointListForResource'))
     $('.collapseResource', @el).click(this.callDocs.bind(this, 'collapseOperationsForResource'))
-    $('.expandResource', @el).click(this.callDocs.bind(this, 'expandOperationsForResoruce'))
+    $('.expandResource', @el).click(this.callDocs.bind(this, 'expandOperationsForResource'))
     
     return @
 

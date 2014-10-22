@@ -12,7 +12,7 @@ class ParameterView extends Backbone.View
 
     if typeof type is 'undefined'
       schema = @model.schema
-      if schema['$ref']
+      if schema and schema['$ref']
         ref = schema['$ref']
         if ref.indexOf('#/definitions/') is 0
           type = ref.substring('#/definitions/'.length)
@@ -23,7 +23,7 @@ class ParameterView extends Backbone.View
     @model.paramType = @model.in || @model.paramType
     @model.isBody = true if @model.paramType == 'body'
     @model.isFile = true if type and type.toLowerCase() == 'file'
-    #@model.signature = type
+    @model.default = (@model.default || @model.defaultValue)
 
     template = @template()
     $(@el).html(template(@model))
