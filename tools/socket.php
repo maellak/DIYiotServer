@@ -22,9 +22,7 @@ do {
 		$data = trim(fgets($socket, 4096));
 		if($data != "") {
 			$dataParts = explode(':', $data);
-   			$e = json_encode($dataParts);
-                        //var_dump($dataParts);
-			echo $e;
+			var_dump($dataParts);
 		}
 	}
 
