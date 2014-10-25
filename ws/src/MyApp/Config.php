@@ -2,6 +2,21 @@
 namespace MyApp;
 
 
+
+//dbfile
+$_dbfile = 'path to db file';
+
+//api
+$_apihost="https://your server";
+
+//wss
+$_wssusername='username';
+$_wsspassword='password';
+
+// ***GIT*** 
+// ***GitGit*** 
+
+
 class Config
 {
     static $confArray;
@@ -18,9 +33,9 @@ class Config
 
 }
  
-$_dbfile = 'you sqlite db file';
 //api
-Config::write('api.host', 'https://you server');
+Config::write('api.host', $_apihost);
+
 // db
 Config::write('db.file', sprintf($_dbfile));
 Config::write('db.dsn',  sprintf('sqlite:%s', $_dbfile));
@@ -28,6 +43,8 @@ Config::write('db.port', '');
 Config::write('db.basename', '');
 Config::write('db.user', 'root');
 Config::write('db.password', '');
+
 //wss
-Config::write('wss.username', 'username');
-Config::write('wss.password', 'password sssssssssssssssss');
+Config::write('wss.username', $_wssusername);
+Config::write('wss.password', $_wsspassword);
+

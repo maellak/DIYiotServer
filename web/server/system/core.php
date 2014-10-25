@@ -2,14 +2,13 @@
 
 
 //dbfile
-$_dbfile = '../../db/oauth.sqlite';
+$_dbfile = 'path to db file';
 
 //api
-$_apihost="https://arduino.os.cs.teiath.gr";
+$_apihost="https://your server";
 
 //ssh
-$sshhome="/home/SSH";
-
+$sshhome="path to ssh dir witch contain the buplic keys"; 
 
 // ***GIT*** 
 // ***GitGit*** 

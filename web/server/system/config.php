@@ -10,13 +10,5 @@ ini_set('output_buffering','on');
 ini_set('zlib.output_compression', 0);
 date_default_timezone_set('Europe/Athens');
 session_name('diy');
-//pdo connection settings
-$_dbfile = '../../db/oauth.sqlite';
-$conOptions = new stdClass();
-$conOptions->dbfile = sprintf($_dbfile);
-$conOptions->dsn = sprintf('sqlite:%s', $_dbfile);
-$conOptions->username = 'root';
-$conOptions->password = '';
-$conOptions->sshhome = '/home/SSH';
 
 ?>

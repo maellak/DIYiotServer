@@ -16,10 +16,10 @@ $app->config('debug', true);
 //===========================================================
 $authenticateForRole = function () 
 {
-	global $conOptions;
-	$_dsn = $conOptions->dsn;
-	$_username = $conOptions->username;
-	$_password = $conOptions->password;
+	//global $conOptions;
+	$_dsn = diyConfig::read('db.dsn');
+	$_username = diyConfig::read('db.username');
+	$_password = diyConfig::read('db.password');
 	$storage = new OAuth2\Storage\Pdo(array('dsn' => $_dsn, 'username' => $_username, 'password' => $_password));
 	$server = new OAuth2\Server($storage);
 	$server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage), array(
@@ -37,14 +37,19 @@ $authenticateForRole = function ()
 
 $diy_storage = function () 
 {
-	global $conOptions;
-	$_dbfile = $conOptions->dbfile;
+	//global $conOptions;
+	$_dbfile = diyConfig::read('db.file');
  	$db = new PDO(sprintf('sqlite:%s', $_dbfile));
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 	return $db;
 };
 
+$diy_exception = function () 
+{
+ 	$exception = new CustomException();
+	return $exception;
+};
 
 //=========================  POST ==================================
 
@@ -61,6 +66,7 @@ $app->post('/token', function () use ($authenticateForRole)  {
 $diy_classesDir = array (
     '../api/post/',
     '../api/get/',
+    '../api/put/',
     '../api/delete/'
 );
 foreach ($diy_classesDir as $directory) {

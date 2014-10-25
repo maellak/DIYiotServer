@@ -15,7 +15,7 @@ class Pusher implements WampServerInterface {
 
 
     public function onSubscribe(ConnectionInterface $conn, $topic) {
-echo Config::read('wss.username');
+	//Config::read('wss.username');
 	$querystring = $topic->getId();
 	$session = $conn->WAMP->sessionId;
 	$wss_user = $conn->resourceId;
@@ -37,10 +37,11 @@ echo Config::read('wss.username');
 	 $curlResponse = json_decode($curlResponse, TRUE);
 	 var_dump($curlResponse);
 
-	$data = "access_token=".$curlResponse["access_token"];
-	$data .= "&session=". $conn->WAMP->sessionId;
-	$data .= "&wss_user=". $conn->resourceId; 
-	$data .= "&device=". $topic->getId(); 
+	$data = "access_token=".trim($curlResponse["access_token"]);
+	$data .= "&session=". trim($conn->WAMP->sessionId);
+	$data .= "&wss_user=". trim($conn->resourceId); 
+	$data .= "&device=". trim($topic->getId()); 
+//	echo $data; 
 	$ch = curl_init();
 	curl_setopt ($ch, CURLOPT_URL,"$host/api/wssdeviceAccess?".$data);
 	curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -50,22 +51,27 @@ echo Config::read('wss.username');
 	$result = curl_exec($ch);
 	curl_close($ch);
 	$i = json_decode($result, TRUE);
-	if($i["view"] == 1){
+echo "\n---111----\n";
+var_dump($i);
+echo "\n\n\n-----------------------------\n\n\n";
+var_dump($result);
+echo "\n---1111--".$i["result"]["view"]."--\n";
+//$view=1;
+	if($i["result"]["view"] == 1){
+	//if($view == 1){
 
 
 
 		if (!array_key_exists($topic->getId(), $this->subscribedTopics)) {
 			$this->subscribedTopics[$topic->getId()] = $topic;
 			if(array_key_exists($topic->getId(),$this->subscribedTopics)){
-				echo $topic->getId()." topic was added $crypto_token\n";
-				echo "\n\n\nsession_id ".$conn->WAMP->sessionId."\n\n\n";
-				echo "\n resource_id ".$conn->resourceId;
+				echo $topic->getId()."  added with  session_id ".$conn->WAMP->sessionId." and resource_id ".$conn->resourceId."\n";
 			}else{
-				echo $topic->getId()." topic was not added $crypto_token\n";
+				echo $topic->getId()." device was not added \n";
 			}
 		}
 	}else{
-		$conn->callError('You are not allowed to connect device')->close();
+				$conn->close();
 	}
     }
 
@@ -132,11 +138,11 @@ echo Config::read('wss.username');
 			if ($sessionserver == $conn->WAMP->sessionId ) {
 				//var_dump($ii);
 			}else{
-				$conn->callError('You are not allowed to connect session problem')->close();
+				$conn->close();
 			}
 		}else{
 			//echo 'Unable to verify access token: '."\n";
-			$conn->callError('You are not allowed to connect')->close();
+				$conn->close();
 		}
     }
     public function onClose(ConnectionInterface $conn) {

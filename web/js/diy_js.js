@@ -2,11 +2,12 @@ function diy_tools () {
 	var diy__hostname = "your server";
      	this.https_url = "https://"+diy__hostname;
      	this.wss_url = "wss://"+diy__hostname;
-     	this.client_id = "user";
+     	this.client_id = "username";
      	this.client_secret = "password";
      	this.device = "";
 }
-
+// ***GIT*** 
+// ***GitGit*** 
 // var data="grant_type=client_credentials&client_id="+username+"&client_secret="+password;
 /*
  * get token from server

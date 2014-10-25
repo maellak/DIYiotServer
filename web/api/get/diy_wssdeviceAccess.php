@@ -4,13 +4,13 @@ header("Content-Type: text/html; charset=utf-8");
 // get info for client (device) 
 // ean o christis echei prosvassi se afto i ochi
 // this is for onsubscribeconnections
-$app->get('/wssdeviceAccess', function () use ($authenticateForRole, $diy_storage)  {
+$app->get('/wssdeviceAccess', function () use ($authenticateForRole, $diy_storage, $diy_exception)  {
         global $app;
         $params = loadParameters();
         $server = $authenticateForRole();
         $dbstorage = $diy_storage();
+        $exceptions = $diy_exception();
         if (!$server->verifyResourceRequest(OAuth2\Request::createFromGlobals())) {
-                echo 'Unable to verify access token: '."\n";
                 $server->getResponse()->send();
                 die;
         }else{
@@ -23,6 +23,7 @@ $app->get('/wssdeviceAccess', function () use ($authenticateForRole, $diy_storag
                 $result = diy_wssdeviceAccess(
                         $params["payload"],
                         $params["storage"],
+                        $params["exceptions"],
                         $params["test"]
                 );
                 PrepareResponse();
@@ -31,12 +32,11 @@ $app->get('/wssdeviceAccess', function () use ($authenticateForRole, $diy_storag
 });
 
 
-function diy_wssdeviceAccess($payload,$storage){
+function diy_wssdeviceAccess($payload,$storage,$exceptions){
     global $app;
-
-	$post["session"] = OAuth2\Request::createFromGlobals()->request["session"];
-	$post["wss_user"] = OAuth2\Request::createFromGlobals()->request["wss_user"];
-	$post["device"] = OAuth2\Request::createFromGlobals()->request["device"];
+ 	$post["session"] = OAuth2\Request::createFromGlobals()->query["session"];
+	$post["wss_user"] = OAuth2\Request::createFromGlobals()->query["wss_user"];
+	$post["device"] = OAuth2\Request::createFromGlobals()->query["device"];
 	$gump = new GUMP();
 	$gump->validation_rules(array(
 		'wss_user'    => 'required|alpha_numeric',
@@ -72,8 +72,8 @@ function diy_wssdeviceAccess($payload,$storage){
 			$stmt->execute(array('device' => $post["device"]));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			if($row["organisation"]){
-				$organisation=$row["organisation"];
-				$organisation=$row["scope"];
+				$organisation=trim($row["organisation"]);
+				//$organisation=$row["scope"];
 				// o user einai sto scope
 				try {
 					$stmt1 = $storage->prepare('SELECT * FROM oauth_https_wss WHERE wss_user = :wss_user and session = :session');
@@ -83,22 +83,27 @@ function diy_wssdeviceAccess($payload,$storage){
 						$client_user = $row1["client_id"];
 						try {
 							$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_user');
-							$stmt2->execute(array('wss_user' => trim($client_user)));
+							$stmt2->execute(array('client_user' => trim($client_user)));
 							$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 							if($row2["scope"]){
-								$devview=$rganisation."_view";
-								if (strpos($devview,$row2["scope"]) !== false) {
+								$devview=$organisation."_view";
+								if (strpos(trim($row2["scope"]),$devview) !== false) {
 									$result["result"]["view"]=  1;
+								}else{
+									$diy_error["errors"] =  ExceptionMessages::ScopeNotFound." , ". ExceptionCodes::ScopeNotFound;
 								}
 							}
 						} catch (Exception $e) {
 							echo "error ".$e->getCode();
+							$diy_error["db"] = $e->getCode();
 						}
 					}else{
-						echo "-----2----------".$row1["client_id"];
+							$diy_error["errors"] =  ExceptionMessages::UserNotFound." , ". ExceptionCodes::UserNotFound;
+						//$result["errors"]["select"] = exceptions::MethodNotFound;
 					}
 				} catch (Exception $e) {
 					echo "error ".$e->getCode();
+					$diy_error["db"] = $e->getCode();
 				}
 				// to devices einai public
 				try {
@@ -107,12 +112,16 @@ function diy_wssdeviceAccess($payload,$storage){
 					$row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
 					if($row3["scope"]){
 						$devview3=$rganisation."_dpub";
-						if (strpos($devview3,$row3["scope"]) !== false) {
+						if (strpos($row3["scope"],$devview3) !== false) {
 							$result["result"]["view"]=  1;
+						}else{
+							$diy_error["errors"] =  ExceptionMessages::ScopeNotFound." , ". ExceptionCodes::ScopeNotFound;
+							//$diy_error["errors"] =  new Exception(ExceptionMessages::ScopeNotFound, ExceptionCodes::ScopeNotFound);
 						}
 					}
 				} catch (Exception $e) {
 					echo "error ".$e->getCode();
+					$diy_error["db"] = $e->getCode();
 				}
 
 			}
@@ -122,7 +131,12 @@ function diy_wssdeviceAccess($payload,$storage){
 		} catch (Exception $e) {
 			$result["status"] = $e->getCode();
 			$result["message"] = "[".$result["method"]."][".$result["function"]."]:".$e->getMessage();
+			echo "error ".$e->getCode();
+			$diy_error["db"] = $e->getCode();
 		}
+	}
+	if(diyConfig::read('debug') == 1){
+		$result["debug"]=$diy_error;
 	}
 	return $result;
 
