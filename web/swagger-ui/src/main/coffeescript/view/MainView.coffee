@@ -14,13 +14,28 @@ class MainView extends Backbone.View
         if (sorterName == "alpha") # sort top level paths if alpha 
           @model.apisArray.sort sorter
 
-    log @model
-    if @model.info.license and typeof @model.info.license is 'string'
+    if @model.info and @model.info.license and typeof @model.info.license is 'string'
       name = @model.info.license
       url = @model.info.licenseUrl
       @model.info.license = {}
       @model.info.license.name = name
       @model.info.license.url = url
+
+    if !@model.info
+      @model.info = {}
+
+    if !@model.info.version
+      @model.info.version = @model.apiVersion
+
+    if "validatorUrl" of opts.swaggerOptions
+      # Validator URL specified explicitly
+      @model.validatorUrl = opts.swaggerOptions.validatorUrl
+    else if @model.url.match(/https?:\/\/localhost/) and @model.swaggerVersion is 2
+      # Localhost override
+      @model.validatorUrl = @model.url
+    else
+      # Default validator
+      @model.validatorUrl = "http://online.swagger.io/validator"
  
   render: ->
     # Render the outer container for resources

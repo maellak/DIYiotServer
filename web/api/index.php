@@ -88,7 +88,7 @@ $app->notFound(function () use ($app)
        if ( !in_array( strtoupper($app->request()->getMethod()), array(MethodTypes::GET, MethodTypes::POST, MethodTypes::PUT, MethodTypes::DELETE)))
             throw new Exception(ExceptionMessages::MethodNotFound, ExceptionCodes::MethodNotFound);
         else
-            throw new Exception(ExceptionMessages::MethodNotFound, ExceptionCodes::MethodNotFound);
+            throw new Exception(ExceptionMessages::FunctionNotFound, ExceptionCodes::FunctionNotFound);
     } 
     catch (Exception $e) 
     {

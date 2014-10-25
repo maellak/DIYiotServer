@@ -16,6 +16,10 @@ require_once('exceptions/ExceptionCodes.php');
 require_once('exceptions/ExceptionMessages.php');
 require_once('exceptions/ExceptionManager.php');
 
+//exceptions
+require_once('exceptions/ExceptionCodes.php');
+require_once('exceptions/ExceptionMessages.php');
+require_once('exceptions/ExceptionManager.php');
 
 ?>
 
