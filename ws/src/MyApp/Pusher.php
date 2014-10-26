@@ -84,10 +84,12 @@ echo "\n---1111--".$i["result"]["view"]."--\n";
 		    //return;
 		}
 
-		$topic = $this->subscribedTopics[$entryData['catecory']];
+		if (array_key_exists($entryData['catecory'], $this->subscribedTopics)) {
+			$topic = $this->subscribedTopics[$entryData['catecory']];
 
-		// re-send the data to all the clients subscribed to that category
-		$topic->broadcast($entryData);
+			// re-send the data to all the clients subscribed to that category
+			$topic->broadcast($entryData);
+		}
     }
 
     /* The rest of our methods were as they were, omitted from docs to save space */

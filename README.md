@@ -73,6 +73,8 @@ Tree Example
 ```
 ### Config
 
+#### https 
+
 Follow these steps:
 
 1. install apache, php with PDO, sqlite3
@@ -107,10 +109,19 @@ Follow these steps:
 	- cd db; sqlite3 oauth.sqlite 
 	- .tables  (the generated tables)
 	- .quit    (exit)
+4. edit web/server/system/core.php
 
-4. Edit  client/myhost.php
+	$_dbfile = 'your db file'; 		(created in step 3.2 above)
+	$_apihost="your url";			(created in step 1.1 above)
+	$sshhome="dir for ssh";			(dir contains the devices keys)
+						more info how to do this
+						http://stackoverflow.com/questions/8021/allow-user-to-set-up-an-ssh-tunnel-but-nothing-else
+						http://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html
+						https://wiki.archlinux.org/index.php/Secure_Shell
 
- 4.1 run "php client/client-gettoken.php"
+5. Edit  client/myhost.php
+
+ 5.1 run "php client/client-gettoken.php"
 
 	If you see something like this, then your application is ready
 	array(4) {
@@ -124,7 +135,40 @@ Follow these steps:
 	  string(15) "test_admin main"
 	}
 
-5.  see examples in the directory "client"
+6.  see examples in the directory "client"
+
+#### wss
+
+1. edit ws/src/MyApp/Config.php file
+
+	$_dbfile = 'your db file'; 	(created in step 3.2 above)
+	$_apihost="your url"; 		(created in step 1.1 above)	
+	$_wssusername='wssusername'; 	(created in step 3.1 above)
+	$_wsspassword='wsspassword';	(created in step 3.1 above)
+
+2. edit /etc/hosts
+
+	change the 127.0.1.1 line to your new wss/api service
+	127.0.0.1 <old names>  verifytoken 
+
+	p.x.
+
+	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 verifytoken
+
+	or 
+
+	
+	if the https Api is  installed in another host
+	then put hier the  ip of the host
+	
+	p.x.
+
+	192.168.0.10   verifytoken or 195.175.111.10 verifytoken
+
+
+2. run it
+
+	php ws/ws.php
 
 Happy Coding :-)
 

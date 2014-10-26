@@ -26,25 +26,35 @@ $privateKey = file_get_contents('../ssh/CLIENT_ID_privkey.pem');
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret) VALUES ("CLIENT_ID", "ssssssssssssssssssssssssssssssssssssss")');
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
-// CLIENT_ID1
+// CLIENT_ID1 
 $publicKey  = file_get_contents('../ssh/CLIENT_ID1_pubkey.pem');
 $privateKey = file_get_contents('../ssh/CLIENT_ID1_privkey.pem');
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, scope) VALUES ("CLIENT_ID1", "ssssssssssssssssssssssssssssssssssssss","main test_view")');
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID1", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
+// this user is the main user for the test example  used in webclient 
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("CLIENT_ID11", "ssssssssssssssssssssssssssssssssssssss","1","test_admin main")'); 				// insert client user
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID11", "'.$publicKey.'", "'.$privateKey.'", "RS256")');	// insert key gia client user
+
+// this user is the main user for the test example  used in wss   (put the user information in ws/src/MyApp/Config.php ) 
+// wss
+$db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("wssusername", "wsspassword","3","admin")');
+$db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("diywssconnect", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
+
 // *********************************************************** clients ************************************
 
 // *********************************************************** organisation ************************************
+// this is the main organisation used for the test example
 $db->exec('INSERT INTO oauth_organisations (organisation, client_id) VALUES ("test","CLIENT_ID11")');										// insert org tou client user
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("testdev", "ssssssssssssssssssssssssssssssssssssss","2","test_dpri test_dev")'); 					// insert device
 // *********************************************************** organisation ************************************
 
 // ***********************************************************devices ************************************
+//devices testdev begin
 // to key edo gia ta devs tha einai diaforetiko gia kathe dev   o client user tha echei to geniko   to key tou dev tha ginete download apo ton client user giati tha prpei na mpei sto dev gia auth giafto kai einai diaforetiko
 $publicKeydev  = file_get_contents('../ssh/CLIENT_ID_pubkey.pem');
 $privateKeydev = file_get_contents('../ssh/CLIENT_ID_privkey.pem');
+// this is the main test device used for the test example
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("testdev", "'.$publicKeydev.'", "'.$privateKeydev.'", "RS256")');		// insert dev key 
 // to devices chriasete kai afto oti o client giati kai afto prepei na sindethi me ton server gia na stili ta data kai epissis na anixi socket gia na lamvanei entoles sxetika me tis leitourgies pou prepei ad-hoc na kanei
 $db->exec('INSERT INTO oauth_devices (device, device_desc, organisation, client_id) VALUES ("testdev","perigrafi","test","CLIENT_ID11")');					// insert device device=client_id  perigrafi, organisation kai client_id tou user pou aniki to org
@@ -58,6 +68,7 @@ $db->exec('INSERT INTO oauth_ports (port, client_id) VALUES ("50001","testdev")'
 //to port sti opoio tha steknei ta dechete tis entoles
 //enimerossi tou sxetikou pinaka
 $db->exec('UPDATE oauth_clients set dataport="50000", apiport="50001", apihost="https://'.$HOST.'", sshhost="'.$HOST.'", sshport="9999" where client_id="testdev"');													// update tou port tou dev sto vasiko table ton cliebts
+//devices testdev end
 // ***********************************************************devices ************************************
 
 
