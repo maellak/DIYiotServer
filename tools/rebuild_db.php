@@ -81,6 +81,7 @@ $oauth_users = <<<EOD
 		last_name 	VARCHAR(80),
 		email 		VARCHAR(2000),
 		email_verified 	BOOLEAN,
+		email_ver_code 	VARCHAR(2000),
 		PRIMARY KEY (user_id)
 	);
 EOD;
