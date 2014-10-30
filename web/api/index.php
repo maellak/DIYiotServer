@@ -29,13 +29,28 @@ $app->config('debug', true);
 
 
 //===========================================================
+class PdoStorageWithEmailVerification extends OAuth2\Storage\Pdo {
+	// Override checkClientCredentials to add a check about whether the user is verified or not
+    public function checkClientCredentials($client_id, $client_secret = null)
+    {
+        $stmt = $this->db->prepare(sprintf('SELECT * from %s c JOIN %s u ON c.user_id = u.user_id where c.client_id = :client_id and u.email_verified = 1',
+			$this->config['client_table'],
+			$this->config['user_table']
+			));
+        $stmt->execute(compact('client_id'));
+        $result = $stmt->fetch();
+
+        // make this extensible
+        return $result && $result['client_secret'] == $client_secret;
+    }
+}
 $authenticateForRole = function () 
 {
 	//global $conOptions;
 	$_dsn = diyConfig::read('db.dsn');
 	$_username = diyConfig::read('db.username');
 	$_password = diyConfig::read('db.password');
-	$storage = new OAuth2\Storage\Pdo(array('dsn' => $_dsn, 'username' => $_username, 'password' => $_password));
+	$storage = new PdoStorageWithEmailVerification(array('dsn' => $_dsn, 'username' => $_username, 'password' => $_password));
 	$server = new OAuth2\Server($storage);
 	$server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage), array(
 			'allow_credentials_in_request_body => true'
