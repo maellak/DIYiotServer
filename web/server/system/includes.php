@@ -11,6 +11,9 @@ require_once('system/methodtypes.php');
 // validation gump
 require_once('../../src/GUMP-master/gump.class.php');
 
+// swiftmailer
+require_once('../../src/Swiftmailer/lib/swift_required.php');
+
 //exceptions
 require_once('exceptions/ExceptionCodes.php');
 require_once('exceptions/ExceptionMessages.php');
