@@ -61,8 +61,11 @@ function diy_register(){
         $user_id = $storage->lastInsertId();
 
         // Create client
-        $storage->query('INSERT INTO oauth_clients (client_id, client_secret, user_id) VALUES ("'.$post["client_id"].'", "'.$post["client_secret"].'", '.$user_id.')');
+        $publicKey  = file_get_contents('../../ssh/CLIENT_ID1_pubkey.pem');
+        $privateKey = file_get_contents('../../ssh/CLIENT_ID1_privkey.pem');
+        $storage->query('INSERT INTO oauth_clients (client_id, client_secret, scope, user_id) VALUES ("'.$post["client_id"].'", "'.$post["client_secret"].'", "main", '.$user_id.')');
         $client_id = $storage->lastInsertId();
+        $storage->query('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("'.$post["client_id"].'", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
         // Send email
         $link = 'https://'.$_SERVER['HTTP_HOST'].'/api/activate/'.$code;
@@ -84,7 +87,9 @@ function diy_register(){
     } catch (Exception $e) {
         $result["status"] = $e->getCode();
         $result["message"] = "[".$result["method"]."][".$result["function"]."]:".$e->getMessage();
-        $storage->query('DELETE FROM oauth_users WHERE user_id = '.$user_id);
+        if(isset($user_id)) {
+            $storage->query('DELETE FROM oauth_users WHERE user_id = '.$user_id);
+        }
     }
 
     if(diyConfig::read('debug') == 1){
