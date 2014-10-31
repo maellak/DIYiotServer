@@ -25,5 +25,6 @@ class ExceptionMessages
         const FunctionNotFound = 'Η διαδικασία δεν βρέθηκε';
         const UserNotFound = 'Ο χρήστης δεν βρέθηκε';
         const ScopeNotFound = 'Το scope δεν βρέθηκε';
+        const DeviceExist = 'Το Device υπάρχει';
 }
    ?>

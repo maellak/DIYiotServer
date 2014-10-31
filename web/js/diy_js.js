@@ -14,11 +14,11 @@ function diy_tools () {
  * return access_token
  */
 /*
-diy_tools.prototype.getToken = function()  {
+diy_tools.prototype.postDevice = function()  {
     	var subject = this;
 	$.ajax({
 		type: "POST",
-		url: this.https_url+'/api/token',
+		url: this.https_url+'/api/adddevice',
 		dataType: "json",
 		data: {
 			'grant_type': 'client_credentials', 
@@ -37,7 +37,6 @@ diy_tools.prototype.getToken = function()  {
 		}
 	});
 }
-
 */
 diy_tools.prototype.getToken = function()  {
     	var subject = this;

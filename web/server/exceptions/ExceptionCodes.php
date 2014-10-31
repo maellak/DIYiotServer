@@ -25,6 +25,7 @@ class ExceptionCodes
         const FunctionNotFound = 500;
         const UserNotFound = 500;
         const ScopeNotFound = 500;
+        const DeviceExist = 500;
 }
 
 ?>
