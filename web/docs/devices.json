@@ -1,0 +1,58 @@
+{
+    "basePath": "https://arduino.os.cs.teiath.gr/api",
+    "swaggerVersion": "2.0",
+    "apiVersion": "0.1",
+    "resourcePath": "/devices",
+    "apis": [
+        {
+            "path": "/devices",
+            "operations": [
+                {
+                    "method": "GET",
+                    "summary": "List user devices",
+                    "nickname": "find_catalog",
+                    "type": "pathModel",
+                    "parameters": [
+                        {
+                            "paramType": "query",
+                            "name": "path",
+                            "type": "text",
+                            "required": false,
+                            "description": "\u03a0\u03bb\u03b7\u03ba\u03c4\u03c1\u03bf\u03bb\u03bf\u03b3\u03b7\u03c3\u03c4\u03b5 \u03c4\u03bf system path"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "\u0395\u03c0\u03b9\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Success"
+                        },
+                        {
+                            "code": 500,
+                            "message": "\u0391\u03c0\u03bf\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Failure"
+                        }
+                    ],
+                    "notes": "\u0395\u03c0\u03b9\u03c3\u03c4\u03c1\u03ad\u03c6\u03b5\u03b9 user devices"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "pathModel": {
+            "id": "pathModel",
+            "required": [
+                "path"
+            ],
+            "properties": {
+                "path": {
+                    "description": "\u03a4\u03bf path",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ]
+}
