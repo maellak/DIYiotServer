@@ -96,14 +96,14 @@ Follow these steps:
 
 3. Change into the tools directory 
 
- 3.1 Edit ./rebuild_db.php
+ 3.1 Edit ./insert-testdata_db.php
 
 	Find and Replace '../ssh/pubkey.pem' and '../ssh/privkey.pem', with your file names (see step 2)
 
 	$publicKey  = file_get_contents('../ssh/pubkey.pem');
 	$privateKey = file_get_contents('../ssh/privkey.pem');
 
- 3.2 run "php ./rebuild_db.php"
+ 3.2 run "php ./insert-testdata_db.php"
 
 	Check Generated Tables
 	- cd db; sqlite3 oauth.sqlite 
