@@ -94,7 +94,9 @@ ServerName [Your Server Name]
 
     1.2 Restart httpd for changes to take effect.
 
-2. Change into the ssh directory and run `bash ./rsa`.
+2. mkdir ssh; Change into the ssh  directory and run
+   openssl genrsa -out privkey.pem 2048
+   openssl rsa -in privkey.pem -pubout -out pubkey.pem 
 
 3. Change into the tools directory.
 
