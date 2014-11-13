@@ -77,18 +77,20 @@ Tree Example
 
 Follow these steps:
 
-1. install apache, php with PDO, sqlite3
+1. Install apache, php with PDO, sqlite3.
 
- 1.1 creating a virtual host 
+ 1.1 Create a virtual host in apache (httpd.conf):
 
-	DocumentRoot "path to web dir"
-	ServerName [Your Server Name]
-
-	<Directory "path to web dir">
-		Options -Indexes
-		AllowOverride All
-		Require all granted
-	</Directory>
+```
+    DocumentRoot "path to web dir"
+    ServerName [Your Server Name]
+    
+    <Directory "path to web dir">
+        Options -Indexes
+        AllowOverride All
+        Require all granted
+    </Directory>
+```
 
  1.2 restart httpd
 
