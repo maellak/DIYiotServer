@@ -77,26 +77,23 @@ Tree Example
 
 Follow these steps to set up the website in the Apache web server:
 
-1. Install apache, php with PDO, sqlite3.
+1. Create a virtual host in the apache configuration file:
 
-    1.1 Create a virtual host in the apache configuration file:
-
-```
-DocumentRoot "path to web dir"
-ServerName [Your Server Name]
+    DocumentRoot "path to web dir"
+    ServerName [Your Server Name]
     
-<Directory "path to web dir">
-    Options -Indexes
-    AllowOverride All
-    Require all granted
-</Directory>
-```
+    <Directory "path to web dir">
+        Options -Indexes
+        AllowOverride All
+        Require all granted
+    </Directory>
 
-   1.2 Restart httpd for changes to take effect.
+2. Restart httpd for changes to take effect.
 
-2. mkdir ssh; Change into the ssh  directory and run
-   openssl genrsa -out privkey.pem 2048
-   openssl rsa -in privkey.pem -pubout -out pubkey.pem 
+2. mkdir ssh; Change into the ssh directory and run:
+
+    openssl genrsa -out privkey.pem 2048
+    openssl rsa -in privkey.pem -pubout -out pubkey.pem 
 
 3. Change into the tools directory.
 
@@ -182,8 +179,10 @@ Happy Coding :-)
 
 # Required dependencies
 
+Apache, PHP with PDO, sqlite3.
+
 For more information see `web/swagger-ui/README.md` and `swagger/swagger-php/readme.md`.
 
 # License
 
-  See `LICENSE`.
+See `LICENSE`.
