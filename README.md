@@ -138,7 +138,7 @@ Follow these steps to set up the website in the Apache web server:
 
 #### wss
 
-1. Edit ws/src/MyApp/Config.php file
+1. Edit `ws/src/MyApp/Config.php`:
 
         $_dbfile = 'your db file'; 	(created in step 4.2 above)
         $_apihost="your url"; 		(created in step 1.1 above)	
@@ -147,21 +147,16 @@ Follow these steps to set up the website in the Apache web server:
 
 2. Edit `/etc/hosts`:
 
-	change the 127.0.1.1 line to your new wss/api service
+  - Change the 127.0.1.1 line to your new wss/API service
+
 	127.0.0.1 <old names>  verifytoken 
 
-	p.x.
+      For example:
 
 	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 verifytoken
 
-	or 
-
+  - If the https API is installed in another host, then put here the IP of the host, for example:
 	
-	if the https Api is  installed in another host
-	then put hier the  ip of the host
-	
-	p.x.
-
 	192.168.0.10   verifytoken or 195.175.111.10 verifytoken
 
 
