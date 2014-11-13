@@ -41,9 +41,7 @@ Just clone this repo and use the files in the `web` folder.
 
 Follow these steps to set up the website in the Apache web server:
 
-Edit the apache configuration file:
-
-`/etc/httpd/conf/httpd.conf`
+Edit the apache configuration file (e.g. `/etc/httpd/conf/httpd.conf` in CentOS):
 
 ```
 DocumentRoot /var/www/html/web
@@ -56,7 +54,7 @@ ServerName example.com
 </Directory>
 ```
 
-Generate ssl keys:
+Generate SSL keys:
 
 ```
 cd ssh/
