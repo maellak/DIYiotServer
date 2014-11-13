@@ -28,7 +28,7 @@ DIYiotServer provides:
 
 Apache, PHP with PDO, sqlite3.
 
-For more information see web/swagger-ui/README.md and swagger/swagger-php/readme.md.
+For more information see [swagger-ui](web/swagger-ui/README.md) and [swagger-php](swagger/swagger-php/readme.md).
 
 ### Download
 
@@ -61,18 +61,19 @@ cd ssh/
 ./create_rsa_key.sh
 ```
 
-Change into the `tools` directory.
-In `insert-testdata_db.php`, replace all occurrences of '../ssh/pubkey.pem' and
-'../ssh/privkey.pem', with your file names (see step 3 above):
+In `tools/insert-testdata_db.php`, replace all occurrences of `../ssh/pubkey.pem`
+and `../ssh/privkey.pem`, with your file names:
 
 ```
 $publicKey  = file_get_contents('../ssh/pubkey.pem');
 $privateKey = file_get_contents('../ssh/privkey.pem');
 ```
 
-Run `php ./insert-testdata_db.php` and check the generated tables:
+Insert test data and and check the generated tables:
 
 ```
+cd tools/
+php ./insert-testdata_db.php
 cd db
 sqlite3 oauth.sqlite
 .tables
@@ -82,9 +83,9 @@ sqlite3 oauth.sqlite
 Edit `web/server/system/core.php`:
 
 ```
-$_dbfile = 'your_db_file'; # (created in step 4.2 above)
-$_apihost="your_url";      # (created in step 1 above)
-$sshhome="dir_for_ssh";    # (dir contains the devices keys)
+$_dbfile = 'path_to_db_file'; # (by default oauth.sqlite)
+$_apihost="https://your_url"; # (your FQDN)
+$sshhome="path_to_ssh_dir";   # (dir that contains the devices keys)
 ```
 
 More info how to do this:
@@ -92,7 +93,13 @@ More info how to do this:
 * http://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html
 * https://wiki.archlinux.org/index.php/Secure_Shell
 
-Edit `client/myhost.php`.
+Edit `client/myhost.php`:
+
+```
+$host="url";            # (your FQDN)
+$username="username";   # (set a username)
+$password="password";   # (set a password)
+```
 
 Run `php client/client-gettoken.php`.
 
@@ -110,17 +117,18 @@ array(4) {
   string(15) "test_admin main"
 }
 ```
-6. See the examples in the `client` directory.
+
+See the examples in the `client` directory.
 
 #### wss
 
 Edit `ws/src/MyApp/Config.php`:
 
 ```
-$_dbfile = 'your db file'; 	(created in step 4.2 above)
-$_apihost="your url"; 		(created in step 1.1 above)
-$_wssusername='wssusername'; 	(created in step 4.1 above)
-$_wsspassword='wsspassword';	(created in step 4.1 above)
+$_dbfile = 'path_to_db_file';   # (by default oauth.sqlite)
+$_apihost="https://your_url";   # (your FQDN)
+$_wssusername='wssusername';    # (same as client/myhost.php)
+$_wsspassword='wsspassword';    # (same as client/myhost.php)
 ```
 
 Change the 127.0.1.1 line to your new wss/API service,
