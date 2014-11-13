@@ -41,15 +41,15 @@ Just clone this repo and use the files in the `web` folder.
 
 Follow these steps to set up the website in the Apache web server:
 
-Create a virtual host in the apache configuration file:
+Edit the apache configuration file:
 
 `/etc/httpd/conf/httpd.conf`
 
 ```
 DocumentRoot /var/www/html/web
-ServerName [Your Server Name]
+ServerName example.com
 
-<Directory "path to web dir">
+<Directory /var/www/html/web>
     Options -Indexes
     AllowOverride All
     Require all granted
