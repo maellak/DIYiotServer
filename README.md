@@ -92,7 +92,7 @@ ServerName [Your Server Name]
 </Directory>
 ```
 
-    1.2 Restart httpd for changes to take effect.
+   1.2 Restart httpd for changes to take effect.
 
 2. mkdir ssh; Change into the ssh  directory and run
    openssl genrsa -out privkey.pem 2048
