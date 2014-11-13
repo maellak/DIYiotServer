@@ -1,16 +1,26 @@
 # DIYiotServer
 
-Το DIYiotServer παρέχει Rest API και εργαλεία για τη δημιουργία Network-enabled Arduino projects
+## Σκοπός (Greek, English follows)
 
+Το DIYiotServer παρέχει REST API και εργαλεία για τη δημιουργία network-enabled Arduino projects.
 
-## To DIYiotServer παρέχει
+To DIYiotServer παρέχει:
 
+* Network-enabled Arduino, wireless ή ethernet, έχει επίσης λειτουργικά την δυνατότητα σύνδεσης σε δίκτυο 3G/GPRS
+* Over-the-air/on-the-fly programming
+* Online monitoring & real-time data streaming
+* REST API για δημιουργία διεπαφής για Web/κινητά
 
-Network-enabled Arduino
-	Wireless ή  ethernet, έχει επίσης λειτουργικά την δυνατότητα σύνδεσης σε δίκτυο 3G/GPRS
-Over-the-air/on-the-fly programming
-Online monitoring & real-time data streaming
-Rest Api για δημιουργία διεπαφής για Web/Phone
+## Introduction
+
+DIYiotServer provides a REST API and tools for creating network-enabled Arduino projects.
+
+DIYiotServer provides:
+
+* Network-enabled Arduino, wireless or over ethernet, can also connect to 3G/GPRS networks
+* Over-the-air/on-the-fly programming
+* Online monitoring & real-time data streaming
+* REST API for creating UIs for the Web or smartphones
 
 ## How to Use It
 
