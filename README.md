@@ -44,7 +44,7 @@ Follow these steps to set up the website in the Apache web server:
 Create a virtual host in the apache configuration file:
 
 ```
-DocumentRoot "path to web dir"
+DocumentRoot /var/www/html/web
 ServerName [Your Server Name]
 
 <Directory "path to web dir">
