@@ -43,6 +43,8 @@ Follow these steps to set up the website in the Apache web server:
 
 Create a virtual host in the apache configuration file:
 
+`/etc/httpd/conf/httpd.conf`
+
 ```
 DocumentRoot /var/www/html/web
 ServerName [Your Server Name]
