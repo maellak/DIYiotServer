@@ -82,14 +82,14 @@ Follow these steps to set up the website in the Apache web server:
     1.1 Create a virtual host in the apache configuration file:
 
 ```
-    DocumentRoot "path to web dir"
-    ServerName [Your Server Name]
+DocumentRoot "path to web dir"
+ServerName [Your Server Name]
     
-    <Directory "path to web dir">
-        Options -Indexes
-        AllowOverride All
-        Require all granted
-    </Directory>
+<Directory "path to web dir">
+    Options -Indexes
+    AllowOverride All
+    Require all granted
+</Directory>
 ```
 
     1.2 Restart httpd for changes to take effect.
