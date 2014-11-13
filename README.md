@@ -149,15 +149,15 @@ Follow these steps to set up the website in the Apache web server:
 
   - Change the 127.0.1.1 line to your new wss/API service
 
-	127.0.0.1 <old names>  verifytoken 
+        127.0.0.1 <old names>  verifytoken 
 
       For example:
 
-	127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 verifytoken
+        127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 verifytoken
 
   - If the https API is installed in another host, then put here the IP of the host, for example:
 	
-	192.168.0.10   verifytoken or 195.175.111.10 verifytoken
+        192.168.0.10   verifytoken or 195.175.111.10 verifytoken
 
 
 2. Run it with:
