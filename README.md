@@ -90,24 +90,23 @@ Follow these steps to set up the website in the Apache web server:
 
 2. Restart httpd for changes to take effect.
 
-2. mkdir ssh; Change into the ssh directory and run:
+3. Make an `ssh` directory (`mkdir ssh`), change into it (`cd ssh`) and run:
 
-    openssl genrsa -out privkey.pem 2048
-    openssl rsa -in privkey.pem -pubout -out pubkey.pem 
+        openssl genrsa -out privkey.pem 2048
+        openssl rsa -in privkey.pem -pubout -out pubkey.pem 
 
-3. Change into the tools directory.
+3. Change into the `tools` directory.
 
-    3.1 In `insert-testdata_db.php`, replace all occurrences of '../ssh/pubkey.pem' and '../ssh/privkey.pem', with your file names (see step 2 above).
+    3.1 In `insert-testdata_db.php`, replace all occurrences of '../ssh/pubkey.pem' and '../ssh/privkey.pem', with your file names (see step 3 above).
 
-````
-$publicKey  = file_get_contents('../ssh/pubkey.pem');
-$privateKey = file_get_contents('../ssh/privkey.pem');
-````
+        $publicKey  = file_get_contents('../ssh/pubkey.pem');
+        $privateKey = file_get_contents('../ssh/privkey.pem');
 
     3.2 Run `php ./insert-testdata_db.php` and check the generated tables:
         - `cd db; sqlite3 oauth.sqlite`
 	- `.tables`  (the generated tables)
 	- `.quit`    (exit)
+
 4. Edit `web/server/system/core.php`:
 
         - `$_dbfile = 'your db file';` (created in step 3.2 above)
