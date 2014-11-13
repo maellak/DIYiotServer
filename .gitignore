@@ -1,5 +1,9 @@
 db/oauth.sqlite
-ssh/
+ssh/*.pem
+ssh/*.crt
+ssh/*.cert
+ssh/*.key
+ssh/*.pub
 tools/root_insert_testdata_db.php
 tools/root_rebuild_db.php
 tools/tmp/
