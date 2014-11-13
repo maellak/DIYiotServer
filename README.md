@@ -15,7 +15,7 @@ Rest Api για δημιουργία διεπαφής για Web/Phone
 ## How to Use It
 
 ### Download
-You can use the DIYiotServer code AS-IS!  No need to build or recompile--just clone this repo and use the files in the `web` folder.  
+You can use the DIYiotServer code AS-IS! No need to build or recompile -- just clone this repo and use the files in the `web` folder.  
 
 Tree Example
 ```
@@ -71,15 +71,15 @@ Tree Example
     │       └── methodtypes.php
     └── swagger-ui
 ```
-### Config
+### Configuration steps
 
-#### https 
+#### Set up HTTPS in Apache
 
-Follow these steps:
+Follow these steps to set up the website in the Apache web server:
 
 1. Install apache, php with PDO, sqlite3.
 
- 1.1 Create a virtual host in apache (httpd.conf):
+    1.1 Create a virtual host in the apache configuration file:
 
 ```
     DocumentRoot "path to web dir"
@@ -92,63 +92,65 @@ Follow these steps:
     </Directory>
 ```
 
- 1.2 restart httpd
+    1.2 Restart httpd for changes to take effect.
 
-2. Change into the ssh directory and run "bash ./rsa"
+2. Change into the ssh directory and run `bash ./rsa`.
 
-3. Change into the tools directory 
+3. Change into the tools directory.
 
- 3.1 Edit ./insert-testdata_db.php
+    3.1 In `insert-testdata_db.php`, replace all occurrences of '../ssh/pubkey.pem' and '../ssh/privkey.pem', with your file names (see step 2 above).
 
-	Find and Replace '../ssh/pubkey.pem' and '../ssh/privkey.pem', with your file names (see step 2)
+````
+$publicKey  = file_get_contents('../ssh/pubkey.pem');
+$privateKey = file_get_contents('../ssh/privkey.pem');
+````
 
-	$publicKey  = file_get_contents('../ssh/pubkey.pem');
-	$privateKey = file_get_contents('../ssh/privkey.pem');
+    3.2 Run `php ./insert-testdata_db.php` and check the generated tables:
+        - `cd db; sqlite3 oauth.sqlite`
+	- `.tables`  (the generated tables)
+	- `.quit`    (exit)
+4. Edit `web/server/system/core.php`:
 
- 3.2 run "php ./insert-testdata_db.php"
+        - `$_dbfile = 'your db file';` (created in step 3.2 above)
+        - `$_apihost="your url";` (created in step 1.1 above)
+        - `$sshhome="dir for ssh";` (dir contains the devices keys)
+        - More info how to do this:
+            * http://stackoverflow.com/questions/8021/allow-user-to-set-up-an-ssh-tunnel-but-nothing-else
+	    * http://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html
+	    * https://wiki.archlinux.org/index.php/Secure_Shell
 
-	Check Generated Tables
-	- cd db; sqlite3 oauth.sqlite 
-	- .tables  (the generated tables)
-	- .quit    (exit)
-4. edit web/server/system/core.php
+5. Edit `client/myhost.php`:
 
-	$_dbfile = 'your db file'; 		(created in step 3.2 above)
-	$_apihost="your url";			(created in step 1.1 above)
-	$sshhome="dir for ssh";			(dir contains the devices keys)
-						more info how to do this
-						http://stackoverflow.com/questions/8021/allow-user-to-set-up-an-ssh-tunnel-but-nothing-else
-						http://www.gnu.org/software/bash/manual/html_node/The-Restricted-Shell.html
-						https://wiki.archlinux.org/index.php/Secure_Shell
-
-5. Edit  client/myhost.php
-
- 5.1 run "php client/client-gettoken.php"
+     5.1 Run `php client/client-gettoken.php`.
 
 	If you see something like this, then your application is ready
-	array(4) {
-	  ["access_token"]=>
-	  string() "token"
-	  ["expires_in"]=>
-	  int(3600)
-	  ["token_type"]=>
-	  string(6) "bearer"
-	  ["scope"]=>
-	  string(15) "test_admin main"
-	}
+````
+array(4) {
+  ["access_token"]=>
+  string() "token"
+  ["expires_in"]=>
+  int(3600)
+  ["token_type"]=>
+  string(6) "bearer"
+  ["scope"]=>
+  string(15) "test_admin main"
+}
+````
 
-6.  see examples in the directory "client"
+6. See the examples in the `client` directory.
 
 #### wss
 
-1. edit ws/src/MyApp/Config.php file
+1. Edit ws/src/MyApp/Config.php file
 
-	$_dbfile = 'your db file'; 	(created in step 3.2 above)
-	$_apihost="your url"; 		(created in step 1.1 above)	
-	$_wssusername='wssusername'; 	(created in step 3.1 above)
-	$_wsspassword='wsspassword';	(created in step 3.1 above)
+````
+$_dbfile = 'your db file'; 	(created in step 3.2 above)
+$_apihost="your url"; 		(created in step 1.1 above)	
+$_wssusername='wssusername'; 	(created in step 3.1 above)
+$_wsspassword='wsspassword';	(created in step 3.1 above)
+````
 
-2. edit /etc/hosts
+2. Edit /etc/hosts:
 
 	change the 127.0.1.1 line to your new wss/api service
 	127.0.0.1 <old names>  verifytoken 
@@ -168,18 +170,18 @@ Follow these steps:
 	192.168.0.10   verifytoken or 195.175.111.10 verifytoken
 
 
-2. run it
-
-	php ws/ws.php
+2. Run it with:
+````
+php ws/ws.php
+````
 
 Happy Coding :-)
 
 
-#  Required dependencies
+# Required dependencies
 
-Make sure you have all dependencies
-
-For more information see web/swagger-ui/README.md and  swagger/swagger-php/readme.md
+For more information see `web/swagger-ui/README.md` and `swagger/swagger-php/readme.md`.
 
 # License
-	See LICENSE
+
+  See `LICENSE`.
