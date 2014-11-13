@@ -75,7 +75,7 @@ Insert test data and and check the generated tables:
 cd tools/
 php ./rebuild_db.php
 php ./insert-testdata_db.php
-cd db
+cd ../db
 sqlite3 oauth.sqlite
 .tables
 .quit
