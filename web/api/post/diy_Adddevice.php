@@ -45,30 +45,74 @@ function diy_adddevice($payload,$storage){
     $org = OAuth2\Request::createFromGlobals()->request["org"];
     $device = OAuth2\Request::createFromGlobals()->request["device"];
     $devproperties = OAuth2\Request::createFromGlobals()->request["properties"];
-    $devpasswd = OAuth2\Request::createFromGlobals()->request["passwd"];
+    $client_secret = OAuth2\Request::createFromGlobals()->request["passwd"];
     $device_desc = OAuth2\Request::createFromGlobals()->request["device_desc"];
     $diy_error["post"]["org"] = $org;
     $diy_error["post"]["device"] = $device;
-    $diy_error["post"]["devpasswd"] = $devpasswd;
+    $diy_error["post"]["client_secret"] = $client_secret;
     $diy_error["post"]["devproperties"] = $devproperties;
     $diy_error["post"]["device_desc"] = $device_desc;
-    $post["org"] = $org;
-    $post["device"] = $device;
-    $post["devpasswd"] = $devpasswd;
-    $post["devproperties"] = $devproperties;
-    $post["device_desc"] = $device_desc;
+    $post["org"] = $org;			//organisation					oauth_devices	
+    $post["device"] = $device;  		// to client_id tou device			oauth_devices	oauth_clients	oauth_public_keys
+    $post["devproperties"] = $devproperties;	
+    $post["device_desc"] = $device_desc;	//mia perigrafi oti thelei o christis		oauth_devices
+
+    $tempfile=tempnam(sys_get_temp_dir(),'');
+    if (file_exists($tempfile)) { unlink($tempfile); }
+    mkdir($tempfile);
+    if (is_dir($tempfile)) { 
+    	$exec("openssl genrsa -out $tempfile/$client_id-privkey.pem 2048");
+    	$exec("openssl rsa -in $tempfile/$client_id-privkey.pem -pubout -out $tempfile/$client_id-pubkey.pem");
+	$publicKey  = file_get_contents("$tempfile/$client_id-pubkey.pem");
+	$privateKey = file_get_contents("$tempfile/$client_id-privkey.pem");
+    }
+
+
+
+    $post["public_key"] = $publicKey;		//mia perigrafi oti thelei o christis		oauth_devices	oauth_clients	oauth_public_keys
+    $post["private_key"] = $publicKey;		//mia perigrafi oti thelei o christis		oauth_devices	oauth_clients	oauth_public_keys
+    $post["encryption_algorithm"] = 'RS256'	;//mia perigrafi oti thelei o christis						oauth_public_keys
+
+    $post["public_key_active"] = $device_desc;	//mia perigrafi oti thelei o christis		oauth_devices
+
+    $post["port"] = $device_desc;		//port gia to device				oauth_ports	oauth_clients dataport, apiport
+    $post["client_id"] = $device_desc;		//se pion aniki					oauth_ports	oauth_clients
+
+    $post["dataport"] = $devpasswd;		//dataport							oauth_clients
+    $post["apiport"] = $devpasswd;		//apiport							oauth_clients
+    $post["apihost"] = $devpasswd;		//apihost							oauth_clients
+    $post["sshhost"] = $devpasswd;		//sshhost							oauth_clients
+    $post["sshport"] = $devpasswd;		//sshport							oauth_clients
+/*
+		user_id int oauth_users
+
+              client_id VARCHAR(80),
+                public_key VARCHAR(2000),
+                private_key VARCHAR(2000),
+                encryption_algorithm VARCHAR(100) DEFAULT 'RS256'
+
+		$db->exec('UPDATE oauth_clients set dataport="50000", apiport="50001", apihost="https://arduino.os.cs.teiath.gr", sshhost="arduino.os.cs.teiath.gr", sshport="9999" where client_id="testdev"');
+		oauth_ports (port, client_id) VALUES ("50000","testdev")');
+
+                device VARCHAR(80) NOT NULL,
+                device_desc TEXT NOT NULL,
+                organisation TEXT NOT NULL,
+                client_id VARCHAR(80) NOT NULL,
+                public_key VARCHAR(2000),
+                public_key_active VARCHAR(10),
+*/
         $gump = new GUMP();
         $gump->validation_rules(array(
                 'org'    => 'required|alpha_numeric',
                 'device'    => 'required|alpha_numeric',
-                'devpasswd'    => 'required|max_len,100|min_len,6',
+                'client_secret'    => 'required|max_len,100|min_len,6',
                 'devproperties'    => 'required|alpha_numeric',
                 'device_desc'    => 'required|max_len,100|alpha_dash'
         ));
         $gump->filter_rules(array(
                 'org'    => 'trim|sanitize_string',
                 'device'    => 'trim|sanitize_string',
-                'devpasswd'    => 'trim',
+                'client_secret'    => 'trim',
                 'devproperties'    => 'trim|sanitize_string',
                 'device_desc'    => 'trim|sanitize_string'
         ));
@@ -79,7 +123,36 @@ function diy_adddevice($payload,$storage){
 	}
 
     try {
-	$stmt1 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :device');
+	    $tempfile=tempnam(sys_get_temp_dir(),'');
+	    if (file_exists($tempfile)) { unlink($tempfile); }
+	    mkdir($tempfile);
+	    if (is_dir($tempfile)) { 
+		$exec("openssl genrsa -out $tempfile/$client_id-privkey.pem 2048");
+		$exec("openssl rsa -in $tempfile/$client_id-privkey.pem -pubout -out $tempfile/$client_id-pubkey.pem");
+		$publicKey  = file_get_contents("$tempfile/$client_id-pubkey.pem");
+		$privateKey = file_get_contents("$tempfile/$client_id-privkey.pem");
+	    }
+	// user_id for dev
+        $lastkey = $storage->query('SELECT user_id FROM oauth_users ORDER BY user_id DESC LIMIT 1');
+        foreach($lastkey as $curRow) { $lastkey = intval($curRow[0]); }
+	$lastkey++;
+        $stmt = $storage->prepare('INSERT INTO oauth_users (user_id,email_ver_code) VALUES (:user_id,TRUE)');
+        $stmt->execute(array('user_id' => $lastkey));
+
+	$scope=$org."_dev";
+	$scope .= $org."_dpri";
+        $apiport = $storage->query('SELECT apiport FROM oauth_clients ORDER BY apiport DESC LIMIT 1');
+        foreach($apiport as $curRow) { $apiport = intval($curRow[0]); }
+	$dataport=$apiport + 1;
+	$apiport=$apiport + 2;
+	$apihost=diyConfig::read('api.host');
+	$sshhost=diyConfig::read('ssh.host');
+	$sshport=diyConfig::read('ssh.port');
+
+        $stmt1 = $storage->prepare('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope, dataport, apiport, apihost, sshhost, sshport) VALUES (:client_id, :client_secret, :user_id, :scope, :dataport, :apiport, :apihost, :sshhost, :sshport)');
+        $stmt1->execute(array('user_id' => $lastkey, 'client_id' => $client_id, 'client_secret' => $client_secret, 'scope' => $scope, 'dataport' => $dataport, 'apiport' => $apiport, 'apihost' = > $apihost, 'sshhost' => $sshhost, 'sshport' => $sshport));
+
+	$stmt1 = $storage->prepare('INSERT  FROM oauth_clients WHERE client_id = :device');
 	$stmt1->execute(array('device' => trim($device)));
 	$row = $stmt1->fetch(PDO::FETCH_ASSOC);
 	if($row){

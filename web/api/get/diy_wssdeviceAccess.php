@@ -71,6 +71,7 @@ function diy_wssdeviceAccess($payload,$storage,$exceptions){
 			$stmt = $storage->prepare('SELECT * FROM oauth_devices WHERE device = :device');
 			$stmt->execute(array('device' => $post["device"]));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
+// if edo ean to device einai dpri kai o client den einai o owner tote den mporei na to dei kaneis
 			if($row["organisation"]){
 				$organisation=trim($row["organisation"]);
 				//$organisation=$row["scope"];

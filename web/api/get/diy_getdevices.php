@@ -98,6 +98,7 @@ function diy_getdevices($payload,$storage){
 			if (trim($view[1]) == $devview) {
 			    $org = trim($view[0]);
 			    $diy_error["org"]=$org;
+// id edo ean to device einai dpri kai o user den einai o owner den prochorame
 			    try {
 				$stmt = $storage->prepare('SELECT * FROM oauth_devices WHERE organisation = :org');
 				$stmt->execute(array('org' => $org));
