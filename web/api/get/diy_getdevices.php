@@ -9,23 +9,24 @@ header("Content-Type: text/html; charset=utf-8");
 *   swaggerVersion="2.0",
 *   basePath="https://arduino.os.cs.teiath.gr/api",
 *   resourcePath="/devices",
-*   description="list user devices",
+*   description="Get list of devices",
 *   produces="['application/json']"
 * )
 */
+
 /**
  * @SWG\Api(
  *   path="/devices",
  *   @SWG\Operation(
  *     method="GET",
- *     summary="List user devices",
- *     notes="Επιστρέφει user devices",
- *     type="pathModel",
- *     nickname="find_catalog",
+ *     summary="Get list of devices (pou o user echei ta schetika dikaiomata)",
+ *     notes="epistrefei ta devices pou o user echei ta schetika dikaiomata",
+ *     type="result",
+ *     nickname="get_device",
  *     @SWG\Parameter(
- *       name="path",
- *       description="Πληκτρολογηστε το system path",
- *       required=false,
+ *       name="access_token",
+ *       description="access_token",
+ *       required=true,
  *       type="text",
  *       paramType="query"
  *     ),
@@ -39,11 +40,18 @@ header("Content-Type: text/html; charset=utf-8");
  /**
  *
  * @SWG\Model(
- *              id="pathModel",
- *              required="path",
- *                  @SWG\Property(name="path",type="string",description="Το path")
+ *              id="result",
+ *                  @SWG\Property(name="error",type="text",description="error")
  * )
+ *                  @SWG\Property(name="status",type="integer",description="status code")
+ *                  @SWG\Property(name="message",type="string",description="status message")
+ *                  @SWG\Property(name="org",type="string",description="organisation pou aniki to device")
+ *                  @SWG\Property(name="device",type="string",description="device name")
+ *                  @SWG\Property(name="device_desc",type="string",description="device desc")
+ *                  @SWG\Property(name="status",type="string",description="status of device private/org/public")
+ *                  @SWG\Property(name="mode",type="string",description="mode of device devel/production")
  */
+
 
 //api/get/diy_getdevices.php
 $app->get('/devices', function () use ($authenticateForRole, $diy_storage)  {
@@ -98,16 +106,26 @@ function diy_getdevices($payload,$storage){
 			if (trim($view[1]) == $devview) {
 			    $org = trim($view[0]);
 			    $diy_error["org"]=$org;
-// id edo ean to device einai dpri kai o user den einai o owner den prochorame
 			    try {
 				$stmt = $storage->prepare('SELECT * FROM oauth_devices WHERE organisation = :org');
 				$stmt->execute(array('org' => $org));
 				while($row = $stmt->fetch(PDO::FETCH_ASSOC)){ 
-	    				$diy_error["dev"][$nr]=$row["device"];
-					$devices["dev"][$nr]["device"]= $row["device"];
-					$devices["dev"][$nr]["device_desc"]= $row["device_desc"];
-					$devices["dev"][$nr]["organisation"]= $row["organisation"];
-					$nr++;
+					if($row["status"] == "private" && $row["client_id"] == "$client_id"){
+						$devices["dev"][$nr]["device"]= $row["device"];
+						$devices["dev"][$nr]["device_desc"]= $row["device_desc"];
+						$devices["dev"][$nr]["organisation"]= $row["organisation"];
+						$devices["dev"][$nr]["status"]= $row["status"];
+						$devices["dev"][$nr]["mode"]= $row["mode"];
+						$nr++;
+					}elseif($row["status"] == "org" || $row["status"] == "public"){
+						$diy_error["dev"][$nr]=$row["device"];
+						$devices["dev"][$nr]["device"]= $row["device"];
+						$devices["dev"][$nr]["device_desc"]= $row["device_desc"];
+						$devices["dev"][$nr]["organisation"]= $row["organisation"];
+						$devices["dev"][$nr]["status"]= $row["status"];
+						$devices["dev"][$nr]["mode"]= $row["mode"];
+						$nr++;
+					}
 				}
 			    } catch (Exception $e) {
 			      	$diy_error["db"]= $e->getCode();

@@ -3,8 +3,16 @@
     "swaggerVersion": "2.0",
     "apis": [
         {
+            "path": "/adddevice.{format}",
+            "description": "Add device"
+        },
+        {
             "path": "/devices.{format}",
-            "description": "list user devices"
+            "description": "Get list of devices"
+        },
+        {
+            "path": "/token.{format}",
+            "description": "get token"
         }
     ]
 }

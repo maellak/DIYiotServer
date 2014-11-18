@@ -2,15 +2,15 @@
     "basePath": "https://arduino.os.cs.teiath.gr/api",
     "swaggerVersion": "2.0",
     "apiVersion": "0.1",
-    "resourcePath": "/devices",
+    "resourcePath": "/adddevice",
     "apis": [
         {
-            "path": "/devices",
+            "path": "/adddevice",
             "operations": [
                 {
-                    "method": "GET",
-                    "summary": "Get list of devices (pou o user echei ta schetika dikaiomata)",
-                    "nickname": "get_device",
+                    "method": "POST",
+                    "summary": "Add device in a organisation",
+                    "nickname": "add_device",
                     "type": "result",
                     "parameters": [
                         {
@@ -19,6 +19,34 @@
                             "type": "text",
                             "required": true,
                             "description": "access_token"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "org",
+                            "type": "text",
+                            "required": true,
+                            "description": "organisation gia to device"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "device",
+                            "type": "text",
+                            "required": true,
+                            "description": "device name (alphanumeric)"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "device_desc",
+                            "type": "text",
+                            "required": true,
+                            "description": "description (alphanumeric)"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "password",
+                            "type": "text",
+                            "required": true,
+                            "description": "password for the devices"
                         }
                     ],
                     "responseMessages": [
@@ -33,7 +61,7 @@
                             "responseModel": "Failure"
                         }
                     ],
-                    "notes": "epistrefei ta devices pou o user echei ta schetika dikaiomata"
+                    "notes": "Create device in organisation kai epistrefei tis schetikes plirofories"
                 }
             ]
         }

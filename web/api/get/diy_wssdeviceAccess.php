@@ -71,7 +71,7 @@ function diy_wssdeviceAccess($payload,$storage,$exceptions){
 			$stmt = $storage->prepare('SELECT * FROM oauth_devices WHERE device = :device');
 			$stmt->execute(array('device' => $post["device"]));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-// if edo ean to device einai dpri kai o client den einai o owner tote den mporei na to dei kaneis
+			
 			if($row["organisation"]){
 				$organisation=trim($row["organisation"]);
 				//$organisation=$row["scope"];
@@ -82,43 +82,33 @@ function diy_wssdeviceAccess($payload,$storage,$exceptions){
 					$row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
 					if($row1["client_id"]){
 						$client_user = $row1["client_id"];
-						try {
-							$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_user');
-							$stmt2->execute(array('client_user' => trim($client_user)));
-							$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-							if($row2["scope"]){
-								$devview=$organisation."_view";
-								if (strpos(trim($row2["scope"]),$devview) !== false) {
-									$result["result"]["view"]=  1;
-								}else{
-									$diy_error["errors"] =  ExceptionMessages::ScopeNotFound." , ". ExceptionCodes::ScopeNotFound;
+						if($row["status"] == "org") {
+							try {
+								$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_user');
+								$stmt2->execute(array('client_user' => trim($client_user)));
+								$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+								if($row2["scope"]){
+									$devview=$organisation."_view";
+									if (strpos(trim($row2["scope"]),$devview) !== false) {
+										$result["result"]["view"]=  1;
+									}else{
+										$diy_error["errors"] =  ExceptionMessages::ScopeNotFound." , ". ExceptionCodes::ScopeNotFound;
+									}
 								}
+							} catch (Exception $e) {
+								echo "error ".$e->getCode();
+								$diy_error["db"] = $e->getCode();
 							}
-						} catch (Exception $e) {
-							echo "error ".$e->getCode();
-							$diy_error["db"] = $e->getCode();
+						}elseif($row["status"] == "public") {
+							$result["result"]["view"]=  1;
+						}elseif($row["status"] == "private" && $row["client_id"] == $client_user){
+							$result["result"]["view"]=  1;
+						}elseif($row["status"] == "private" && $row["client_id"] != $client_user){
+							$result["result"]["view"]=  0;
 						}
 					}else{
 							$diy_error["errors"] =  ExceptionMessages::UserNotFound." , ". ExceptionCodes::UserNotFound;
 						//$result["errors"]["select"] = exceptions::MethodNotFound;
-					}
-				} catch (Exception $e) {
-					echo "error ".$e->getCode();
-					$diy_error["db"] = $e->getCode();
-				}
-				// to devices einai public
-				try {
-					$stmt3 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_user');
-					$stmt3->execute(array('client_user' => trim($client_user)));
-					$row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-					if($row3["scope"]){
-						$devview3=$rganisation."_dpub";
-						if (strpos($row3["scope"],$devview3) !== false) {
-							$result["result"]["view"]=  1;
-						}else{
-							$diy_error["errors"] =  ExceptionMessages::ScopeNotFound." , ". ExceptionCodes::ScopeNotFound;
-							//$diy_error["errors"] =  new Exception(ExceptionMessages::ScopeNotFound, ExceptionCodes::ScopeNotFound);
-						}
 					}
 				} catch (Exception $e) {
 					echo "error ".$e->getCode();

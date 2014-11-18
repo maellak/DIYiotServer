@@ -51,6 +51,7 @@ $authenticateForRole = function ()
 	$_username = diyConfig::read('db.username');
 	$_password = diyConfig::read('db.password');
 	$storage = new PdoStorageWithEmailVerification(array('dsn' => $_dsn, 'username' => $_username, 'password' => $_password));
+	//$storage = new OAuth2\Storage\Pdo(array('dsn' => $_dsn, 'username' => $_username, 'password' => $_password));
 	$server = new OAuth2\Server($storage);
 	$server->addGrantType(new OAuth2\GrantType\ClientCredentials($storage), array(
 			'allow_credentials_in_request_body => true'
@@ -82,6 +83,66 @@ $diy_exception = function ()
 };
 
 //=========================  POST ==================================
+
+/**
+*
+* @SWG\Resource(
+*   apiVersion="0.1",
+*   swaggerVersion="2.0",
+*   basePath="https://arduino.os.cs.teiath.gr/api",
+*   resourcePath="/token",
+*   description="get token",
+*   produces="['application/json']"
+* )
+*/
+
+/**
+ * @SWG\Api(
+ *   path="/token",
+ *   @SWG\Operation(
+ *     method="POST",
+ *     summary="Get token",
+ *     notes="epistrefei token. To token chriasete gia olous tous porous tou api",
+ *     type="result",
+ *     nickname="token",
+ *     @SWG\Parameter(
+ *       name="grant_type",
+ *       description="access type p.x. client_credentials",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="client_id",
+ *       description="your username",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="client_secret",
+ *       description="your password",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\ResponseMessage(code=200, message="Επιτυχία", responseModel="Success"),
+ *     @SWG\ResponseMessage(code=500, message="Αποτυχία", responseModel="Failure")
+ *   )
+ * )
+ *
+     */
+
+ /**
+ *
+ * @SWG\Model(
+ *              id="result",
+ *                  @SWG\Property(name="access_token",type="text",description="access_token")
+ * )
+ *                  @SWG\Property(name="expires_in",type="integer",description="time expires")
+ *                  @SWG\Property(name="token_type",type="string",description="token_type")
+ *                  @SWG\Property(name="scope",type="string",description="se poia scopes aniki o user")
+ */
 
 $app->post('/token', function () use ($authenticateForRole)  {
 	$server = $authenticateForRole();
