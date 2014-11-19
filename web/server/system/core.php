@@ -15,6 +15,14 @@ $_apihost="https://your server";
 //ssh
 $sshhome="path to ssh dir witch contain the buplic keys"; 
 
+//e-mail server settings
+
+
+$fromuser="user@server.gr";
+$smtpserver="smtp.server.gr";
+$smtpport="25";
+
+
 // ***GIT*** 
 // ***GitGit*** 
 
