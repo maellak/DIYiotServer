@@ -1,5 +1,6 @@
 <?php
 
+chdir(__DIR__); // Change dir to where the script is located
 $dbfile = '../db/oauth.sqlite';
 $HOST="you server";
 
@@ -21,18 +22,19 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 // CLIENT_ID
-$publicKey  = file_get_contents('../ssh/CLIENT_ID_pubkey.pem');
-$privateKey = file_get_contents('../ssh/CLIENT_ID_privkey.pem');
+$publicKey  = file_get_contents('../ssh/pubkey.pem');
+$privateKey = file_get_contents('../ssh/privkey.pem');
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret) VALUES ("CLIENT_ID", "ssssssssssssssssssssssssssssssssssssss")');
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
 // CLIENT_ID1 
-$publicKey  = file_get_contents('../ssh/CLIENT_ID1_pubkey.pem');
-$privateKey = file_get_contents('../ssh/CLIENT_ID1_privkey.pem');
+$publicKey  = file_get_contents('../ssh/pubkey.pem');
+$privateKey = file_get_contents('../ssh/privkey.pem');
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, scope) VALUES ("CLIENT_ID1", "ssssssssssssssssssssssssssssssssssssss","main test_view")');
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID1", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
 // this user is the main user for the test example  used in webclient 
+$db->exec('INSERT INTO oauth_users (user_id, first_name, last_name, email, email_verified, email_ver_code) VALUES ("1", "Test","User","test@test.com", 1, "")');
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("CLIENT_ID11", "ssssssssssssssssssssssssssssssssssssss","1","test_admin main")'); 				// insert client user
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID11", "'.$publicKey.'", "'.$privateKey.'", "RS256")');	// insert key gia client user
 
@@ -52,8 +54,8 @@ $db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) 
 // ***********************************************************devices ************************************
 //devices testdev begin
 // to key edo gia ta devs tha einai diaforetiko gia kathe dev   o client user tha echei to geniko   to key tou dev tha ginete download apo ton client user giati tha prpei na mpei sto dev gia auth giafto kai einai diaforetiko
-$publicKeydev  = file_get_contents('../ssh/CLIENT_ID_pubkey.pem');
-$privateKeydev = file_get_contents('../ssh/CLIENT_ID_privkey.pem');
+$publicKeydev  = file_get_contents('../ssh/pubkey.pem');
+$privateKeydev = file_get_contents('../ssh/privkey.pem');
 // this is the main test device used for the test example
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("testdev", "'.$publicKeydev.'", "'.$privateKeydev.'", "RS256")');		// insert dev key 
 // to devices chriasete kai afto oti o client giati kai afto prepei na sindethi me ton server gia na stili ta data kai epissis na anixi socket gia na lamvanei entoles sxetika me tis leitourgies pou prepei ad-hoc na kanei

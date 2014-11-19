@@ -2,7 +2,7 @@
 
 
 //dbfile
-$_dbfile = 'path to db file';
+$_dbfile = '../../db/oauth.sqlite';
 
 //api
 $_apihost="https://your server";
