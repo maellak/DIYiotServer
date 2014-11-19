@@ -8,14 +8,12 @@ include("myhost.php");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
- $username="CLIENT_ID11";
- $password="CLIENT_SECRET11";
  $data="grant_type=client_credentials&client_id=".$username."&client_secret=".$password;
  $ch = curl_init();
  curl_setopt ($ch, CURLOPT_URL,"$host/api/token");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
- curl_setopt ($ch, CURLOPT_USERPWD, "CLIENT_ID11:CLIENT_SECRET11"); 
+ curl_setopt ($ch, CURLOPT_USERPWD, $username.":".$password);
  curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
  curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
  curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);                                                                  
