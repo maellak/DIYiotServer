@@ -2,51 +2,51 @@
     "basePath": "https://arduino.os.cs.teiath.gr/api",
     "swaggerVersion": "2.0",
     "apiVersion": "0.1",
-    "resourcePath": "/adddevice",
+    "resourcePath": "/register",
     "apis": [
         {
-            "path": "/adddevice",
+            "path": "/register",
             "operations": [
                 {
                     "method": "POST",
-                    "summary": "Add device in a organisation",
-                    "nickname": "add_device",
-                    "type": "adddevice",
+                    "summary": "register",
+                    "nickname": "register",
+                    "type": "register",
                     "parameters": [
                         {
                             "paramType": "query",
-                            "name": "access_token",
+                            "name": "client_id",
                             "type": "text",
                             "required": true,
-                            "description": "access_token"
+                            "description": "client_id alpha_numeric"
                         },
                         {
                             "paramType": "query",
-                            "name": "org",
+                            "name": "client_secret",
                             "type": "text",
                             "required": true,
-                            "description": "organisation gia to device"
+                            "description": "client_secret min 6"
                         },
                         {
                             "paramType": "query",
-                            "name": "device",
+                            "name": "firstname",
                             "type": "text",
                             "required": true,
-                            "description": "device name (alphanumeric)"
+                            "description": "firstname"
                         },
                         {
                             "paramType": "query",
-                            "name": "device_desc",
+                            "name": "lastname",
                             "type": "text",
                             "required": true,
-                            "description": "description "
+                            "description": "lastname"
                         },
                         {
                             "paramType": "query",
-                            "name": "password",
+                            "name": "email",
                             "type": "text",
                             "required": true,
-                            "description": "password for the devices"
+                            "description": "email"
                         }
                     ],
                     "responseMessages": [
@@ -61,41 +61,29 @@
                             "responseModel": "Failure"
                         }
                     ],
-                    "notes": "Create device in organisation kai epistrefei tis schetikes plirofories"
+                    "notes": "Create username for the diyiot api"
                 }
             ]
         }
     ],
     "models": {
-        "adddevice": {
-            "id": "adddevice",
+        "register": {
+            "id": "register",
             "properties": {
                 "error": {
                     "description": "error",
                     "$ref": "text"
                 },
                 "status": {
-                    "description": "status of device private/org/public",
-                    "type": "string"
+                    "description": "status code",
+                    "type": "integer"
                 },
                 "message": {
                     "description": "status message",
                     "type": "string"
                 },
-                "org": {
-                    "description": "organisation pou aniki to device",
-                    "type": "string"
-                },
-                "device": {
-                    "description": "device name",
-                    "type": "string"
-                },
-                "device_desc": {
-                    "description": "device desc",
-                    "type": "string"
-                },
-                "mode": {
-                    "description": "mode of device devel/production",
+                "user_id": {
+                    "description": "your user_id (prepei na kaneis click sto e-mail pou tha pareis)",
                     "type": "string"
                 }
             }

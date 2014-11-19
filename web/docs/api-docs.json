@@ -15,6 +15,10 @@
             "description": "Get list of devices"
         },
         {
+            "path": "/register.{format}",
+            "description": "User register"
+        },
+        {
             "path": "/token.{format}",
             "description": "get token"
         }

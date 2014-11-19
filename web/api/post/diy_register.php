@@ -1,5 +1,84 @@
 <?php
 header("Content-Type: text/html; charset=utf-8");
+/**
+*
+* @SWG\Resource(
+*   apiVersion="0.1",
+*   swaggerVersion="2.0",
+*   basePath="https://arduino.os.cs.teiath.gr/api",
+*   resourcePath="/register",
+*   description="User register",
+*   produces="['application/json']"
+* )
+*/
+                'client_id'    => 'required|alpha_numeric',
+                'client_secret'    => 'required|alpha_numeric',
+                'firstname'    => 'required|alpha_numeric',
+                'lastname'    => 'required|alpha_numeric',
+                'email'    => 'required|valid_email',
+
+/**
+ * @SWG\Api(
+ *   path="/register",
+ *   @SWG\Operation(
+ *     method="POST",
+ *     summary="register",
+ *     notes="Create username for the diyiot api",
+ *     type="register",
+ *     nickname="register",
+ *     @SWG\Parameter(
+ *       name="client_id",
+ *       description="client_id alpha_numeric",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="client_secret",
+ *       description="client_secret min 6",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="firstname",
+ *       description="firstname",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="lastname",
+ *       description="lastname",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="email",
+ *       description="email",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\ResponseMessage(code=200, message="Επιτυχία", responseModel="Success"),
+ *     @SWG\ResponseMessage(code=500, message="Αποτυχία", responseModel="Failure")
+ *   )
+ * )
+ *
+     */
+
+ /**
+ *
+ * @SWG\Model(
+ *              id="register",
+ *                  @SWG\Property(name="error",type="text",description="error"),
+ *                  @SWG\Property(name="status",type="integer",description="status code"),
+ *                  @SWG\Property(name="message",type="string",description="status message"),
+ *                  @SWG\Property(name="user_id",type="string",description="your user_id (prepei na kaneis click sto e-mail pou tha pareis)"),
+ * )
+ */
+
 //api/get/diy_register.php
 // register a user
 $app->post('/register', function () {
