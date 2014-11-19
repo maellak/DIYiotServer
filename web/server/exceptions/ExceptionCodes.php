@@ -26,6 +26,7 @@ class ExceptionCodes
         const UserNotFound = 500;
         const ScopeNotFound = 500;
         const DeviceExist = 500;
+        const OrgExist = 500;
 }
 
 ?>

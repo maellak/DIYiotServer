@@ -2,16 +2,16 @@
     "basePath": "https://arduino.os.cs.teiath.gr/api",
     "swaggerVersion": "2.0",
     "apiVersion": "0.1",
-    "resourcePath": "/adddevice",
+    "resourcePath": "/addorg",
     "apis": [
         {
-            "path": "/adddevice",
+            "path": "/addorg",
             "operations": [
                 {
                     "method": "POST",
-                    "summary": "Add device in a organisation",
-                    "nickname": "add_device",
-                    "type": "adddevice",
+                    "summary": "Add organisation",
+                    "nickname": "add_org",
+                    "type": "addorg",
                     "parameters": [
                         {
                             "paramType": "query",
@@ -25,28 +25,14 @@
                             "name": "org",
                             "type": "text",
                             "required": true,
-                            "description": "organisation gia to device"
+                            "description": "organisation"
                         },
                         {
                             "paramType": "query",
-                            "name": "device",
+                            "name": "org_desc",
                             "type": "text",
                             "required": true,
-                            "description": "device name (alphanumeric)"
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "device_desc",
-                            "type": "text",
-                            "required": true,
-                            "description": "description (alphanumeric)"
-                        },
-                        {
-                            "paramType": "query",
-                            "name": "password",
-                            "type": "text",
-                            "required": true,
-                            "description": "password for the devices"
+                            "description": "org description"
                         }
                     ],
                     "responseMessages": [
@@ -61,41 +47,33 @@
                             "responseModel": "Failure"
                         }
                     ],
-                    "notes": "Create device in organisation kai epistrefei tis schetikes plirofories"
+                    "notes": "Create organisation kai epistrefei tis schetikes plirofories (mono se ena organisation mporeis na valeis devices)"
                 }
             ]
         }
     ],
     "models": {
-        "adddevice": {
-            "id": "adddevice",
+        "addorg": {
+            "id": "addorg",
             "properties": {
                 "error": {
                     "description": "error",
                     "$ref": "text"
                 },
                 "status": {
-                    "description": "status of device private/org/public",
-                    "type": "string"
+                    "description": "status code",
+                    "type": "integer"
                 },
                 "message": {
                     "description": "status message",
                     "type": "string"
                 },
                 "org": {
-                    "description": "organisation pou aniki to device",
+                    "description": "organisation gia na valei o christis devices",
                     "type": "string"
                 },
-                "device": {
-                    "description": "device name",
-                    "type": "string"
-                },
-                "device_desc": {
-                    "description": "device desc",
-                    "type": "string"
-                },
-                "mode": {
-                    "description": "mode of device devel/production",
+                "org_desc": {
+                    "description": "org desc",
                     "type": "string"
                 }
             }

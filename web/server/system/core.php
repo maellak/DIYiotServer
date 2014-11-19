@@ -53,3 +53,9 @@ diyConfig::write('db.username', 'root');
 diyConfig::write('db.password', '');
 //ssh
 diyConfig::write('ssh.home', $sshhome);
+
+
+// e-mail server settings
+diyConfig::write('mail.fromuser', $fromuser);
+diyConfig::write('mail.smtpserver',  $smtpserver);
+diyConfig::write('mail.smtpport',  $smtpport);

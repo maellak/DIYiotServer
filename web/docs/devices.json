@@ -11,7 +11,7 @@
                     "method": "GET",
                     "summary": "Get list of devices (pou o user echei ta schetika dikaiomata)",
                     "nickname": "get_device",
-                    "type": "result",
+                    "type": "devices",
                     "parameters": [
                         {
                             "paramType": "query",
@@ -39,23 +39,35 @@
         }
     ],
     "models": {
-        "result": {
-            "id": "result",
+        "devices": {
+            "id": "devices",
             "properties": {
-                "access_token": {
-                    "description": "access_token",
+                "error": {
+                    "description": "error",
                     "$ref": "text"
                 },
-                "expires_in": {
-                    "description": "time expires",
-                    "type": "integer"
-                },
-                "token_type": {
-                    "description": "token_type",
+                "status": {
+                    "description": "status of device private/org/public",
                     "type": "string"
                 },
-                "scope": {
-                    "description": "se poia scopes aniki o user",
+                "message": {
+                    "description": "status message",
+                    "type": "string"
+                },
+                "org": {
+                    "description": "organisation pou aniki to device",
+                    "type": "string"
+                },
+                "device": {
+                    "description": "device name",
+                    "type": "string"
+                },
+                "device_desc": {
+                    "description": "device desc",
+                    "type": "string"
+                },
+                "mode": {
+                    "description": "mode of device devel/production",
                     "type": "string"
                 }
             }

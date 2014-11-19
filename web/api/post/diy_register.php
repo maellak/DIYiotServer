@@ -67,12 +67,17 @@ function diy_register(){
         $client_id = $storage->lastInsertId();
         $storage->query('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("'.$post["client_id"].'", "'.$publicKey.'", "'.$privateKey.'", "RS256")');
 
+
+
         // Send email
+	$mailserver = diyConfig::read('mail.smtpserver');
+	$mailserverport = diyConfig::read('mail.smtpport');
+	$mailfrom = diyConfig::read('mail.fromuser');
         $link = 'https://'.$_SERVER['HTTP_HOST'].'/api/activate/'.$code;
-        $transport = Swift_SmtpTransport::newInstance('smtp.teiath.gr', 25);
+        $transport = Swift_SmtpTransport::newInstance($mailserver, $mailserverport);
         $mailer = Swift_Mailer::newInstance($transport);
         $message = Swift_Message::newInstance('Wonderful Subject')
-            ->setFrom(array('dnna@teiath.gr' => 'Diyiot'))
+            ->setFrom(array($mailfrom  => 'Diyiot'))
             ->setTo(array($post["email"]))
             ->setSubject('Welcome to diyiot')
             ->setBody('Hi '.$post["firstname"].',<BR /><BR />To active your account please click the following link <a href="'.$link.'">'.$link.'</a>.', 'text/html', 'UTF-8')

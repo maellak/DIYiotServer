@@ -7,6 +7,10 @@
             "description": "Add device"
         },
         {
+            "path": "/addorg.{format}",
+            "description": "Add organisation"
+        },
+        {
             "path": "/devices.{format}",
             "description": "Get list of devices"
         },

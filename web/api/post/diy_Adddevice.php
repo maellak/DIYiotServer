@@ -18,7 +18,7 @@ header("Content-Type: text/html; charset=utf-8");
  *     method="POST",
  *     summary="Add device in a organisation",
  *     notes="Create device in organisation kai epistrefei tis schetikes plirofories",
- *     type="result",
+ *     type="adddevice",
  *     nickname="add_device",
  *     @SWG\Parameter(
  *       name="access_token",
@@ -43,7 +43,7 @@ header("Content-Type: text/html; charset=utf-8");
  *     ),
  *     @SWG\Parameter(
  *       name="device_desc",
- *       description="description (alphanumeric)",
+ *       description="description ",
  *       required=true,
  *       type="text",
  *       paramType="query"
@@ -66,7 +66,7 @@ header("Content-Type: text/html; charset=utf-8");
  /**
  *
  * @SWG\Model(
- *              id="result",
+ *              id="adddevice",
  *                  @SWG\Property(name="error",type="text",description="error"),
  *                  @SWG\Property(name="status",type="integer",description="status code"),
  *                  @SWG\Property(name="message",type="string",description="status message"),
@@ -136,7 +136,7 @@ function diy_adddevice($payload,$storage){
 		'org'    => 'required|alpha_numeric',
 		'device'    => 'required|alpha_numeric',
 		'client_secret'    => 'required|max_len,100|min_len,6',
-		'device_desc'    => 'required|max_len,100|alpha_dash'
+		'device_desc'    => 'required|max_len,100'
 	));
 	$gump->filter_rules(array(
 		'org'    => 'trim|sanitize_string',

@@ -21,7 +21,7 @@ header("Content-Type: text/html; charset=utf-8");
  *     method="GET",
  *     summary="Get list of devices (pou o user echei ta schetika dikaiomata)",
  *     notes="epistrefei ta devices pou o user echei ta schetika dikaiomata",
- *     type="result",
+ *     type="devices",
  *     nickname="get_device",
  *     @SWG\Parameter(
  *       name="access_token",
@@ -40,7 +40,7 @@ header("Content-Type: text/html; charset=utf-8");
  /**
  *
  * @SWG\Model(
- *              id="result",
+ *              id="devices",
  *                  @SWG\Property(name="error",type="text",description="error")
  * )
  *                  @SWG\Property(name="status",type="integer",description="status code")
