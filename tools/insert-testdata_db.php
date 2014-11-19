@@ -35,6 +35,7 @@ $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, en
 // this user is the main user for the test example  used in webclient 
 $db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("CLIENT_ID11", "ssssssssssssssssssssssssssssssssssssss","1","test_admin main")'); 				// insert client user
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("CLIENT_ID11", "'.$publicKey.'", "'.$privateKey.'", "RS256")');	// insert key gia client user
+$db->exec('INSERT INTO oauth_users (user_id, email_verified) VALUES (1, 1)');   
 
 // this user is the main user for the test example  used in wss   (put the user information in ws/src/MyApp/Config.php ) 
 // wss
@@ -45,8 +46,10 @@ $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, en
 
 // *********************************************************** organisation ************************************
 // this is the main organisation used for the test example
-$db->exec('INSERT INTO oauth_organisations (organisation, client_id) VALUES ("test","CLIENT_ID11")');										// insert org tou client user
-$db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("testdev", "ssssssssssssssssssssssssssssssssssssss","2","test_dpri test_dev")'); 					// insert device
+	db->exec('INSERT INTO oauth_organisations (organisation, client_id) VALUES ("test","CLIENT_ID11")');										// insert org tou client user
+$db->exec('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope) VALUES ("testdev", "ssssssssssssssssssssssssssssssssssssss","2","test_dpri test_dev")'); 					// insert 
+$db->exec('INSERT INTO oauth_users (user_id, email_verified) VALUES (2, 1)');   
+
 // *********************************************************** organisation ************************************
 
 // ***********************************************************devices ************************************
@@ -57,8 +60,14 @@ $privateKeydev = file_get_contents('../ssh/CLIENT_ID_privkey.pem');
 // this is the main test device used for the test example
 $db->exec('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES ("testdev", "'.$publicKeydev.'", "'.$privateKeydev.'", "RS256")');		// insert dev key 
 // to devices chriasete kai afto oti o client giati kai afto prepei na sindethi me ton server gia na stili ta data kai epissis na anixi socket gia na lamvanei entoles sxetika me tis leitourgies pou prepei ad-hoc na kanei
-$db->exec('INSERT INTO oauth_devices (device, device_desc, organisation, client_id) VALUES ("testdev","perigrafi","test","CLIENT_ID11")');					// insert device device=client_id  perigrafi, organisation kai client_id tou user pou aniki to org
-$db->exec('INSERT INTO oauth_devices (device, device_desc, organisation, client_id) VALUES ("testdev1","perigrafi1","test","CLIENT_ID11")');					// insert device device=client_id  perigrafi, organisation kai client_id tou user pou aniki to org
+$db->exec('INSERT INTO oauth_devices (device, device_desc, organisation, client_id, status, mode) VALUES ("testdev","perigrafi","test","CLIENT_ID11","org","devel")');                                  // insert device device=client_id  perigrafi, organisation kai client_id tou user pou aniki to org
+$db->exec('INSERT INTO oauth_devices (device, device_desc, organisation, client_id, status, mode) VALUES ("testdev1","perigrafi1","test","CLIENT_ID11","private","devel")'); 
+
+
+
+
+
+
 //to port sti opoio tha steknei ta data
 // ta ports pou echoun dothi ta kratame se enan pinaka
 // prin dosoume ena neo port elenchoume ean einai eleftero ston server kai oti den echei dothei

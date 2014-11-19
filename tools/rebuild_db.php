@@ -81,7 +81,7 @@ $oauth_users = <<<EOD
 		last_name 	VARCHAR(80),
 		email 		VARCHAR(2000),
 		email_verified 	BOOLEAN,
-		email_ver_code 	VARCHAR(2000),
+        email_ver_code	VARCHAR(2000),
 		PRIMARY KEY (user_id)
 	);
 EOD;
@@ -178,6 +178,8 @@ $db->exec($oauth_ports);
 // perigrafi
 // se pion aniki
 // se pio arganisation
+// ti status echei    private   org  public
+// ti mode echei    devel i production
 // public_key ginete kata tin egktastassi tou dev
 // chrissimoiite gia ssh open ports
 // ****************************** more info *****************************************
@@ -191,12 +193,25 @@ $oauth_devices = <<<EOD
 	 	device_desc TEXT NOT NULL,
 	 	organisation TEXT NOT NULL,
 	 	client_id VARCHAR(80) NOT NULL,
+		status VARCHAR(10) NOT NULL,
+		mode VARCHAR(10) NOT NULL,
 	 	public_key VARCHAR(2000),
 	 	public_key_active VARCHAR(10),
 	 	PRIMARY KEY (device)
  	);
 EOD;
 $db->exec($oauth_devices);
+
+//$oauth_user_devices = <<<EOD
+// 	CREATE TABLE oauth_user_devices (
+//	 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+//	 	device VARCHAR(80) NOT NULL,
+//	 	device_desc TEXT NOT NULL,
+//	 	organisation TEXT NOT NULL,
+//	 	client_id VARCHAR(80) NOT NULL
+// 	);
+//EOD;
+//$db->exec($oauth_user_devices);
 
 // ******************************************** info ************************************
 // pinakas gia plirofories sxetika me to session ston wss
@@ -242,6 +257,7 @@ $error_clients = <<<EOD
  	);
 EOD;
 $db->exec($error_clients);
+
 $db->exec('PRAGMA encoding="UTF-8";');
 
 chmod($dbfile, 0777);
