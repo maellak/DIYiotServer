@@ -5,13 +5,13 @@
 $_dbfile = '../../db/oauth.sqlite';
 
 //api
-$_apihost="https://your server";
+$_apihost="https://your_server";
 
 //ssh
-$sshhome="path to ssh dir witch contain the buplic keys"; 
+$sshhome="../../ssh";
 
-// ***GIT*** 
-// ***GitGit*** 
+// ***GIT***
+// ***GitGit***
 
 class diyConfig
 {
@@ -28,7 +28,7 @@ class diyConfig
     }
 
 }
- 
+
 //debug
 diyConfig::write('debug', 1); // 1 = on 0 = off
 
