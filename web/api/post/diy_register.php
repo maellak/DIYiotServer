@@ -11,7 +11,6 @@ header("Content-Type: text/html; charset=utf-8");
 *   produces="['application/json']"
 * )
 */
-
 /**
  * @SWG\Api(
  *   path="/register",
