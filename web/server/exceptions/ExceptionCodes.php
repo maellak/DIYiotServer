@@ -27,6 +27,8 @@ class ExceptionCodes
         const ScopeNotFound = 500;
         const DeviceExist = 500;
         const OrgExist = 500;
+        const OrgNotExist = 500;
+        const OrgOwner = 500;
 }
 
 ?>

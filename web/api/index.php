@@ -91,7 +91,7 @@ $diy_exception = function ()
 *   swaggerVersion="2.0",
 *   basePath="https://arduino.os.cs.teiath.gr/api",
 *   resourcePath="/token",
-*   description="get token",
+*   description="Get token",
 *   produces="['application/json']"
 * )
 */

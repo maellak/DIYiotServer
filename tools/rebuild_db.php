@@ -63,6 +63,8 @@ $oauth_clients = <<<EOD
 		apihost		VARCHAR(2000),
 		apiport		INT UNSIGNED,
 		dataport	INT UNSIGNED,
+		tty 		VARCHAR(80),
+		baud 		VARCHAR(80),
 		public_key 	VARCHAR(2000),
 		PRIMARY KEY (client_id)
 	);
@@ -195,6 +197,7 @@ $oauth_devices = <<<EOD
 	 	client_id VARCHAR(80) NOT NULL,
 		status VARCHAR(10) NOT NULL,
 		mode VARCHAR(10) NOT NULL,
+	 	private_key VARCHAR(2000),
 	 	public_key VARCHAR(2000),
 	 	public_key_active VARCHAR(10),
 	 	PRIMARY KEY (device)
@@ -257,7 +260,9 @@ $error_clients = <<<EOD
  	);
 EOD;
 $db->exec($error_clients);
+// *********************************************************** clients ************************************
 
 $db->exec('PRAGMA encoding="UTF-8";');
 
 chmod($dbfile, 0777);
+

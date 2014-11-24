@@ -14,6 +14,7 @@ $_apihost="https://your server";
 
 //ssh
 $sshhome="path to ssh dir witch contain the buplic keys"; 
+$sshhomekeys="file for authorized_keys";
 
 //e-mail server settings
 
@@ -21,7 +22,6 @@ $sshhome="path to ssh dir witch contain the buplic keys";
 $fromuser="user@server.gr";
 $smtpserver="smtp.server.gr";
 $smtpport="25";
-
 
 // ***GIT*** 
 // ***GitGit*** 
@@ -61,6 +61,7 @@ diyConfig::write('db.username', 'root');
 diyConfig::write('db.password', '');
 //ssh
 diyConfig::write('ssh.home', $sshhome);
+diyConfig::write('ssh.keys', $sshhomekeys);
 
 
 // e-mail server settings

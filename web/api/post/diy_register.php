@@ -11,11 +11,6 @@ header("Content-Type: text/html; charset=utf-8");
 *   produces="['application/json']"
 * )
 */
-                'client_id'    => 'required|alpha_numeric',
-                'client_secret'    => 'required|alpha_numeric',
-                'firstname'    => 'required|alpha_numeric',
-                'lastname'    => 'required|alpha_numeric',
-                'email'    => 'required|valid_email',
 
 /**
  * @SWG\Api(

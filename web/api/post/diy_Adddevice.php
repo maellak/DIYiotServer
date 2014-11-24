@@ -17,7 +17,7 @@ header("Content-Type: text/html; charset=utf-8");
  *   @SWG\Operation(
  *     method="POST",
  *     summary="Add device in a organisation",
- *     notes="Create device in organisation kai epistrefei tis schetikes plirofories",
+ *     notes="Create device in organisation kai epistrefei tis schetikes plirofories. <br>To Organisation prepei na yparchei kai o christis na einai o owner i na aniki sto Organisations admin scope",
  *     type="adddevice",
  *     nickname="add_device",
  *     @SWG\Parameter(
@@ -118,6 +118,7 @@ function diy_adddevice($payload,$storage){
     //$params = loadParameters();
     $up=json_decode(base64_decode($payload));
     $client_id=$up->client_id;
+    $userscope=$up->scope;
     $org = OAuth2\Request::createFromGlobals()->request["org"];
     $device = OAuth2\Request::createFromGlobals()->request["device"];
     $client_secret = OAuth2\Request::createFromGlobals()->request["passwd"];
@@ -131,6 +132,7 @@ function diy_adddevice($payload,$storage){
     $post["client_secret"] = $client_secret;	//mia perigrafi oti thelei o christis		oauth_devices
     $post["device_desc"] = $device_desc;	//mia perigrafi oti thelei o christis		oauth_devices
 
+	//$result["result"]["up"] =  $up;
 	$gump = new GUMP();
 	$gump->validation_rules(array(
 		'org'    => 'required|alpha_numeric',
@@ -149,13 +151,53 @@ function diy_adddevice($payload,$storage){
 		$result["parse_errors"] = $gump->get_readable_errors(true);
 		$result["message"] = "[".$result["method"]."][".$result["function"]."]:".$gump->get_readable_errors(true);
 	}else{
+
+                //check if org name exists
+		$orgexists = "no";
+                $stmtorg = $storage->prepare('SELECT * FROM oauth_organisations WHERE organisation = :org');
+                $stmtorg->execute(array('org' => trim($org)));
+                $roworg = $stmtorg->fetch(PDO::FETCH_ASSOC);
+                if($roworg){
+			$orgexists = "yes";
+                        //$result["result"]["error"] =  ExceptionMessages::OrgExist." , ". ExceptionCodes::OrgExist;
+
+			$orgadmin="no";		
+			$orgowner="no";
+			$userscopes = explode(' ',trim($userscope));
+			$orgscope=$org."_admin";
+			for ($i = 0; $i <= count($userscopes); $i++) {
+				if (trim($userscopes[$i]) == $orgscope) {
+					$orgadmin="yes";		
+				}
+
+			}
+			if($orgadmin == "no"){
+				//check if org name exists and client_id
+				$stmtorg1 = $storage->prepare('SELECT * FROM oauth_organisations WHERE organisation = :org and client_id = :client_id');
+				$stmtorg1->execute(array('org' => trim($org), 'client_id' => $client_id));
+				$roworg1 = $stmtorg1->fetch(PDO::FETCH_ASSOC);
+				if(!$roworg1){
+					$result["result"]["error"] =  ExceptionMessages::OrgOwner." , ". ExceptionCodes::OrgOwner;
+				}else{
+					$orgowner="yes";
+				}
+			}
+                }else{
+                        $result["result"]["error"] =  ExceptionMessages::OrgNotExist." , ". ExceptionCodes::OrgNotExist;
+		}
+
 		//check if device name exists
+		$orgdeviceexists="no";
 		$stmt = $storage->prepare('SELECT client_id  FROM oauth_clients WHERE client_id = :device');
 		$stmt->execute(array('device' => trim($device)));
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
 		if($row){
 			$result["result"]["error"] =  ExceptionMessages::DeviceExist." , ". ExceptionCodes::DeviceExist;
-		}else{
+			$orgdeviceexists="yes";
+		}
+
+		if( ($orgexists == "yes" && ($orgowner == "yes" || $orgadmin == "yes")) && $orgdeviceexists == "no"){
+		//}else{
 
 		    try {
 			$tempfile=tempnam('tmp/','');
@@ -168,8 +210,14 @@ function diy_adddevice($payload,$storage){
 				$privateKey = file_get_contents("$tempfile/$client_id-privkey.pem");
 
 				// oauth_public_keys table
+				$encryption_algorithm="RS256";
 				$stmt5 = $storage->prepare('INSERT INTO oauth_public_keys (client_id, public_key, private_key, encryption_algorithm) VALUES (:client_id, :public_key, :private_key, :encryption_algorithm)');
 				$stmt5->execute(array( 'client_id' => $device, 'public_key' => $publicKey, 'private_key' => $privateKey, ':encryption_algorithm' => $encryption_algorithm));
+				unlink("$tempfile/$client_id-pubkey.pem");
+				unlink("$tempfile/$client_id-privkey.pem");
+			    // na ftiaxo to key me tis portes na einai etoimo
+			    // tha to kano messo cron
+			    // o pinakas ta echei ola oauth_clients
 			    }
 
 			// user_id for dev
@@ -177,11 +225,11 @@ function diy_adddevice($payload,$storage){
 			foreach($lastkey as $curRow) { $lastkey = intval($curRow[0]); }
 			$lastkey++;
 			// oauth_users table
-			$stmt = $storage->prepare('INSERT INTO oauth_users (user_id,email_ver_code) VALUES (:user_id,"1")');
+			$stmt = $storage->prepare('INSERT INTO oauth_users (user_id,email_verified) VALUES (:user_id,"1")');
 			$stmt->execute(array('user_id' => $lastkey));
 
 			$scope=$org."_dev";
-			$scope .= $org."_dpri";
+			$scope .= ' '.$org."_dpri";
 			$apiport = $storage->query('SELECT apiport FROM oauth_clients ORDER BY apiport DESC LIMIT 1');
 			foreach($apiport as $curRow) { $apiport = intval($curRow[0]); }
 			$dataport=$apiport + 1;
@@ -197,8 +245,10 @@ function diy_adddevice($payload,$storage){
 			$stmt2->execute(array('client_id' => $device, 'port' => $apiport));
 
 			// oauth_clients table
-			$stmt1 = $storage->prepare('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope, dataport, apiport, apihost, sshhost, sshport) VALUES (:client_id, :client_secret, :user_id, :scope, :dataport, :apiport, :apihost, :sshhost, :sshport)');
-			$stmt1->execute(array('user_id' => $lastkey, 'client_id' => $device, 'client_secret' => $client_secret, 'scope' => $scope, 'dataport' => $dataport, 'apiport' => $apiport, 'apihost' => $apihost, 'sshhost' => $sshhost, 'sshport' => $sshport));
+			$tty="/dev/ttyACM0";
+			$baud="115200";
+			$stmt1 = $storage->prepare('INSERT INTO oauth_clients (client_id, client_secret, user_id, scope, dataport, apiport, apihost, sshhost, sshport, tty, baud) VALUES (:client_id, :client_secret, :user_id, :scope, :dataport, :apiport, :apihost, :sshhost, :sshport, :tty, :baud)');
+			$stmt1->execute(array('user_id' => $lastkey, 'client_id' => $device, 'client_secret' => $client_secret, 'scope' => $scope, 'dataport' => $dataport, 'apiport' => $apiport, 'apihost' => $apihost, 'sshhost' => $sshhost, 'sshport' => $sshport, 'tty' => $tty, 'baud' => $baud));
 
 			// oauth_devices table
 			$public_key_active="yes";
