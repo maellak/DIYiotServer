@@ -1,6 +1,7 @@
 <?php
 
 header("Content-Type: text/html; charset=utf-8");
+ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 
 /**
 *
@@ -103,7 +104,7 @@ function diy_writedevice($payload,$storage){
     $device= OAuth2\Request::createFromGlobals()->request["device"];
     $up=json_decode(base64_decode($payload));
     $client_id=$up->client_id;
-    $diy_error["post"]["binfile"] = $binfile;
+    //$diy_error["post"]["binfile"] = $binfile;
     $diy_error["post"]["device"] = $device;
     $post["binfile"] = $binfile;                        //organisation                                  oauth_devices   
     $post["device"] = $device;                        //organisation                                  oauth_devices   
@@ -159,12 +160,13 @@ function diy_writedevice($payload,$storage){
 		}
 		// einmai o owner
 		if($mode == "devel" && $status =="private" && $devclient_id == $client_id){
-                	$orgcopedmin="yes";
+                	$orgscopeadmin="yes";
 		}
 
+				$result["result"]["sketch1"]=  $orgscopeadmin;
 		if($orgscopeadmin == "yes" || $orgscopedevel =="yes"){
 			try {
-				$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE device = :device');
+				$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :device');
 				$stmt2->execute(array('device' => trim($device)));
 				$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 				if($row2["apiport"]){
@@ -174,13 +176,17 @@ function diy_writedevice($payload,$storage){
 					 $data1 .= '&binfile='.$binfile;
 
 					 $ch = curl_init();
-					 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/writedevice");
+					 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/writesketch");
 					 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
 					 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
-					$result = curl_exec($ch);
+					$r = curl_exec($ch);
+					$result["sketch"]=  $r;
+					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
+					$result["status"] = "200";
+					$result["result"]=  $r;
 
 				}
 			} catch (Exception $e) {
@@ -189,9 +195,6 @@ function diy_writedevice($payload,$storage){
 				$result["message"] = "[".$result["method"]."][".$result["function"]."]:".$e->getMessage();
 			}
 		}
-			$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
-			$result["status"] = "200";
-			$result["result"]=  $devices;
 	    } catch (Exception $e) {
 		$diy_error["db"] = $e->getCode();
 		$result["status"] = $e->getCode();
