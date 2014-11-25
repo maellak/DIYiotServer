@@ -97,6 +97,8 @@ $db->exec('INSERT INTO oauth_scopes (scope, is_default) VALUES ("dpub", "0")');	
 $db->exec('INSERT INTO oauth_scopes (scope, is_default) VALUES ("devel", "0")');	// o user poui echei afto to scope mporei na kanei mdevel ola ta devs olos ton orgs kai users
 $db->exec('INSERT INTO oauth_scopes (scope, is_default) VALUES ("admin", "0")');	// o user poui echei afto to scope mporei na kanei admin ola ta devs olos ton orgs kai users
 // ***********************************************************scopes ************************************
+$db->exec('INSERT INTO oauth_diyexec (exec, diyexec, desc) VALUES ("datastart", "/etc/init.d/diyiotsocat start","Start the sensor socket server")');    //  start data
+
 
 $db->exec('PRAGMA encoding="UTF-8";');
 

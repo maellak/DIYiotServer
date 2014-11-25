@@ -9,21 +9,21 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 *   apiVersion="0.1",
 *   swaggerVersion="2.0",
 *   basePath="https://arduino.os.cs.teiath.gr/api",
-*   resourcePath="/writedevice",
-*   description="Write sketch to device",
+*   resourcePath="/diyexec",
+*   description="Gateway for command exec in devices",
 *   produces="['application/json']"
 * )
 */
 
 /**
  * @SWG\Api(
- *   path="/writedevice",
+ *   path="/diyexec",
  *   @SWG\Operation(
  *     method="POST",
- *     summary="Write sketch to device",
+ *     summary="Gateway for command exec in devices",
  *     notes="epistrefei success or error",
- *     type="writedevice",
- *     nickname="write_device",
+ *     type="diyexec",
+ *     nickname="diy_exec",
  *     @SWG\Parameter(
  *       name="access_token",
  *       description="access_token",
@@ -32,17 +32,17 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *       paramType="query"
  *     ),
  *     @SWG\Parameter(
- *       name="binfile",
- *       description="bin file",
+ *       name="diyexec",
+ *       description="p.x. datastart<br> datastop<br> for more information see list-diyexec",
  *       required=true,
- *       type="file",
+ *       type="text",
  *       paramType="query"
  *     ),
  *     @SWG\Parameter(
  *       name="device",
- *       description="to device gia to opoio proorisete to bin file",
+ *       description="to device gia to opoio proorisete to exec",
  *       required=true,
- *       type="file",
+ *       type="text",
  *       paramType="query"
  *     ),
  *     @SWG\ResponseMessage(code=200, message="Επιτυχία", responseModel="Success"),
@@ -55,7 +55,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  /**
  *
  * @SWG\Model(
- *              id="writedevice",
+ *              id="diyexec",
  *                  @SWG\Property(name="error",type="text",description="error")
  * )
  *                  @SWG\Property(name="status",type="integer",description="status code")

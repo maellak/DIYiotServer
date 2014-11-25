@@ -176,6 +176,20 @@ EOD;
 $db->exec($oauth_ports);
 
 // ******************************************** info ************************************
+// pinakas gia entoles pou mporoun na trexoun messo to dev gateway
+// exec = lektiko pou erchete ston poro
+// diyiot = i entoli pou tha trexei sto device
+// ******************************************** info ************************************
+$oauth_ports = <<<EOD
+        CREATE TABLE oauth_diyexec (
+                exec VARCHAR(80) NOT NULL,
+                diyexec VARCHAR(200),
+                desc TEXT,
+                PRIMARY KEY (exec)
+        );
+EOD;
+
+// ******************************************** info ************************************
 // pinakas gia plirofories sxetika me to device
 // perigrafi
 // se pion aniki
