@@ -9,16 +9,16 @@
             "operations": [
                 {
                     "method": "GET",
-                    "summary": "List user devices",
-                    "nickname": "find_catalog",
-                    "type": "pathModel",
+                    "summary": "Get list of devices (pou o user echei ta schetika dikaiomata)",
+                    "nickname": "get_device",
+                    "type": "devices",
                     "parameters": [
                         {
                             "paramType": "query",
-                            "name": "path",
+                            "name": "access_token",
                             "type": "text",
-                            "required": false,
-                            "description": "\u03a0\u03bb\u03b7\u03ba\u03c4\u03c1\u03bf\u03bb\u03bf\u03b3\u03b7\u03c3\u03c4\u03b5 \u03c4\u03bf system path"
+                            "required": true,
+                            "description": "access_token"
                         }
                     ],
                     "responseMessages": [
@@ -33,20 +33,41 @@
                             "responseModel": "Failure"
                         }
                     ],
-                    "notes": "\u0395\u03c0\u03b9\u03c3\u03c4\u03c1\u03ad\u03c6\u03b5\u03b9 user devices"
+                    "notes": "epistrefei ta devices pou o user echei ta schetika dikaiomata"
                 }
             ]
         }
     ],
     "models": {
-        "pathModel": {
-            "id": "pathModel",
-            "required": [
-                "path"
-            ],
+        "devices": {
+            "id": "devices",
             "properties": {
-                "path": {
-                    "description": "\u03a4\u03bf path",
+                "error": {
+                    "description": "error",
+                    "$ref": "text"
+                },
+                "status": {
+                    "description": "status of device private/org/public",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "status message",
+                    "type": "string"
+                },
+                "org": {
+                    "description": "organisation pou aniki to device",
+                    "type": "string"
+                },
+                "device": {
+                    "description": "device name",
+                    "type": "string"
+                },
+                "device_desc": {
+                    "description": "device desc",
+                    "type": "string"
+                },
+                "mode": {
+                    "description": "mode of device devel/production",
                     "type": "string"
                 }
             }

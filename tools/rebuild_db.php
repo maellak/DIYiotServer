@@ -64,6 +64,8 @@ $oauth_clients = <<<EOD
 		apihost		VARCHAR(2000),
 		apiport		INT UNSIGNED,
 		dataport	INT UNSIGNED,
+		tty 		VARCHAR(80),
+		baud 		VARCHAR(80),
 		public_key 	VARCHAR(2000),
 		PRIMARY KEY (client_id)
 	);
@@ -82,7 +84,7 @@ $oauth_users = <<<EOD
 		last_name 	VARCHAR(80),
 		email 		VARCHAR(2000),
 		email_verified 	BOOLEAN,
-		email_ver_code 	VARCHAR(2000),
+        email_ver_code	VARCHAR(2000),
 		PRIMARY KEY (user_id)
 	);
 EOD;
@@ -175,10 +177,26 @@ EOD;
 $db->exec($oauth_ports);
 
 // ******************************************** info ************************************
+// pinakas gia entoles pou mporoun na trexoun messo to dev gateway
+// exec = lektiko pou erchete ston poro
+// diyiot = i entoli pou tha trexei sto device
+// ******************************************** info ************************************
+$oauth_ports = <<<EOD
+        CREATE TABLE oauth_diyexec (
+                exec VARCHAR(80) NOT NULL,
+                diyexec VARCHAR(200),
+                desc TEXT,
+                PRIMARY KEY (exec)
+        );
+EOD;
+
+// ******************************************** info ************************************
 // pinakas gia plirofories sxetika me to device
 // perigrafi
 // se pion aniki
 // se pio arganisation
+// ti status echei    private   org  public
+// ti mode echei    devel i production
 // public_key ginete kata tin egktastassi tou dev
 // chrissimoiite gia ssh open ports
 // ****************************** more info *****************************************
@@ -192,12 +210,26 @@ $oauth_devices = <<<EOD
 	 	device_desc TEXT NOT NULL,
 	 	organisation TEXT NOT NULL,
 	 	client_id VARCHAR(80) NOT NULL,
+		status VARCHAR(10) NOT NULL,
+		mode VARCHAR(10) NOT NULL,
+	 	private_key VARCHAR(2000),
 	 	public_key VARCHAR(2000),
 	 	public_key_active VARCHAR(10),
 	 	PRIMARY KEY (device)
  	);
 EOD;
 $db->exec($oauth_devices);
+
+//$oauth_user_devices = <<<EOD
+// 	CREATE TABLE oauth_user_devices (
+//	 	id INTEGER PRIMARY KEY AUTOINCREMENT,
+//	 	device VARCHAR(80) NOT NULL,
+//	 	device_desc TEXT NOT NULL,
+//	 	organisation TEXT NOT NULL,
+//	 	client_id VARCHAR(80) NOT NULL
+// 	);
+//EOD;
+//$db->exec($oauth_user_devices);
 
 // ******************************************** info ************************************
 // pinakas gia plirofories sxetika me to session ston wss
@@ -243,6 +275,9 @@ $error_clients = <<<EOD
  	);
 EOD;
 $db->exec($error_clients);
+// *********************************************************** clients ************************************
+
 $db->exec('PRAGMA encoding="UTF-8";');
 
 chmod($dbfile, 0777);
+

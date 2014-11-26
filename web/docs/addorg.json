@@ -1,0 +1,85 @@
+{
+    "basePath": "https://arduino.os.cs.teiath.gr/api",
+    "swaggerVersion": "2.0",
+    "apiVersion": "0.1",
+    "resourcePath": "/addorg",
+    "apis": [
+        {
+            "path": "/addorg",
+            "operations": [
+                {
+                    "method": "POST",
+                    "summary": "Add organisation",
+                    "nickname": "add_org",
+                    "type": "addorg",
+                    "parameters": [
+                        {
+                            "paramType": "query",
+                            "name": "access_token",
+                            "type": "text",
+                            "required": true,
+                            "description": "access_token"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "org",
+                            "type": "text",
+                            "required": true,
+                            "description": "organisation"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "org_desc",
+                            "type": "text",
+                            "required": true,
+                            "description": "org description"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "\u0395\u03c0\u03b9\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Success"
+                        },
+                        {
+                            "code": 500,
+                            "message": "\u0391\u03c0\u03bf\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Failure"
+                        }
+                    ],
+                    "notes": "Create organisation kai epistrefei tis schetikes plirofories (mono se ena organisation mporeis na valeis devices)"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "addorg": {
+            "id": "addorg",
+            "properties": {
+                "error": {
+                    "description": "error",
+                    "$ref": "text"
+                },
+                "status": {
+                    "description": "status code",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "status message",
+                    "type": "string"
+                },
+                "org": {
+                    "description": "organisation gia na valei o christis devices",
+                    "type": "string"
+                },
+                "org_desc": {
+                    "description": "org desc",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ]
+}

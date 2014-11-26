@@ -1,7 +1,5 @@
 <?php
 
-
-
 include("myhost.php");
 
 /** show all errors! */
@@ -13,10 +11,10 @@ error_reporting(E_ALL);
  curl_setopt ($ch, CURLOPT_URL,"$host/api/token");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
- curl_setopt ($ch, CURLOPT_USERPWD, $username.":".$password);
+ curl_setopt ($ch, CURLOPT_USERPWD, "$username:$password");
  curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
  curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
- curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);                                                                  
+ curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);
  curl_setopt ($ch, CURLOPT_POST, 1);
  $curlResponse = curl_exec ($ch);
  curl_close($ch);
