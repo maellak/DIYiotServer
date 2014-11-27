@@ -178,7 +178,7 @@ function diy_diyexec($payload,$storage){
 						$diyexec = trim($row3["diyexec"]);
 						$diyexecurl = base64_encode($diyexec);
 						 $data1 = 'exec='.$diyexecurl;
-						$result["result1"]=  $diyexec;
+						//$result["result1"]=  $diyexec;
 
 						 $ch = curl_init();
 						 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/diyexec");
@@ -188,6 +188,7 @@ function diy_diyexec($payload,$storage){
 						 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 						 curl_setopt ($ch, CURLOPT_POST, 1);
 						$r = curl_exec($ch);
+var_dump($r);
 						$result["DEV"]=  $r;
 					}
 
