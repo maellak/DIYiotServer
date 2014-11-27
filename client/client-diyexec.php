@@ -2,6 +2,12 @@
 
 include("myhost.php");
 
+$par  =  "e:";
+$par  .=  "d:";
+$options = getopt($par);
+$exec = trim($options["e"]);
+$device = trim($options["d"]);
+echo "$exec $device";
 /** show all errors! */
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -22,15 +28,16 @@ echo $data."\n";
  $curlResponse = json_decode($curlResponse, TRUE);
 echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
+/*
  $file_path = realpath("firmware.hex");
 
 
  $data2 = file_get_contents($file_path);
  $data3 = base64_encode($data2);
-
+*/
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
- $data1 .= '&device=testdev2';
- $data1 .= '&exec=datastart';
+ $data1 .= '&device='.$device;
+ $data1 .= '&exec='.$exec;
 
  $ch = curl_init();
  curl_setopt ($ch, CURLOPT_URL,"$host/api/diyexec");
