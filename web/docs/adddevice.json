@@ -1,0 +1,107 @@
+{
+    "basePath": "https://arduino.os.cs.teiath.gr/api",
+    "swaggerVersion": "2.0",
+    "apiVersion": "0.1",
+    "resourcePath": "/adddevice",
+    "apis": [
+        {
+            "path": "/adddevice",
+            "operations": [
+                {
+                    "method": "POST",
+                    "summary": "Add device in a organisation",
+                    "nickname": "add_device",
+                    "type": "adddevice",
+                    "parameters": [
+                        {
+                            "paramType": "query",
+                            "name": "access_token",
+                            "type": "text",
+                            "required": true,
+                            "description": "access_token"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "org",
+                            "type": "text",
+                            "required": true,
+                            "description": "organisation gia to device"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "device",
+                            "type": "text",
+                            "required": true,
+                            "description": "device name (alphanumeric)"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "device_desc",
+                            "type": "text",
+                            "required": true,
+                            "description": "description "
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "password",
+                            "type": "text",
+                            "required": true,
+                            "description": "password for the devices"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "\u0395\u03c0\u03b9\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Success"
+                        },
+                        {
+                            "code": 500,
+                            "message": "\u0391\u03c0\u03bf\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Failure"
+                        }
+                    ],
+                    "notes": "Create device in organisation kai epistrefei tis schetikes plirofories"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "adddevice": {
+            "id": "adddevice",
+            "properties": {
+                "error": {
+                    "description": "error",
+                    "$ref": "text"
+                },
+                "status": {
+                    "description": "status of device private/org/public",
+                    "type": "string"
+                },
+                "message": {
+                    "description": "status message",
+                    "type": "string"
+                },
+                "org": {
+                    "description": "organisation pou aniki to device",
+                    "type": "string"
+                },
+                "device": {
+                    "description": "device name",
+                    "type": "string"
+                },
+                "device_desc": {
+                    "description": "device desc",
+                    "type": "string"
+                },
+                "mode": {
+                    "description": "mode of device devel/production",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ]
+}

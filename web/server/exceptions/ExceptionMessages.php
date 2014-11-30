@@ -26,5 +26,8 @@ class ExceptionMessages
         const UserNotFound = 'Ο χρήστης δεν βρέθηκε';
         const ScopeNotFound = 'Το scope δεν βρέθηκε';
         const DeviceExist = 'Το Device υπάρχει';
+        const OrgExist = 'Το Organisation υπάρχει';
+        const OrgNotExist = 'Το Organisation δεν υπάρχει';
+        const OrgOwner = 'Organisation exists and your are not the Organisation owner or in the Ooragnisations admin scope';
 }
    ?>

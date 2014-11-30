@@ -1,0 +1,95 @@
+{
+    "basePath": "https://arduino.os.cs.teiath.gr/api",
+    "swaggerVersion": "2.0",
+    "apiVersion": "0.1",
+    "resourcePath": "/register",
+    "apis": [
+        {
+            "path": "/register",
+            "operations": [
+                {
+                    "method": "POST",
+                    "summary": "register",
+                    "nickname": "register",
+                    "type": "register",
+                    "parameters": [
+                        {
+                            "paramType": "query",
+                            "name": "client_id",
+                            "type": "text",
+                            "required": true,
+                            "description": "client_id alpha_numeric"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "client_secret",
+                            "type": "text",
+                            "required": true,
+                            "description": "client_secret min 6"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "firstname",
+                            "type": "text",
+                            "required": true,
+                            "description": "firstname"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "lastname",
+                            "type": "text",
+                            "required": true,
+                            "description": "lastname"
+                        },
+                        {
+                            "paramType": "query",
+                            "name": "email",
+                            "type": "text",
+                            "required": true,
+                            "description": "email"
+                        }
+                    ],
+                    "responseMessages": [
+                        {
+                            "code": 200,
+                            "message": "\u0395\u03c0\u03b9\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Success"
+                        },
+                        {
+                            "code": 500,
+                            "message": "\u0391\u03c0\u03bf\u03c4\u03c5\u03c7\u03af\u03b1",
+                            "responseModel": "Failure"
+                        }
+                    ],
+                    "notes": "Create username for the diyiot api"
+                }
+            ]
+        }
+    ],
+    "models": {
+        "register": {
+            "id": "register",
+            "properties": {
+                "error": {
+                    "description": "error",
+                    "$ref": "text"
+                },
+                "status": {
+                    "description": "status code",
+                    "type": "integer"
+                },
+                "message": {
+                    "description": "status message",
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "your user_id (prepei na kaneis click sto e-mail pou tha pareis)",
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "produces": [
+        "application/json"
+    ]
+}

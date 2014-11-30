@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: text/html; charset=utf-8");
+
 //api/get/diy_getinfoconfig.php
 // get info for client (device) 
 // the device request config info for device settings not the owner 
@@ -53,8 +54,17 @@ function diy_getinfoconfig($payload,$storage){
                         $devices["devinfo"][$nr]["apihost"]= $row["apihost"];
                         $devices["devinfo"][$nr]["apiport"]= $row["apiport"];
                         $devices["devinfo"][$nr]["dataport"]= $row["dataport"];
+                        $devices["devinfo"][$nr]["tty"]= $row["tty"];
+                        $devices["devinfo"][$nr]["baud"]= $row["baud"];
                         $nr++;
                 }
+     	$stmt1 = $storage->prepare('SELECT * FROM oauth_devices where device = :client_id');
+        $stmt1->execute(array('client_id' => $client_id));
+        $row1 = $stmt1->fetch(PDO::FETCH_ASSOC);
+        if($row1["private_key"]){
+        	$devices["devinfo"]["key"]= $row1["private_key"];
+	}
+
 //result_messages===============================================================      
         $result["result"]=  $devices;
         $result["status"] = "200";
