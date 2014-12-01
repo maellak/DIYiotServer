@@ -195,7 +195,7 @@ function diy_compile($payload,$storage){
 		}
 
 				$result["result"]["sketch1"]=  $orgscopeadmin;
-		if(true || $orgscopeadmin == "yes" || $orgscopedevel =="yes"){
+		if($orgscopeadmin == "yes" || $orgscopedevel =="yes"){
 			try {
 				$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :device');
 				$stmt2->execute(array('device' => trim($device)));
