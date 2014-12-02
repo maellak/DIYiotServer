@@ -33,9 +33,9 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *     ),
  *     @SWG\Parameter(
  *       name="srcfile",
- *       description="bin file",
+ *       description="src file",
  *       required=true,
- *       type="file",
+ *       type="text",
  *       paramType="query"
  *     ),
  *     @SWG\Parameter(
@@ -47,7 +47,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *     ),
  *     @SWG\Parameter(
  *       name="comp",
- *       description="compiler",
+ *       description="compiler    avrgcc, ino",
  *       required=true,
  *       type="text",
  *       paramType="query"
@@ -137,13 +137,13 @@ function diy_compile($payload,$storage){
         $gump->validation_rules(array(
                 'device'    => 'required|alpha_numeric',
                 'filename'    => 'required|alpha_numeric',
-                'comp'    => 'required|alpha_numeric'
+                'comp'    => 'required|alpha_numeric',
                 'writedevice'    => 'required|alpha_numeric'
         ));
         $gump->filter_rules(array(
                 'device'    => 'trim|sanitize_string',
                 'filename'    => 'trim|sanitize_string',
-                'comp'    => 'trim|sanitize_string'
+                'comp'    => 'trim|sanitize_string',
                 'writedevice'    => 'trim|sanitize_string'
         ));
         $validated = $gump->run($post);
@@ -203,37 +203,25 @@ function diy_compile($payload,$storage){
 				if($row2["apiport"]){
 
 					// *************************************** compiler *********************************
-					// Dimo
-					// edo se afto to simio echoun ginei ola ta ckeck pou chriasonte
-					// stin metavliti 
 					// srcfile echeis se base64 ton kodika
 					// compiler echeis ton compiler pou thelei o user   mechri stigmis echoume   gcc, ino
 					// filename to filename pou edosse o user
 
-					// to senario 
-					// stelneis to src ston poro
-					// 	o poros einai enas neos server (pare enan apo to snf)
-					// 	echei pano to slim  tou   DIYiotClient   trechei diladi  ton php server kai ochi apache
-					//	vaseis pano to arduino IDE, avrgcc, ino
-					// aftos o server anigi
-					// reverse tunneling ston arduino.os.cs.teiath.gr    stin porta 9998
-					// ssh -R 9998:127.0.0.1:9998 -i /root/id_rsa -p9999 compiler@arduino.os.cs.teiath.gr
-
-					// kai dimiourgeis ton poro compilesketch 
+					// o poros compilesketch 
 					// afou kanei compile
 					// epistrefei 
 					// error   ta lathi  h noerrors
 					// binfile    to hex file
-                			$srcfilebase64encode = base64_encode($srcfile);
+                    $srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
 					$compilerserver =  diyConfig::read("compiler.host");
 					$compilerserver .=  ":".diyConfig::read("compiler.port");
-					 $data1 = 'file='.$filename;
-					 $data1 = 'compiler='.$comp;
+					 $data1 = 'filename='.$filename;
+					 $data1 .= '&compiler='.$comp;
 					 $data1 .= '&srcfile='.$srcfilebase64encode;
 
 
 					 $ch = curl_init();
-					 curl_setopt ($ch, CURLOPT_URL,"$compilerserver/api/compileisketch");
+					 curl_setopt ($ch, CURLOPT_URL,"$compilerserver/api/compilesketch");
 					 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
 					 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -243,31 +231,24 @@ function diy_compile($payload,$storage){
 					$result["compiler"]=  $r;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
+                    
+                    $r = json_decode($r, true);
+                    if(!$r) { echo 'Error: '.$r; die(); }
+                    if($r['status'] != 200) {
+                        $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
+                        $result["status"] = "500";
+                        return $result;
+                    }
 					
-                			$srcfilebase64encode = base64_encode($srcfile);
+                    $srcfilebase64encode = base64_encode($srcfile);
 					$apiport = trim($row2["apiport"]);
-					 $data1 = 'file='.$filename;
-					 $data1 .= '&srcfile='.$srcfilebase64encode;
-	
-					// edo stelneis ta lathoi ston user
-					// h
-					// ean einai ok  
-					// kai i metavliti 
-					// writedevice = "yes"
-					// trecheis ta parakato
-
 
 
 					// *************************************** compiler *********************************
 
-					//Dimo
-					// edo einai o poros opos pesi afti tin stigmi me etoimo to hex
-					// ara afou kaneis ta paeapano 
-					// stelneis edo to hex file
-					// binfile to hex file
-					// file base64
-					if($einaitocompileok == "yes" && $writedevice == "yes"){
+					if($r['status'] == 200 && $writedevice == "yes"){
 						$apiport = trim($row2["apiport"]);
+                        $binfile = $r['hex'];
 						$data1 = 'file=base64';
 						$data1 .= '&binfile='.$binfile;
 
