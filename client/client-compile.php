@@ -62,7 +62,7 @@ $access_token = $curlResponse['access_token'];
 */
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
  $data1 .= '&device='.$device;
- $data1 .= '&srcfile='.$srcfile;
+ $data1 .= '&srcfile='.file_get_contents($srcfile);
  $data1 .= '&filename='.$filename;
  $data1 .= '&comp='.$comp;
  $data1 .= '&writedevice='.$writedevice;
