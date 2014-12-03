@@ -5,6 +5,10 @@
 $_dbfile = '../../db/your_dbfile';
 
 
+//compiler
+$_comphost="127.0.0.1";
+$_compport="9998";
+
 //ssh
 $_sshhost="ssh server";
 $_sshport="port for ssh server";
@@ -44,6 +48,10 @@ class diyConfig
  
 //debug
 diyConfig::write('debug', 1); // 1 = on 0 = off
+
+//compiler
+diyConfig::write('compiler.host', $_comphost);
+diyConfig::write('compiler.port', $_compport);
 
 //api
 diyConfig::write('api.host', $_apihost);
