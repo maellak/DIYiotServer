@@ -62,7 +62,8 @@ Optional
 
 Supervisor - A Process Control System (http://supervisord.org)
 
-For more information see [swagger-ui](web/swagger-ui/README.md) and [swagger-php](swagger/swagger-php/readme.md).
+API Documentation
+See [swagger-ui](web/swagger-ui/README.md) and [swagger-php](swagger/swagger-php/readme.md).
 
 ### Download
 
