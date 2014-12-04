@@ -28,7 +28,6 @@ DIYiotServer provides:
 ### Required dependencies
 
 * Apache - The Apache HTTP Server ("httpd") (http://httpd.apache.org)  
-	  *Alternative*
 	  - you can use lighttpd or nginx but is not tested yet
 
 * PHP with PDO (http://php.net)  
