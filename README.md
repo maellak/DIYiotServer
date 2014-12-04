@@ -39,7 +39,9 @@ PHP with PDO (http://php.net)
 	    you use the same functions to issue queries and fetch data.
 
 sqlite3 (http://www.sqlite.org)
+
 	SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.
+
 	Alternative
 	in fact that this project use PDO you can also use any of this databases systems See http://php.net/manual/en/pdo.drivers.php
 
@@ -52,6 +54,7 @@ HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer (http://www.hapr
 ZeroMQ - Carries messages across inproc, IPC, TCP, TPIC, multicast (http://zeromq.org)
 
 Autobahn|JS - provides an open-source implementation of The Web Application Messaging Protocol (WAMP) (http://autobahn.ws/js)
+
 	Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient. See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html
 
 Optional
