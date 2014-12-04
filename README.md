@@ -55,9 +55,11 @@ ZeroMQ - Carries messages across inproc, IPC, TCP, TPIC, multicast (http://zerom
 
 Autobahn|JS - provides an open-source implementation of The Web Application Messaging Protocol (WAMP) (http://autobahn.ws/js)
 
-	Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient. See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html
+	Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient. 
+	See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html
 
 Optional
+
 Supervisor - A Process Control System (http://supervisord.org)
 
 For more information see [swagger-ui](web/swagger-ui/README.md) and [swagger-php](swagger/swagger-php/readme.md).
