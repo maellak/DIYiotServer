@@ -33,14 +33,11 @@ DIYiotServer provides:
 * PHP with PDO (http://php.net)  
 	PHP is a popular general-purpose scripting language that is especially suited to web development.  
 	PDO The PHP Data Objects extension defines a lightweight, consistent interface for accessing databases in PHP.  
-	    PDO provides a data-access abstraction layer, which means that, regardless of which database you're using,  
-	    you use the same functions to issue queries and fetch data.  
+	    PDO provides a data-access abstraction layer, which means that, regardless of which database you're using, you use the same functions to issue queries and fetch data.  
 
-* sqlite3 (http://www.sqlite.org)
-
-	SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.
-
-	Alternative
+* sqlite3 (http://www.sqlite.org)  
+	SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.  
+	Alternative  
 	in fact that this project use PDO you can also use any of this databases systems See http://php.net/manual/en/pdo.drivers.php
 
 * Ratchet - WebSockets for PHP (http://socketo.me)
@@ -52,15 +49,14 @@ DIYiotServer provides:
 * ZeroMQ - Carries messages across inproc, IPC, TCP, TPIC, multicast (http://zeromq.org)
 
 * Autobahn|JS - provides an open-source implementation of The Web Application Messaging Protocol (WAMP) (http://autobahn.ws/js)
-
-	Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient. 
-	See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html
+	Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient.   
+	See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html  
 
 Optional
 
 * Supervisor - A Process Control System (http://supervisord.org)
 
-* API Documentation
+* API Documentation  
 See [swagger-ui](web/swagger-ui/README.md) and [swagger-php](swagger/swagger-php/readme.md).
 
 ### Download
