@@ -28,7 +28,8 @@ DIYiotServer provides:
 ### Required dependencies
 
 * Apache - The Apache HTTP Server ("httpd") (http://httpd.apache.org)  
-	- Alternative you can use lighttpd or nginx but is not tested yet
+	  **Alternative** 
+	  - you can use lighttpd or nginx but is not tested yet
 
 * PHP with PDO (http://php.net)  
 	- PHP is a popular general-purpose scripting language that is especially suited to web development.  
@@ -37,7 +38,7 @@ DIYiotServer provides:
 
 * sqlite3 (http://www.sqlite.org)  
 	- SQLite is a software library that implements a self-contained, serverless, zero-configuration, transactional SQL database engine.  
-	 Alternative  
+	 ***Alternative***  
 	- In fact that this project use PDO you can also use any of this databases systems See http://php.net/manual/en/pdo.drivers.php
 
 * Ratchet - WebSockets for PHP (http://socketo.me)
@@ -52,7 +53,7 @@ DIYiotServer provides:
 	- Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient.   
 	See https://github.com/diyiot-tools/DIYiotWebClient/blob/master/example-websocket.html  
 
-Optional
+**Optional**
 
 * Supervisor - A Process Control System (http://supervisord.org)
 
