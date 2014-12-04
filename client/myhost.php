@@ -1,8 +1,8 @@
 <?php
 
-$host="url";
-$username="username";
-$password="password";
+$host="https://arduino.os.cs.teiath.gr";
+$username="dim";
+$password="arduinoase46ef";
 
 // ***GIT*** 
 // ***GitGit*** 
