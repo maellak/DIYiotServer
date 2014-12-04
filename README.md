@@ -44,9 +44,9 @@ DIYiotServer provides:
 
 * React - Event-driven, non-blocking I/O with PHP (http://reactphp.org/)
 
-* HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer (http://www.haproxy.org)
-
 * ZeroMQ - Carries messages across inproc, IPC, TCP, TPIC, multicast (http://zeromq.org)
+
+* HAProxy - The Reliable, High Performance TCP/HTTP Load Balancer (http://www.haproxy.org)
 
 * Autobahn|JS - provides an open-source implementation of The Web Application Messaging Protocol (WAMP) (http://autobahn.ws/js)
 	- Autobahn is used in https://github.com/diyiot-tools/DIYiotWebClient.   
