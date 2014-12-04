@@ -28,12 +28,17 @@ DIYiotServer provides:
 ### Required dependencies
 
 Apache - The Apache HTTP Server ("httpd") (http://httpd.apache.org) 
+
 	Alternative you can use lighttpd or nginx but is not tested yet
 
 PHP with PDO (http://php.net)
+
 	PHP is a popular general-purpose scripting language that is especially suited to web development.
+
 	PDO The PHP Data Objects extension defines a lightweight, consistent interface for accessing databases in PHP.
+
 	    PDO provides a data-access abstraction layer, which means that, regardless of which database you're using, 
+
 	    you use the same functions to issue queries and fetch data.
 
 sqlite3 (http://www.sqlite.org)
