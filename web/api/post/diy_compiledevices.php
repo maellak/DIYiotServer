@@ -9,21 +9,21 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 *   apiVersion="0.1",
 *   swaggerVersion="2.0",
 *   basePath="https://arduino.os.cs.teiath.gr/api",
-*   resourcePath="/diyexec",
-*   description="Gateway for command exec in devices",
+*   resourcePath="/compile",
+*   description="Compile Write sketch to device",
 *   produces="['application/json']"
 * )
 */
 
 /**
  * @SWG\Api(
- *   path="/diyexec",
+ *   path="/compile",
  *   @SWG\Operation(
  *     method="POST",
- *     summary="Gateway for command exec in devices",
+ *     summary="Compile and Write sketch to device",
  *     notes="epistrefei success or error",
- *     type="diyexec",
- *     nickname="diy_exec",
+ *     type="compile",
+ *     nickname="compile_device",
  *     @SWG\Parameter(
  *       name="access_token",
  *       description="access_token",
@@ -32,15 +32,36 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *       paramType="query"
  *     ),
  *     @SWG\Parameter(
- *       name="diyexec",
- *       description="p.x. datastart<br> datastop<br> for more information see list-diyexec",
+ *       name="srcfile",
+ *       description="src file",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="filename",
+ *       description="filename",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="comp",
+ *       description="compiler    avrgcc, ino",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="writedevice",
+ *       description="yes/no",
  *       required=true,
  *       type="text",
  *       paramType="query"
  *     ),
  *     @SWG\Parameter(
  *       name="device",
- *       description="to device gia to opoio proorisete to exec",
+ *       description="to device gia to opoio proorisete to file",
  *       required=true,
  *       type="text",
  *       paramType="query"
@@ -55,7 +76,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  /**
  *
  * @SWG\Model(
- *              id="diyexec",
+ *              id="writedevice",
  *                  @SWG\Property(name="error",type="text",description="error")
  * )
  *                  @SWG\Property(name="status",type="integer",description="status code")
@@ -64,7 +85,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 
 
 //api/get/diy_getdevices.php
-$app->post('/diyexec', function () use ($authenticateForRole, $diy_storage)  {
+$app->post('/compile', function () use ($authenticateForRole, $diy_storage)  {
         global $app;
         $params = loadParameters();
         $server = $authenticateForRole();
@@ -80,7 +101,7 @@ $app->post('/diyexec', function () use ($authenticateForRole, $diy_storage)  {
                 //echo base64_decode($payload);
                 $params["payload"] = $payload;
                 $params["storage"] = $dbstorage;
-                $result = diy_diyexec(
+                $result = diy_compile(
                         $params["payload"],
                         $params["storage"],
                         $params["test"]
@@ -90,7 +111,7 @@ $app->post('/diyexec', function () use ($authenticateForRole, $diy_storage)  {
         }
 });
 
-function diy_diyexec($payload,$storage){
+function diy_compile($payload,$storage){
     global $app;
     $result["controller"] = __FUNCTION__;
     $result["function"] = substr($app->request()->getPathInfo(),1);
@@ -99,21 +120,31 @@ function diy_diyexec($payload,$storage){
     $result->function = substr($app->request()->getPathInfo(),1);
     $result->method = $app->request()->getMethod();
     $params = loadParameters();
+    $srcfile= OAuth2\Request::createFromGlobals()->request["srcfile"];
     $device= OAuth2\Request::createFromGlobals()->request["device"];
-    $exec= OAuth2\Request::createFromGlobals()->request["exec"];
+    $comp= OAuth2\Request::createFromGlobals()->request["comp"];
+    $filename= OAuth2\Request::createFromGlobals()->request["filename"];
+    $writedevice= OAuth2\Request::createFromGlobals()->request["writedevice"];
     $up=json_decode(base64_decode($payload));
     $client_id=$up->client_id;
     $diy_error["post"]["device"] = $device;
+    $post["srcfile"] = $srcfile;                        //organisation                                  oauth_devices   
     $post["device"] = $device;                        //organisation                                  oauth_devices   
-    $post["exec"] = $exec;                        //organisation                                  oauth_devices   
+    $post["comp"] = $comp;                        //organisation                                  oauth_devices   
+    $post["filename"] = $filename;                        //organisation                                  oauth_devices   
+    $post["writedevice"] = $writedevice;                        //organisation                                  oauth_devices   
         $gump = new GUMP();
         $gump->validation_rules(array(
                 'device'    => 'required|alpha_numeric',
-                'exec'    => 'required|alpha_numeric'
+                'filename'    => 'required|alpha_numeric',
+                'comp'    => 'required|alpha_numeric',
+                'writedevice'    => 'required|alpha_numeric'
         ));
         $gump->filter_rules(array(
                 'device'    => 'trim|sanitize_string',
-                'exec'    => 'trim|sanitize_string'
+                'filename'    => 'trim|sanitize_string',
+                'comp'    => 'trim|sanitize_string',
+                'writedevice'    => 'trim|sanitize_string'
         ));
         $validated = $gump->run($post);
         if($validated === false) {
@@ -139,7 +170,7 @@ function diy_diyexec($payload,$storage){
 
 		$orgscopeadmin="no";
 		$orgscopedevel="no";
-		if($status =="org"){
+		if($mode == "devel" && $status =="org"){
                         $userscopes = explode(' ',trim($userscope));
                         $adminscope=$org."_admin";
                         $develscope=$org."_admin";
@@ -159,38 +190,85 @@ function diy_diyexec($payload,$storage){
 			}
 		}
 		// einmai o owner
-		if($status =="private" && $devclient_id == $client_id){
+		if($mode == "devel" && $status =="private" && $devclient_id == $client_id){
                 	$orgscopeadmin="yes";
 		}
 
+				$result["result"]["sketch1"]=  $orgscopeadmin;
 		if($orgscopeadmin == "yes" || $orgscopedevel =="yes"){
 			try {
 				$stmt2 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :device');
 				$stmt2->execute(array('device' => trim($device)));
 				$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
 				if($row2["apiport"]){
-					$stmt3 = $storage->prepare('SELECT * FROM oauth_diyexec WHERE exec = :exec');
-					$stmt3->execute(array('exec' => trim($exec)));
-					$row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-					if($row3["exec"]){
 
+					// *************************************** compiler *********************************
+					// srcfile echeis se base64 ton kodika
+					// compiler echeis ton compiler pou thelei o user   mechri stigmis echoume   gcc, ino
+					// filename to filename pou edosse o user
+
+					// o poros compilesketch 
+					// afou kanei compile
+					// epistrefei 
+					// error   ta lathi  h noerrors
+					// binfile    to hex file
+                    $srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
+					$compilerserver =  diyConfig::read("compiler.host");
+					$compilerserver .=  ":".diyConfig::read("compiler.port");
+					 $data1 = 'filename='.$filename;
+					 $data1 .= '&compiler='.$comp;
+					 $data1 .= '&srcfile='.$srcfilebase64encode;
+
+
+					 $ch = curl_init();
+					 curl_setopt ($ch, CURLOPT_URL,"$compilerserver/api/compilesketch");
+					 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+					 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
+					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
+					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
+					 curl_setopt ($ch, CURLOPT_POST, 1);
+					$r = curl_exec($ch);
+					$result["compiler"]=  $r;
+					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
+					$result["status"] = "200";
+                    
+                    $r = json_decode($r, true);
+                    if(!$r) { echo 'Error: '.$r; die(); }
+                    if($r['status'] != 200) {
+                        $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
+                        $result["status"] = "500";
+                        return $result;
+                    }
+					
+                    $srcfilebase64encode = base64_encode($srcfile);
+					$apiport = trim($row2["apiport"]);
+
+
+					// *************************************** compiler *********************************
+
+					if($r['status'] == 200 && $writedevice == "yes"){
 						$apiport = trim($row2["apiport"]);
-						$diyexec = trim($row3["diyexec"]);
-						$diyexecurl = base64_encode($diyexec);
-						 $data1 = 'exec='.$diyexecurl;
-						//$result["result1"]=  $diyexec;
+                        $binfile = $r['hex'];
+						$data1 = 'file=base64';
+						$data1 .= '&binfile='.$binfile;
 
 						 $ch = curl_init();
-						 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/diyexec");
-						 curl_setopt ($ch, CURLOPT_TIMEOUT, 20);
+						 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/writesketch");
+						 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
 						 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 						 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 						 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 						 curl_setopt ($ch, CURLOPT_POST, 1);
 						$r = curl_exec($ch);
-var_dump($r);
-						$result["DEV"]=  $r;
+						$result["sketch"]=  $r;
+						$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
+						$result["status"] = "200";
+						$result["result"]=  $r;
 					}
+
+
+
+
 
 				}
 			} catch (Exception $e) {

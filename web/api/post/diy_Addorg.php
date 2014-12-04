@@ -178,6 +178,16 @@ function diy_addorg($payload,$storage){
 			$stmt3 = $storage->prepare('INSERT INTO oauth_scopes (scope, is_default) VALUES (:scope, :is_default)');
 			$stmt3->execute(array('scope' => $scope, 'is_default' => $is_default));
 
+			$stmt6 = $storage->prepare('SELECT * FROM oauth_clients WHERE client_id = :client_id');
+			$stmt6->execute(array('client_id' => trim($client_id)));
+			$row6 = $stmt6->fetch(PDO::FETCH_ASSOC);
+			if($row6){
+				$scope6 = $row6["scope"];
+				$scope6 .=" ".$org."_admin"; 
+				$scope6 .=" ".$org."_view"; 
+				$stmt5 = $storage->prepare('UPDATE oauth_clients  set scope = :scope6 where client_id = :client_id');
+				$stmt5->execute(array('scope6' => $scope6, 'client_id' => $client_id));
+			}
 
 			//result_messages===============================================================      
 			$result["result"]["result"] =  $post;

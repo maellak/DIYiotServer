@@ -1,7 +1,38 @@
+#!/usr/bin/php
 <?php
 
 include("myhost.php");
 
+$par  =  "s:";
+$par  .=  "d:";
+$par  .=  "f:";
+$par  .=  "c:";
+$par  .=  "w:";
+$options = getopt($par);
+$srcfile = trim($options["s"]);
+$device = trim($options["d"]);
+$filename = trim($options["f"]);
+$comp = trim($options["c"]);
+$writedevice = trim($options["w"]);
+
+$info = <<<EOD
+
+client-compile.php  
+
+    INFO: compile sketch for a device
+    OPTIONS:
+	-s source file
+	-d device name
+	-f filename
+	-c gcc/ino
+	-w yes/no
+
+
+EOD;
+if(!($options['s'] || $options['d'] || $options["f"] || $options["c"] || $options["w"]) ){
+	echo $info;
+	die;
+}
 /** show all errors! */
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -22,18 +53,22 @@ echo $data."\n";
  $curlResponse = json_decode($curlResponse, TRUE);
 echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
+/*
  $file_path = realpath("firmware.hex");
 
 
  $data2 = file_get_contents($file_path);
  $data3 = base64_encode($data2);
-
+*/
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
- $data1 .= '&device=dimdevice';
- $data1 .= '&binfile='.$data3;
+ $data1 .= '&device='.$device;
+ $data1 .= '&srcfile='.file_get_contents($srcfile);
+ $data1 .= '&filename='.$filename;
+ $data1 .= '&comp='.$comp;
+ $data1 .= '&writedevice='.$writedevice;
 
  $ch = curl_init();
- curl_setopt ($ch, CURLOPT_URL,"$host/api/writedevice");
+ curl_setopt ($ch, CURLOPT_URL,"$host/api/compile");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
  curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -41,9 +76,10 @@ $access_token = $curlResponse['access_token'];
  curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
  curl_setopt ($ch, CURLOPT_POST, 1);
  
-var_dump(curl_getinfo($ch));
 $result = curl_exec($ch);
 echo " --------------------------------------------\n\n";
-var_dump($result);
+//var_dump($result);
+ $r = json_decode($result, TRUE);
+var_dump($r);
 echo " --------------------------------------------\n\n";
  curl_close($ch);
