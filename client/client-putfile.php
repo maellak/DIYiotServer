@@ -29,7 +29,7 @@ $access_token = $curlResponse['access_token'];
  $data3 = base64_encode($data2);
 
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
- $data1 .= '&device=testdev2';
+ $data1 .= '&device=dimdevice';
  $data1 .= '&binfile='.$data3;
 
  $ch = curl_init();

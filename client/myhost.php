@@ -1,8 +1,8 @@
 <?php
 
-$host="url";
-$username="username";
-$password="password";
+$host="https://";
+$username="";
+$password="";
 
 // ***GIT*** 
 // ***GitGit*** 

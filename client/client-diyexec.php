@@ -18,10 +18,10 @@ echo $data."\n";
  curl_setopt ($ch, CURLOPT_URL,"$host/api/token");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
- curl_setopt ($ch, CURLOPT_USERPWD, "$username:$password"); 
+ curl_setopt ($ch, CURLOPT_USERPWD, "$username:$password");
  curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
  curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
- curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);                                                                  
+ curl_setopt ($ch, CURLOPT_POSTFIELDS, $data);
  curl_setopt ($ch, CURLOPT_POST, 1);
  $curlResponse = curl_exec ($ch);
  curl_close($ch);
@@ -44,12 +44,12 @@ $access_token = $curlResponse['access_token'];
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
  curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
  curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
- curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);                                                                                                              
+ curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
  curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
  curl_setopt ($ch, CURLOPT_POST, 1);
- 
+
 $result = curl_exec($ch);
 echo " --------------------------------------------\n\n";
 var_dump($result);
 echo " --------------------------------------------\n\n";
- curl_close($ch);
+curl_close($ch);
