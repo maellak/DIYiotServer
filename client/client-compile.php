@@ -71,7 +71,7 @@ if ($handle = opendir($dir)) {
 
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
  $data1 .= '&device='.$device;
- $data1 .= '&srcfile='.base64_encode(file_get_contents($srcfile));
+ $data1 .= '&srcfile='.urlencode(base64_encode(urlencode(file_get_contents($srcfile))));
  $data1 .= '&srclib='.$srclibarray;
  $data1 .= '&filename='.$filename;
  $data1 .= '&comp='.$comp;
