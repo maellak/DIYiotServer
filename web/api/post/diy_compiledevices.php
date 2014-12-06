@@ -243,13 +243,13 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
-					$r = curl_exec($ch);
+					$or = curl_exec($ch);
 					$result["compiler"]=  $r;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
                     
-                    $r = json_decode($r, true);
-                    if(!$r) { echo 'Error: '.$r; die(); }
+                    $r = json_decode($or, true);
+                    if(!$r) { echo 'Error: '.$or; die(); }
                     if($r['status'] != 200) {
                         $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
                         $result["status"] = "500";
