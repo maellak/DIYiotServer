@@ -2,6 +2,7 @@
 <?php
 
 include("myhost.php");
+include("rdir.php");
 
 $par  =  "s:";
 $par  .=  "l:";
@@ -57,7 +58,9 @@ echo $data."\n";
 echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
 $dir = realpath($srclib);
+$getcwd = getcwd($dir);
 
+/*
 if ($handle = opendir($dir)) {
     $c=0;
     while (false !== ($entry = readdir($handle))) {
@@ -68,7 +71,10 @@ if ($handle = opendir($dir)) {
     }
     closedir($handle);
 }
-
+*/
+chdir($dir);
+$srclibarray = read_all_files();
+chdir($getcwd);
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
  $data1 .= '&device='.$device;
  $data1 .= '&srcfile='.urlencode(base64_encode(urlencode(file_get_contents($srcfile))));
