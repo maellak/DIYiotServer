@@ -33,7 +33,14 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *     ),
  *     @SWG\Parameter(
  *       name="srcfile",
- *       description="src file",
+ *       description="src file base64_encode",
+ *       required=true,
+ *       type="text",
+ *       paramType="query"
+ *     ),
+ *     @SWG\Parameter(
+ *       name="srclib",
+ *       description="array with libs. base64_encode",
  *       required=true,
  *       type="text",
  *       paramType="query"
@@ -121,6 +128,7 @@ function diy_compile($payload,$storage){
     $result->method = $app->request()->getMethod();
     $params = loadParameters();
     $srcfile= OAuth2\Request::createFromGlobals()->request["srcfile"];
+    $srclib= OAuth2\Request::createFromGlobals()->request["srclib"];
     $device= OAuth2\Request::createFromGlobals()->request["device"];
     $comp= OAuth2\Request::createFromGlobals()->request["comp"];
     $filename= OAuth2\Request::createFromGlobals()->request["filename"];
@@ -212,7 +220,15 @@ function diy_compile($payload,$storage){
 					// epistrefei 
 					// error   ta lathi  h noerrors
 					// binfile    to hex file
-                    $srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
+					// sou alaxa 
+                    			//$srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
+					// se
+                    			$srcfilebase64encode = $srcfile;
+					// to stelno iodi se base64_encode
+					// Dimo
+					// edo echeis kai tin metavliti 
+					// $srclib pou legame
+					// einai se base64_encode
 					$compilerserver =  diyConfig::read("compiler.host");
 					$compilerserver .=  ":".diyConfig::read("compiler.port");
 					 $data1 = 'filename='.$filename;
@@ -227,20 +243,20 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
-					$r = curl_exec($ch);
+					$or = curl_exec($ch);
 					$result["compiler"]=  $r;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
                     
-                    $r = json_decode($r, true);
-                    if(!$r) { echo 'Error: '.$r; die(); }
+                    $r = json_decode($or, true);
+                    if(!$r) { echo 'Error: '.$or; die(); }
                     if($r['status'] != 200) {
                         $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
                         $result["status"] = "500";
                         return $result;
                     }
 					
-                    $srcfilebase64encode = base64_encode($srcfile);
+                    //$srcfilebase64encode = base64_encode($srcfile);
 					$apiport = trim($row2["apiport"]);
 
 
@@ -254,7 +270,7 @@ function diy_compile($payload,$storage){
 
 						 $ch = curl_init();
 						 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/writesketch");
-						 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
+						 curl_setopt ($ch, CURLOPT_TIMEOUT, 90);
 						 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 						 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 						 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
@@ -263,7 +279,7 @@ function diy_compile($payload,$storage){
 						$result["sketch"]=  $r;
 						$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 						$result["status"] = "200";
-						$result["result"]=  $r;
+						//$result["result"]=  $r;
 					}
 
 
