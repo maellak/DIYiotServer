@@ -4,12 +4,14 @@
 include("myhost.php");
 
 $par  =  "s:";
+$par  .=  "l:";
 $par  .=  "d:";
 $par  .=  "f:";
 $par  .=  "c:";
 $par  .=  "w:";
 $options = getopt($par);
 $srcfile = trim($options["s"]);
+$srclib = trim($options["l"]);
 $device = trim($options["d"]);
 $filename = trim($options["f"]);
 $comp = trim($options["c"]);
@@ -22,6 +24,7 @@ client-compile.php
     INFO: compile sketch for a device
     OPTIONS:
 	-s source file
+	-l directory with lib 
 	-d device name
 	-f filename
 	-c gcc/ino
@@ -29,7 +32,7 @@ client-compile.php
 
 
 EOD;
-if(!($options['s'] || $options['d'] || $options["f"] || $options["c"] || $options["w"]) ){
+if(!($options['s'] || $options['l'] || $options['d'] || $options["f"] || $options["c"] || $options["w"]) ){
 	echo $info;
 	die;
 }
@@ -53,19 +56,27 @@ echo $data."\n";
  $curlResponse = json_decode($curlResponse, TRUE);
 echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
-/*
- $file_path = realpath("firmware.hex");
+$dir = realpath($srclib);
 
+if ($handle = opendir($dir)) {
+    $c=0;
+    while (false !== ($entry = readdir($handle))) {
+        if ($entry != "." && $entry != "..") {
+		$srclibarray[$c]=base64_encode(file_get_contents($entry));
+		$c++;
+        }
+    }
+    closedir($handle);
+}
 
- $data2 = file_get_contents($file_path);
- $data3 = base64_encode($data2);
-*/
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
  $data1 .= '&device='.$device;
- $data1 .= '&srcfile='.file_get_contents($srcfile);
+ $data1 .= '&srcfile='.urlencode(base64_encode(urlencode(file_get_contents($srcfile))));
+ $data1 .= '&srclib='.$srclibarray;
  $data1 .= '&filename='.$filename;
  $data1 .= '&comp='.$comp;
  $data1 .= '&writedevice='.$writedevice;
+
 
  $ch = curl_init();
  curl_setopt ($ch, CURLOPT_URL,"$host/api/compile");
@@ -82,4 +93,5 @@ echo " --------------------------------------------\n\n";
  $r = json_decode($result, TRUE);
 var_dump($r);
 echo " --------------------------------------------\n\n";
+echo $data1;
  curl_close($ch);
