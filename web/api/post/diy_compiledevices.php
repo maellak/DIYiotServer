@@ -220,20 +220,16 @@ function diy_compile($payload,$storage){
 					// epistrefei 
 					// error   ta lathi  h noerrors
 					// binfile    to hex file
-					// sou alaxa 
-                    			//$srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
-					// se
-                    			$srcfilebase64encode = $srcfile;
-					// to stelno iodi se base64_encode
-					// Dimo
-					// edo echeis kai tin metavliti 
-					// $srclib pou legame
-					// einai se base64_encode
 					$compilerserver =  diyConfig::read("compiler.host");
 					$compilerserver .=  ":".diyConfig::read("compiler.port");
 					 $data1 = 'filename='.$filename;
 					 $data1 .= '&compiler='.$comp;
-					 $data1 .= '&srcfile='.$srcfilebase64encode;
+					 $data1 .= '&srcfile='.$srcfile;
+                    $fixedFiles = array();
+                    foreach($srclib as $curFile) {
+                        $fixedFiles[] = 'srclib[]='.$curFile;
+                    }
+                     $data1 .= '&'.implode('&', $fixedFiles);
 
 
 					 $ch = curl_init();
@@ -244,7 +240,7 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
 					$or = curl_exec($ch);
-					$result["compiler"]=  $r;
+					$result["compiler"]=  $or;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
                     
