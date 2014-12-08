@@ -67,8 +67,8 @@ chdir($getcwd);
  $data1 .= '&srcfile='.urlencode(base64_encode(urlencode(file_get_contents($srcfile))));
  if(count($srclibarray['files']) > 0) {
     $fixedFiles = array();
-    foreach($srclibarray['files'] as $curFile) {
-        $fixedFiles[] = 'srclib[]='.urlencode($curFile);
+    foreach($srclibarray['files'] as $curName => $curFile) {
+        $fixedFiles[] = 'srclib['.$curName.']='.urlencode($curFile);
     }
     $data1 .= '&'.implode('&', $fixedFiles);
  }

@@ -226,8 +226,8 @@ function diy_compile($payload,$storage){
 					 $data1 .= '&compiler='.$comp;
 					 $data1 .= '&srcfile='.$srcfile;
                     $fixedFiles = array();
-                    foreach($srclib as $curFile) {
-                        $fixedFiles[] = 'srclib[]='.$curFile;
+                    foreach($srclib as $curName => $curFile) {
+                        $fixedFiles[] = 'srclib['.$curName.']='.$curFile;
                     }
                      $data1 .= '&'.implode('&', $fixedFiles);
 
