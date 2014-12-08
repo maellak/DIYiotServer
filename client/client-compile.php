@@ -58,27 +58,20 @@ echo $data."\n";
 echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
 $dir = realpath($srclib);
-$getcwd = getcwd($dir);
-
-/*
-if ($handle = opendir($dir)) {
-    $c=0;
-    while (false !== ($entry = readdir($handle))) {
-        if ($entry != "." && $entry != "..") {
-		$srclibarray[$c]=base64_encode(file_get_contents($entry));
-		$c++;
-        }
-    }
-    closedir($handle);
-}
-*/
+$getcwd = getcwd();
 chdir($dir);
 $srclibarray = read_all_files();
 chdir($getcwd);
  $data1 = 'access_token='.$curlResponse['access_token'].'&test=test';
  $data1 .= '&device='.$device;
  $data1 .= '&srcfile='.urlencode(base64_encode(urlencode(file_get_contents($srcfile))));
- $data1 .= '&srclib='.$srclibarray;
+ if(count($srclibarray['files']) > 0) {
+    $fixedFiles = array();
+    foreach($srclibarray['files'] as $curFile) {
+        $fixedFiles[] = 'srclib[]='.urlencode($curFile);
+    }
+    $data1 .= '&'.implode('&', $fixedFiles);
+ }
  $data1 .= '&filename='.$filename;
  $data1 .= '&comp='.$comp;
  $data1 .= '&writedevice='.$writedevice;
@@ -95,7 +88,7 @@ chdir($getcwd);
  
 $result = curl_exec($ch);
 echo " --------------------------------------------\n\n";
-//var_dump($result);
+var_dump($result);
  $r = json_decode($result, TRUE);
 var_dump($r);
 echo " --------------------------------------------\n\n";
