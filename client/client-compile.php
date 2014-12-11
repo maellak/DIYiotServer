@@ -5,7 +5,7 @@ include("myhost.php");
 include("rdir.php");
 
 $par  =  "s:";
-$par  .=  "l:";
+$par  .=  "l::";
 $par  .=  "d:";
 $par  .=  "f:";
 $par  .=  "c:";
@@ -42,7 +42,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
  $data="grant_type=client_credentials&client_id=".$username."&client_secret=".$password;
-echo $data."\n";
+//echo $data."\n";
  $ch = curl_init();
  curl_setopt ($ch, CURLOPT_URL,"$host/api/token");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -55,7 +55,7 @@ echo $data."\n";
  $curlResponse = curl_exec ($ch);
  curl_close($ch);
  $curlResponse = json_decode($curlResponse, TRUE);
-echo $curlResponse['access_token']."\n";
+//echo $curlResponse['access_token']."\n";
 $access_token = $curlResponse['access_token'];
 $dir = realpath($srclib);
 $getcwd = getcwd();
@@ -76,7 +76,7 @@ chdir($getcwd);
  $data1 .= '&comp='.$comp;
  $data1 .= '&writedevice='.$writedevice;
 
-
+//echo $data1;
  $ch = curl_init();
  curl_setopt ($ch, CURLOPT_URL,"$host/api/compile");
  curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -88,9 +88,9 @@ chdir($getcwd);
  
 $result = curl_exec($ch);
 echo " --------------------------------------------\n\n";
-var_dump($result);
+//var_dump($result);
  $r = json_decode($result, TRUE);
 var_dump($r);
 echo " --------------------------------------------\n\n";
-echo $data1;
+//echo $data1;
  curl_close($ch);
