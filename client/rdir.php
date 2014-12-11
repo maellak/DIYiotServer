@@ -32,7 +32,7 @@ function read_all_files($root = '.'){
 						array_push($directories, $directory_path);
 						$files['dirs'][]  = $directory_path;
 					} elseif (is_file($file)) {
-						$files['files'][$file]  = base64_encode(file_get_contents($file));
+						$files['files'][$file]  = base64_encode(urlencode(file_get_contents($file)));
 				    	}
 				}
 				    closedir($handle);
