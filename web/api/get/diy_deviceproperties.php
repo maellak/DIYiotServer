@@ -138,14 +138,19 @@ function diy_deviceproperties($payload,$storage){
 	}else{
 
 		$deviceproperties = "no";
+		$orgscopeadmin="no";
                 $dev = $storage->prepare('SELECT * FROM oauth_devices WHERE device  = :device');
                 $dev->execute(array('device' => trim($device)));
                 $rowdev = $dev->fetch(PDO::FETCH_ASSOC);
                 if($rowdev){
 			$org=$rowdev["organisation"];
+                        $devclient_id=$rowdev["client_id"];
+                        $statust=$rowdev["status"];
+                        $modet=$rowdev["mode"];
 		}else{
 			$result["result"]["error"] =  ExceptionMessages::DeviceNotExist." , ". ExceptionCodes::DeviceNotExist;
 		}
+
 		function check($storage, $userscopes, $org, $client_id, $device){
 				//check if org name exists
 				$orgexists = "no";
@@ -203,14 +208,19 @@ function diy_deviceproperties($payload,$storage){
 				}
 			}
 
-		    $diy_error["error"]["check"] =  check($storage, $userscopes, $org, $client_id, $device);
-		    // check if user owned the devices or have admin scope in orgfrom
-		    $checkr =  check($storage, $userscopes, $org, $client_id, $device);
+			if($statust =="private" && $devclient_id == $client_id){
+				$deviceproperties="yes";
+			}
+			if( $statust =="org" || $statust =="public" ){
+				$diy_error["error"]["check"] =  check($storage, $userscopes, $org, $client_id, $device);
+				// check if user owned the devices or have admin scope in orgfrom
+				$checkr =  check($storage, $userscopes, $org, $client_id, $device);
 
-		if( $checkr["result"]["check"] == "ok"){
-    			$diy_error["error"]["org"] =  "ok";
-			$deviceproperties = "yes";
-		}
+				if( $checkr["result"]["check"] == "ok"){
+					$diy_error["error"]["org"] =  "ok";
+					$deviceproperties = "yes";
+				}
+			}
 		//if( ($orgexists == "yes" && ($orgowner == "yes" || $orgadmin == "yes")) && $orgdeviceexists == "yes"){
 		if( $deviceproperties == "yes"){
 		//}else{
