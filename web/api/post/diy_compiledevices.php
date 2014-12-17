@@ -83,7 +83,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  /**
  *
  * @SWG\Model(
- *              id="writedevice",
+ *              id="compile",
  *                  @SWG\Property(name="error",type="text",description="error")
  * )
  *                  @SWG\Property(name="status",type="integer",description="status code")
@@ -160,6 +160,9 @@ function diy_compile($payload,$storage){
                 $result["message"] = "[".$result["method"]."][".$result["function"]."]:".$gump->get_readable_errors(true);
         }else{
 	    try {
+        $sourceWriteDir = __DIR__.'/../../../data/sketches/'.$client_id.'/'.$device.'/'.$filename;
+        if(file_exists($sourceWriteDir)) { throw new \Exception('Filename '.$filename.' for user '.$client_id.' and device '.$device.' already exists'); }
+        
 		$stmt2 = $storage->prepare('SELECT * FROM oauth_devices WHERE device = :device');
 		$stmt2->execute(array('device' => trim($device)));
 		$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -240,8 +243,8 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
 					$or = curl_exec($ch);
-					if(!$or) { $or = curl_error($ch); }
-					$result["compiler"]=  $or;
+                    if(!$or) { $or = curl_error($ch); }
+					$result["compiler"] =  $or;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
                     
@@ -257,6 +260,7 @@ function diy_compile($payload,$storage){
                         $result["status"] = "500";
                         return $result;
                     }
+                    unset($result["compiler"]); // No need to transfer this to the user
 					
                     //$srcfilebase64encode = base64_encode($srcfile);
 					$apiport = trim($row2["apiport"]);
@@ -285,7 +289,15 @@ function diy_compile($payload,$storage){
 					}
 
 
-
+                    // If we are here with no exceptions then everything went well. Lets save the sketch.
+                    $ziptmp = tempnam(sys_get_temp_dir(), 'diytmpzip').'.tgz';
+                    file_put_contents($ziptmp, base64_decode($r['zip']));
+                    $p = new PharData($ziptmp);
+                    $p->decompress(); // creates /path/to/my.tar
+                    $ziptmpextracted = str_replace('.tgz', '.tar', $ziptmp);
+                    $phar = new PharData($ziptmpextracted);
+                    $writeDir = __DIR__.'/../../../data/sketches/'.$client_id.'/'.$filename;
+                    $phar->extractTo($sourceWriteDir);
 
 
 				}
