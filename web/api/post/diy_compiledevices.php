@@ -246,7 +246,12 @@ function diy_compile($payload,$storage){
 					$result["status"] = "200";
                     
                     $r = json_decode($or, true);
-                    if(!$r) { echo 'Error: '.$or; die(); }
+                    if(!$r) {
+                        $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
+                        $result["compiler"]=  $or;
+                        $result["status"] = "500";
+                        return $result;
+                    }
                     if($r['status'] != 200) {
                         $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
                         $result["status"] = "500";
