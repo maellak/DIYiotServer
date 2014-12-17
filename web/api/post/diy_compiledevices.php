@@ -240,6 +240,7 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
 					$or = curl_exec($ch);
+					if(!$or) { $or = curl_error($ch); }
 					$result["compiler"]=  $or;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
