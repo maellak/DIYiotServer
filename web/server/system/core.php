@@ -1,9 +1,7 @@
 <?php
 
-
 //dbfile
-$_dbfile = '../../db/your_dbfile';
-
+$_dbfile = '../../db/oauth.sqlite';
 
 //compiler
 $_comphost="127.0.0.1";
@@ -14,21 +12,19 @@ $_sshhost="ssh server";
 $_sshport="port for ssh server";
 
 //api
-$_apihost="https://your server";
+$_apihost="https://your_server";
 
 //ssh
-$sshhome="path to ssh dir witch contain the buplic keys"; 
+$sshhome="../../ssh";
 $sshhomekeys="file for authorized_keys";
 
 //e-mail server settings
-
-
 $fromuser="user@server.gr";
 $smtpserver="smtp.server.gr";
 $smtpport="25";
 
-// ***GIT*** 
-// ***GitGit*** 
+// ***GIT***
+// ***GitGit***
 
 class diyConfig
 {
@@ -45,7 +41,7 @@ class diyConfig
     }
 
 }
- 
+
 //debug
 diyConfig::write('debug', 1); // 1 = on 0 = off
 
@@ -67,10 +63,10 @@ diyConfig::write('db.port', '');
 diyConfig::write('db.basename', '');
 diyConfig::write('db.username', 'root');
 diyConfig::write('db.password', '');
+
 //ssh
 diyConfig::write('ssh.home', $sshhome);
 diyConfig::write('ssh.keys', $sshhomekeys);
-
 
 // e-mail server settings
 diyConfig::write('mail.fromuser', $fromuser);

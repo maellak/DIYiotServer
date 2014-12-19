@@ -1,5 +1,6 @@
 <?php
 
+chdir(__DIR__); // Change dir to where the script is located
 $dbfile = '../db/oauth.sqlite';
 
 if (file_exists($dbfile)) {
