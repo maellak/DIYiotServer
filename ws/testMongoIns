@@ -1,0 +1,20 @@
+#!/usr/bin/php
+<?php
+//connect to database and chose collection and record
+
+$m = new MongoClient();
+$db = $m->diyiot_sensorsData;
+$sensor_coll = $db->devIDfake;
+// create a unique index on timestamp
+//$sensor_coll->ensureIndex(array('timestamp' => 1));
+
+ 
+for($i = 1000; $i < 1020; $i++)
+{
+	usleep(100000);// 1/10 of second
+ 	//echo 'eimai to i:'.$i .PHP_EOL;
+	$sensor_rec = array( "value" => $i, "timestamp" => $_SERVER["REQUEST_TIME_FLOAT" );
+	$sensor_coll->insert($sensor_rec);
+
+}
+
