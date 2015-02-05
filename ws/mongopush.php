@@ -84,7 +84,7 @@ do {
 			$entryData = array(
 				'catecory' => 'ourdevice',
 				'data'   => $data,
-				'when'    => time()
+				'when'    => $_SERVER["REQUEST_TIME_FLOAT"]
 			);
 
 			//edo ta stelneis gia na egrafoun
