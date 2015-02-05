@@ -26,6 +26,8 @@ $socket->connect("tcp://127.0.0.1:5556");
 p.x. $socket1 = fsockopen("localhost", 50018);
 */
 $socket1 = fsockopen("localhost",50036 );
+$devID='devID'+'xx';
+
 if(!$socket1)return;
 stream_set_blocking($socket1, 0);
 stream_set_blocking(STDIN, 0);
@@ -82,9 +84,9 @@ do {
 									
 		if($continue === true) {
 			$entryData = array(
-				'catecory' => 'ourdevice',
 				'data'   => $data,
 				'when'    => $_SERVER["REQUEST_TIME_FLOAT"]
+				'devID' =>  $devID
 			);
 
 			//edo ta stelneis gia na egrafoun

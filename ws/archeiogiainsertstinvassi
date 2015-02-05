@@ -21,9 +21,16 @@ if(!$options['d'] ){
 }
 
 
-// edo echete ta data 
-// opos ta stilate apo to mongodb.php
-// prepei nata valete stin mongo
-echo $data;
+$dataArray = json_decode($data);
+
+$m = new MongoClient();
+$db = $m->diyiot_sensorsData;
+$sensor_coll = $db->($dataArray['devID');
+// create a unique index on timestamp
+//$sensor_coll->ensureIndex(array('timestamp' => 1));
+$sensor_rec = array( "value" => $dataArray['data'], "timestamp" => $dataArray['when']);       
+$sensor_coll->insert($sensor_rec);
+
+
 
 

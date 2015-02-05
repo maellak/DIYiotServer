@@ -32,8 +32,8 @@
 		// edo echete kanei fork opote mporeite na trexete oti thelete
 		    exec("archeiogiainsertstinvassi -d$m  2>&1", $output, $return_var);
 		    break;
-		default:
-		   echo "start";
+//		default:
+//		   echo "start";
 	       }
 
     });
