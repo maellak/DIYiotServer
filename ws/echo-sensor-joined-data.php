@@ -25,12 +25,14 @@ $socket->connect("tcp://127.0.0.1:5556");
 // kai trexte afto edo to archeio me tin katallili porta
 p.x. $socket1 = fsockopen("localhost", 50018);
 */
-$socket1 = fsockopen("localhost",50036 );
-$devID='devID'+'xx';
 
+
+$socket1 = fsockopen("localhost",50036 );
 if(!$socket1)return;
 stream_set_blocking($socket1, 0);
 stream_set_blocking(STDIN, 0);
+
+
 do {
         $read   = array( $socket1, STDIN); $write  = NULL; $except = NULL;
 
@@ -47,37 +49,29 @@ do {
                 $data = trim(fgets($socket1, 4096));
           if($data != "") {
 // edo ftiachete ta data pou erchonte apo to device
-                $length = strlen($data);
-                $pos_a = strpos($data, "@");
-                $pos_b = strpos($data, "#");
+		$length = strlen($data);
+		$pos_a = strpos($data, "@");	
+		$pos_b = strpos($data, "#");
+		
 
+		if (count(explode('@', $data)) > 2) {
+			continue ;
+		}	
+		elseif( ($pos_a === 0) && ($pos_b > 0)){
+			$data = substr($data, 1, $length-2);
+		}elseif($pos_a === 0){
+			$data_a = substr($data, $pos_a+1);
+			continue;
+		}
+		elseif( $pos_b !== false ) $data = $data_a.substr($data, 0, $pos_b);
+		else $data = $data_a.$data; 				
 
-                if (count(explode('@', $data)) > 2) {
-                        continue ;
-                }
-                elseif( ($pos_a === 0) && ($pos_b > 0)){
-                        $data = substr($data, 1, $length-2);
-                }elseif($pos_a === 0){
-                        $data_a = substr($data, $pos_a+1);
-                        continue;
-                }
-                elseif( $pos_b !== false ) $data = $data_a.substr($data, 0, $pos_b);
-                else $data = $data_a.$data;
-
-		 $entryData = array(
-                                'data'   => $data,
-                                'when'    => $_SERVER["REQUEST_TIME_FLOAT"]
-                                'devID' =>  $devID
-                        );
-
-                        //edo ta stelneis gia na egrafoun
-                        // choris kamia kathisterissi
-                        // ta archeia ta ipodechete to mongodb.php
-                        // pou einai kai o pipe server gia tin mongo
-                        $socket->send(json_encode($entryData));
-
-
-
+		$entryData = array(
+			'catecory' => 'ourdevice',
+			'data'   => $data,
+			'when'    => time()
+		);
+		echo $data.PHP_EOL;
            }
      }
 } while(true);
