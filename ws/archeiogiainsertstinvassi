@@ -1,10 +1,11 @@
 #!/usr/bin/php
 <?php
-
 $par  =  "p:";
 $par  .=  "d:";
 $options = getopt($par);
-$data = trim($options["d"]);
+//print_r( $options);
+//$data = trim($options["d"]);
+$data=($options["d"]);
 
 $info = <<<EOD
 
@@ -21,16 +22,15 @@ if(!$options['d'] ){
 }
 
 
-$dataArray = json_decode($data);
+$dataArray = json_decode($data,true);
 
 $m = new MongoClient();
 $db = $m->diyiot_sensorsData;
-$sensor_coll = $db->($dataArray['devID');
+$sensor_coll = $db->$dataArray['devID'];
 // create a unique index on timestamp
 //$sensor_coll->ensureIndex(array('timestamp' => 1));
-$sensor_rec = array( "value" => $dataArray['data'], "timestamp" => $dataArray['when']);       
+$sensor_rec = array( "data" => $dataArray['data'], "when" => $dataArray['when']);       
 $sensor_coll->insert($sensor_rec);
-
 
 
 
