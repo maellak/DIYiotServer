@@ -26,7 +26,7 @@ $socket->connect("tcp://127.0.0.1:5556");
 p.x. $socket1 = fsockopen("localhost", 50018);
 */
 $socket1 = fsockopen("localhost",50036 );
-$devID='devID'+'xx';
+$devID='devID'.'xx'; //Device's Id .This will be the name of it's mongo collection
 
 if(!$socket1)return;
 stream_set_blocking($socket1, 0);
@@ -66,7 +66,7 @@ do {
 
 		 $entryData = array(
                                 'data'   => $data,
-                                'when'    => $_SERVER["REQUEST_TIME_FLOAT"]
+                                'when'    => microtime('get_as_float'),
                                 'devID' =>  $devID
                         );
 
