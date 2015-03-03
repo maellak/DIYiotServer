@@ -33,14 +33,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  *     ),
  *     @SWG\Parameter(
  *       name="srcfile",
- *       description="src file base64_encode",
- *       required=true,
- *       type="text",
- *       paramType="query"
- *     ),
- *     @SWG\Parameter(
- *       name="srclib",
- *       description="array with libs. base64_encode",
+ *       description="src file",
  *       required=true,
  *       type="text",
  *       paramType="query"
@@ -83,7 +76,7 @@ ini_set('max_execution_time', 300); //300 seconds = 5 minutes
  /**
  *
  * @SWG\Model(
- *              id="compile",
+ *              id="writedevice",
  *                  @SWG\Property(name="error",type="text",description="error")
  * )
  *                  @SWG\Property(name="status",type="integer",description="status code")
@@ -128,7 +121,6 @@ function diy_compile($payload,$storage){
     $result->method = $app->request()->getMethod();
     $params = loadParameters();
     $srcfile= OAuth2\Request::createFromGlobals()->request["srcfile"];
-    $srclib= OAuth2\Request::createFromGlobals()->request["srclib"];
     $device= OAuth2\Request::createFromGlobals()->request["device"];
     $comp= OAuth2\Request::createFromGlobals()->request["comp"];
     $filename= OAuth2\Request::createFromGlobals()->request["filename"];
@@ -160,9 +152,6 @@ function diy_compile($payload,$storage){
                 $result["message"] = "[".$result["method"]."][".$result["function"]."]:".$gump->get_readable_errors(true);
         }else{
 	    try {
-        $sourceWriteDir = __DIR__.'/../../../data/sketches/'.$client_id.'/'.$device.'/'.$filename;
-        if(file_exists($sourceWriteDir)) { throw new \Exception('Filename '.$filename.' for user '.$client_id.' and device '.$device.' already exists'); }
-        
 		$stmt2 = $storage->prepare('SELECT * FROM oauth_devices WHERE device = :device');
 		$stmt2->execute(array('device' => trim($device)));
 		$row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
@@ -223,16 +212,12 @@ function diy_compile($payload,$storage){
 					// epistrefei 
 					// error   ta lathi  h noerrors
 					// binfile    to hex file
+                    $srcfilebase64encode = urlencode(base64_encode(urlencode($srcfile)));
 					$compilerserver =  diyConfig::read("compiler.host");
 					$compilerserver .=  ":".diyConfig::read("compiler.port");
 					 $data1 = 'filename='.$filename;
 					 $data1 .= '&compiler='.$comp;
-					 $data1 .= '&srcfile='.$srcfile;
-                    $fixedFiles = array();
-                    foreach($srclib as $curName => $curFile) {
-                        $fixedFiles[] = 'srclib['.$curName.']='.$curFile;
-                    }
-                     $data1 .= '&'.implode('&', $fixedFiles);
+					 $data1 .= '&srcfile='.$srcfilebase64encode;
 
 
 					 $ch = curl_init();
@@ -242,27 +227,20 @@ function diy_compile($payload,$storage){
 					 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 					 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
 					 curl_setopt ($ch, CURLOPT_POST, 1);
-					$or = curl_exec($ch);
-                    if(!$or) { $or = curl_error($ch); }
-					$result["compiler"] =  $or;
+					$r = curl_exec($ch);
+					$result["compiler"]=  $r;
 					$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 					$result["status"] = "200";
                     
-                    $r = json_decode($or, true);
-                    if(!$r) {
-                        $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
-                        $result["compiler"]=  $or;
-                        $result["status"] = "500";
-                        return $result;
-                    }
+                    $r = json_decode($r, true);
+                    if(!$r) { echo 'Error: '.$r; die(); }
                     if($r['status'] != 200) {
                         $result["message"] = "[".$result["method"]."][".$result["function"]."]: CompilationError";
                         $result["status"] = "500";
                         return $result;
                     }
-                    unset($result["compiler"]); // No need to transfer this to the user
 					
-                    //$srcfilebase64encode = base64_encode($srcfile);
+                    $srcfilebase64encode = base64_encode($srcfile);
 					$apiport = trim($row2["apiport"]);
 
 
@@ -276,7 +254,7 @@ function diy_compile($payload,$storage){
 
 						 $ch = curl_init();
 						 curl_setopt ($ch, CURLOPT_URL,"http://127.0.0.1:$apiport/api/writesketch");
-						 curl_setopt ($ch, CURLOPT_TIMEOUT, 90);
+						 curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
 						 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 						 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 						 curl_setopt ($ch, CURLOPT_POSTFIELDS, $data1);
@@ -285,19 +263,11 @@ function diy_compile($payload,$storage){
 						$result["sketch"]=  $r;
 						$result["message"] = "[".$result["method"]."][".$result["function"]."]: NoErrors";
 						$result["status"] = "200";
-						//$result["result"]=  $r;
+						$result["result"]=  $r;
 					}
 
 
-                    // If we are here with no exceptions then everything went well. Lets save the sketch.
-                    $ziptmp = tempnam(sys_get_temp_dir(), 'diytmpzip').'.tgz';
-                    file_put_contents($ziptmp, base64_decode($r['zip']));
-                    $p = new PharData($ziptmp);
-                    $p->decompress(); // creates /path/to/my.tar
-                    $ziptmpextracted = str_replace('.tgz', '.tar', $ziptmp);
-                    $phar = new PharData($ziptmpextracted);
-                    $writeDir = __DIR__.'/../../../data/sketches/'.$client_id.'/'.$filename;
-                    $phar->extractTo($sourceWriteDir);
+
 
 
 				}

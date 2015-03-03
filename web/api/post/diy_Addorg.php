@@ -60,9 +60,9 @@ header("Content-Type: text/html; charset=utf-8");
  *                  @SWG\Property(name="org_desc",type="string",description="org desc"),
  * )
  */
-//api/get/diy_Adddevice.php
-// post device for add 
-// access_token device org
+//api/get/diy_Addorg.php
+// post org for add 
+// access_token org
 $app->post('/addorg', function () use ($authenticateForRole, $diy_storage)  {
         global $app;
         $params = loadParameters();
@@ -122,7 +122,7 @@ function diy_addorg($payload,$storage){
 		$result["parse_errors"] = $gump->get_readable_errors(true);
 		$result["message"] = "[".$result["method"]."][".$result["function"]."]:".$gump->get_readable_errors(true);
 	}else{
-		//check if device name exists
+		//check if organisation name exists
 		$stmt = $storage->prepare('SELECT * FROM oauth_organisations WHERE organisation = :org');
 		$stmt->execute(array('org' => trim($org)));
 		$row = $stmt->fetch(PDO::FETCH_ASSOC);
